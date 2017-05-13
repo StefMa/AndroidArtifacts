@@ -1,0 +1,23 @@
+apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+}
+
+compileGroovy {
+    sourceCompatibility = '1.6'
+    targetCompatibility = '1.6'
+}
+
+publish {
+    userOrg = 'stefma'
+    groupId = 'guru.stefma.androidartifacts'
+    artifactId = rootProject.name
+    uploadName = 'AndroidArtifacs'
+    version = project.version
+    description = 'Super duper easy way to create artifacts of your Android and Java libraries'
+    website = "https://github.com/StefMa/AndroidArtifacts"
+}
