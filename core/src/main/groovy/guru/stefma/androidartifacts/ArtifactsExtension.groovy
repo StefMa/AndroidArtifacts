@@ -1,6 +1,6 @@
 package guru.stefma.androidartifacts
 
-abstract class ArtifactsExtension {
+class ArtifactsExtension {
 
     String groupId
 
