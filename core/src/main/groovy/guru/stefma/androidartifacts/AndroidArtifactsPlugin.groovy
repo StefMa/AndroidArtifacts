@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.util.GradleVersion
 
-abstract class CreateAndroidArtifactsExtensions implements Plugin<Project> {
+abstract class AndroidArtifactsPlugin implements Plugin<Project> {
 
     ArtifactsExtension mArtifactsExtension
 
