@@ -5,7 +5,7 @@ import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.util.GradleVersion
 
-abstract class AndroidArtifactsPlugin implements Plugin<Project> {
+class AndroidArtifactsPlugin implements Plugin<Project> {
 
     ArtifactsExtension mArtifactsExtension
 
@@ -18,7 +18,9 @@ abstract class AndroidArtifactsPlugin implements Plugin<Project> {
         }
     }
 
-    abstract ArtifactsExtension getArtifactsExtensions(Project project)
+    ArtifactsExtension getArtifactsExtensions(Project project) {
+        mPublishExtension = project.extensions.create('artifacts', ArtifactsExtension)
+    }
 
     void attachArtifacts(Project project) {
         if (project.plugins.hasPlugin('com.android.library')) {
