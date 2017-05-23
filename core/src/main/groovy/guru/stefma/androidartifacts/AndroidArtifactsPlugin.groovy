@@ -19,7 +19,7 @@ class AndroidArtifactsPlugin implements Plugin<Project> {
     }
 
     ArtifactsExtension getArtifactsExtensions(Project project) {
-        mPublishExtension = project.extensions.create('artifacts', ArtifactsExtension)
+        mPublishExtension = project.extensions.create('androidArtifacts', ArtifactsExtension)
     }
 
     void attachArtifacts(Project project) {
