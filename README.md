@@ -33,7 +33,7 @@ androidArtifacts {
 ## Publish
 To finally publish you lib (to your local maven) just run
 ```
-./gradlew :myLib:publishToMavenLocal
+./gradlew build :myLib:publishToMavenLocal
 ```
 
 ## Credits
