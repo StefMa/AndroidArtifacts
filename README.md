@@ -1,4 +1,7 @@
-# AndroidArtifacts
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Download](https://api.bintray.com/packages/stefma/maven/AndroidArtifacs/images/download.svg) ](https://bintray.com/stefma/maven/AndroidArtifacs/_latestVersion)
+
+# AndroidArtifacts 
 
 A super easy way to create Android and Java artifacts.
 
@@ -7,6 +10,7 @@ This is a simple helper for configure the `maven-publish` plugin. It will automa
 
 ## How to use it
 You can use it as a standalone plugin in the following way:
+
 Put these lines into your **project** `build.gradle`
 ```groovy
 buildscript {
@@ -14,7 +18,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'guru.stefma.androidartifacts:androidartifacts:0.0.2'
+        // The current version can be found here https://git.io/vdsUY
+        classpath "guru.stefma.androidartifacts:androidartifacts:$androidArtifactsVersion"
     }
 }
 ```
