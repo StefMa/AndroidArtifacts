@@ -30,6 +30,12 @@ androidArtifacts {
 }
 ```
 
+## Publish
+To finally publish you lib (to your local maven) just run
+```
+./gradlew :myLib:publishToMavenLocal
+```
+
 ## Credits
 
 Goes to [Novoda](https://github.com/novoda/) and there inital idea of there [bintray-release](https://github.com/novoda/bintray-release).
