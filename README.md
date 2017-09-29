@@ -21,13 +21,19 @@ buildscript {
 
 Then put these into your **module** `build.gradle`:
 ```groovy
-apply plugin: 'guru.stefma.androidartifacts' // Add this after your android or java plugin!
+apply plugin: 'guru.stefma.androidartifacts' // Add this after your `com.android.library` or `java` plugin!
 
 androidArtifacts {
     groupId = 'com.example'
     artifactId = 'androidartifacts'
     publishVersion = '0.1'
 }
+```
+
+## Publish
+To finally publish you lib (to your local maven) just run
+```
+./gradlew build :myLib:publishToMavenLocal
 ```
 
 ## Credits
