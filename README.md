@@ -14,7 +14,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'guru.stefma.androidartifacts:androidartifacts:0.0.1'
+        classpath 'guru.stefma.androidartifacts:androidartifacts:0.0.2'
     }
 }
 ```
