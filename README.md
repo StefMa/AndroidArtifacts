@@ -21,7 +21,7 @@ buildscript {
 
 Then put these into your **module** `build.gradle`:
 ```groovy
-apply plugin: 'guru.stefma.androidartifacts' // Add this after your android or java plugin!
+apply plugin: 'guru.stefma.androidartifacts' // Add this after your `com.android.library` or `java` plugin!
 
 androidArtifacts {
     groupId = 'com.example'
