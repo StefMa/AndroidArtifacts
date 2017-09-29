@@ -17,7 +17,8 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'guru.stefma.androidartifacts:androidartifacts:0.0.2'
+        // The current version can be found here https://git.io/vdsUY
+        classpath "guru.stefma.androidartifacts:androidartifacts:$androidArtifactsVersion"
     }
 }
 ```
