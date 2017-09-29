@@ -23,6 +23,8 @@ class AndroidArtifactsPlugin implements Plugin<Project> {
     }
 
     void attachArtifacts(Project project) {
+
+        // add artifacts for com.android.library libraries
         if (project.plugins.hasPlugin('com.android.library')) {
 
             if (outdatedGradleVersion()) {
@@ -33,7 +35,10 @@ class AndroidArtifactsPlugin implements Plugin<Project> {
             project.android.libraryVariants.each { variant ->
                 addArtifact(project, (String) variant.name, new AndroidArtifacts(variant))
             }
-        } else {
+        }
+
+        // add artifacts for java libraries
+        if (project.plugins.hasPlugin('java')) {
             addArtifact(project, 'maven', new JavaArtifacts())
         }
     }
