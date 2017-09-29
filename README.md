@@ -10,6 +10,7 @@ This is a simple helper for configure the `maven-publish` plugin. It will automa
 
 ## How to use it
 You can use it as a standalone plugin in the following way:
+
 Put these lines into your **project** `build.gradle`
 ```groovy
 buildscript {
