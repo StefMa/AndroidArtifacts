@@ -32,7 +32,7 @@ class AndroidArtifactsPlugin implements Plugin<Project> {
                 return
             }
 
-            project.android.libraryVariants.each { variant ->
+            project.android.libraryVariants.all { variant ->
                 addArtifact(project, (String) variant.name, new AndroidArtifacts(variant))
             }
         }
