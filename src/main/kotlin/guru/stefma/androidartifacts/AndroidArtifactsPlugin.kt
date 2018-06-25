@@ -50,8 +50,11 @@ class AndroidArtifactsPlugin : Plugin<Project> {
 
             it.setupMetadata(extension)
 
+            it.pom {
             val implementationConfig = configurations.getByName("implementation")
-            it.pom.addDependenciesForConfiguration(implementationConfig)
+                it.addDependenciesForConfiguration(implementationConfig)
+                it.packaging = "aar"
+            }
         }
     }
 
