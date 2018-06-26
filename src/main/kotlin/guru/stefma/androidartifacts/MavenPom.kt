@@ -17,5 +17,6 @@ internal fun MavenPom.addDependenciesForConfiguration(configuration: Configurati
         dependencyNode.appendNode("groupId", it.group)
         dependencyNode.appendNode("artifactId", it.name)
         dependencyNode.appendNode("version", it.version)
+        dependencyNode.appendNode("scope", "compile")
     }
 }
