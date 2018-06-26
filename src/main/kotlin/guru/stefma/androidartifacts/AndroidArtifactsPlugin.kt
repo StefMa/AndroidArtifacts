@@ -48,10 +48,10 @@ class AndroidArtifactsPlugin : Plugin<Project> {
                 if (hasKotlinPluginApplied) it.addDokkaArtifact(this, variant)
             }
 
-            it.setupMetadata(extension)
+            it.setupMetadata(this, extension)
 
             it.pom {
-            val implementationConfig = configurations.getByName("implementation")
+                val implementationConfig = configurations.getByName("implementation")
                 it.addDependenciesForConfiguration(implementationConfig)
                 it.packaging = "aar"
             }

@@ -60,12 +60,16 @@ internal fun MavenPublication.addDokkaArtifact(
  * Setup the "metadata" for this [MavenPublication].
  *
  * Currently it will setup the [MavenPublication.setVersion], [MavenPublication.setArtifactId] and
- * the [MavenPublication.setGroupId] based on the [AndroidArtifactsExtension]
+ * the [MavenPublication.setGroupId] based on the [AndroidArtifactsExtension.artifactId], [Project.getVersion] and
+ * [Project.getGroup]
  */
-internal fun MavenPublication.setupMetadata(extension: AndroidArtifactsExtension) {
-    version = extension.artifactVersion
+internal fun MavenPublication.setupMetadata(
+        project: Project,
+        extension: AndroidArtifactsExtension
+) {
+    version = project.version as String
     artifactId = extension.artifactId
-    groupId = extension.groupId
+    groupId = project.group as String
 }
 
 /**
