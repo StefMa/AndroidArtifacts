@@ -16,7 +16,6 @@ internal fun MavenPublication.addAarArtifact(
 ) {
     artifact("${project.buildDir}/outputs/aar/${variantName.aarFileName(project.name)}") {
         it.builtBy(project.tasks.getByName(variantName.aarAssembleTaskName))
-        it.classifier = variantName
     }
 }
 
@@ -28,7 +27,7 @@ internal fun MavenPublication.addSourcesArtifact(
         variant: LibraryVariant
 ) {
     artifact(project.tasks.createAndroidArtifactsSourcesTask(variant)) {
-        it.classifier = "${variant.name}Sources"
+        it.classifier = "sources"
     }
 }
 
@@ -40,7 +39,7 @@ internal fun MavenPublication.addJavadocArtifact(
         variant: LibraryVariant
 ) {
     artifact(project.tasks.createAndroidArtifactsJavadocTask(variant)) {
-        it.classifier = "${variant.name}Javadoc"
+        it.classifier = "javadoc"
     }
 }
 
@@ -52,6 +51,9 @@ internal fun MavenPublication.addDokkaArtifact(
         variant: LibraryVariant
 ) {
     artifact(project.tasks.createAndroidArtifactsDokkaTask(variant.name)) {
+        // TODO: Think avout the classifier.
+        // Should be maybe just javadoc and replaced the original javadoc
+        // if we use kotlin...
         it.classifier = "${variant.name}Dokka"
     }
 }
