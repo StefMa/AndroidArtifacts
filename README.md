@@ -3,12 +3,12 @@
 
 # AndroidArtifacts 
 
-A super easy way to create Android and Java artifacts.
+A super easy way to create Android ~and Java artifacts~.
 
 ## Description
 This is a simple helper for configure the `maven-publish` plugin. It will automatically setup the `publications` for your project.
 
-## How to use it
+## How to apply
 You can use it as a standalone plugin in the following way:
 
 Put these lines into your **project** `build.gradle`
@@ -16,6 +16,7 @@ Put these lines into your **project** `build.gradle`
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
         // The current version can be found here https://git.io/vdsUY
@@ -24,24 +25,27 @@ buildscript {
 }
 ```
 
-Then put these into your **module** `build.gradle`:
+Then you can apply the plugin to your **module** `build.gradle`:
 ```groovy
-apply plugin: 'guru.stefma.androidartifacts' // Add this after your `com.android.library` or `java` plugin!
+apply plugin: "com.android.library"
+apply plugin: "org.jetbrains.kotlin-android" //1
+apply plugin: "guru.stefma.androidartifacts" //2
 
+version = "1.0.0"
+group = "guru.stefma.androidartifacts"
 androidArtifacts {
-    groupId = 'com.example'
     artifactId = 'androidartifacts'
-    publishVersion = '0.1'
 }
 ```
+* **//1:** The Kotlin plugin is optional of course. But if you add it, it will generate a KDoc together with a javadoc.
+* **//2:** The **AndroidArtifacts** plugin should always be added **after** android library and kotlin-android plugin.
+
+The plugin will automatically create some tasks - based on your setup - for you. Just run `./gradlew tasks` to see a list of them. All generated tasks are "prefixed" with `androidArtifact`.
 
 ## Publish
-To finally publish you lib (to your local maven) just run
-```
-./gradlew build :myLib:publishToMavenLocal
-```
+To finally publish you library to your local maven just run of the available `androidArtfactAar*` task.
 
-## Credits
-
-Goes to [Novoda](https://github.com/novoda/) and there inital idea of there [bintray-release](https://github.com/novoda/bintray-release).
-Basically this plugin have extracted some parts of the bintray-release with some changes by me. 
+E.g. the following will publish the **release** build type:
+```
+./gradlew :awesomeLib:androidArtifactRelease
+```
