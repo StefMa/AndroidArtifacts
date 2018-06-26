@@ -51,4 +51,4 @@ gradlePlugin {
  * ```
  */
 group = "guru.stefma.androidartifacts"
-version = "dev"
+version = "1.0.0"
