@@ -47,5 +47,5 @@ To finally publish you library to your local maven just run of the available `an
 
 E.g. the following will publish the **release** build type:
 ```
-./gradlew :awesomeLib:androidArtifactAarRelease
+./gradlew :awesomeLib:androidArtifactRelease
 ```
