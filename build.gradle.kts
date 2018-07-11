@@ -13,6 +13,14 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.android.tools.build:gradle:3.1.3")
     implementation("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
+    testImplementation("org.assertj:assertj-core:3.10.0")
+}
+
+tasks.withType(Test::class.java) {
+    useJUnitPlatform()
 }
 
 gradlePlugin {
