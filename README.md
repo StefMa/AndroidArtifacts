@@ -33,7 +33,7 @@ apply plugin: "guru.stefma.androidartifacts" //2
 
 version = "1.0.0"
 group = "guru.stefma.androidartifacts"
-androidArtifacts {
+androidArtifact {
     artifactId = 'androidartifacts'
 }
 ```
