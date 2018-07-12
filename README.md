@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-[![Download](https://api.bintray.com/packages/stefma/maven/AndroidArtifacs/images/download.svg) ](https://bintray.com/stefma/maven/AndroidArtifacs/_latestVersion)
+[![Download](https://api.bintray.com/packages/stefma/maven/AndroidArtifacts/images/download.svg) ](https://bintray.com/stefma/maven/AndroidArtifacs/_latestVersion)
 
 # AndroidArtifacts 
 
