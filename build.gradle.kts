@@ -1,8 +1,12 @@
+import guru.stefma.bintrayrelease.PublishExtension
+
 plugins {
     id("java-gradle-plugin")
     kotlin("jvm") version "1.2.50"
-    id("maven-publish")
+    id("java-library")
+    id("guru.stefma.bintrayrelease") version "1.0.0" apply false
 }
+apply(plugin = "guru.stefma.bintrayrelease")
 
 repositories {
     jcenter()
@@ -33,31 +37,12 @@ gradlePlugin {
     }
 }
 
-/**
- * For local development.
- * Just run
- * ````
- * ./gradlew publishPluginMavenPublicationToMavenLocal
- * ```
- * to publish this plugin to the local maven
- *
- * Can be used either via
- * ```
- *     plugins { id("guru.stefma.androidartifcts") }
- * ```
- * or with the old `buildscript` block
- * ```
- *     buildscript {
- *         repositories {
- *             google()
- *             jcenter()
- *             mavenLocal()
- *         }
- *         dependencies { classpath "guru.stefma.androidartifacts:androidartifacts:DEV" }
- *     }
- *
- *     apply<guru.stefma.androidartifacts.AndroidArtifactsPlugin>()
- * ```
- */
 group = "guru.stefma.androidartifacts"
 version = "1.0.0"
+configure<PublishExtension> {
+    artifactId = "androidartifacts"
+    userOrg = "stefma"
+    desc = "A Gradle Plugin which will"
+    uploadName = "AndroidArtifacts"
+    website = "https://github.com/StefMa/AndroidArtifacts"
+}
