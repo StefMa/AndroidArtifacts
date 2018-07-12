@@ -16,7 +16,7 @@ But this is currently in "experimental mode".
 The output for the `androidArtifact{$libraryVariant}` is expected at `$project/build/generated/outputs/aar/$projectName-$variantName.aar`.
 This is the default output path for the `assemble{$libraryVariant}` task.
 
-The `*Javadoc` and `*Sources` task output will be created inside the `$project/build/libs/$projectName-$variantName-$type.jar` 
+The `*Javadoc` and `*Sources` task output will be created inside the `$project/build/libs/$projectName-$version-$type.jar` 
 (while `$type` is either `javadoc` or `sources`).
 
 The published aar and jar's can be then found in your local maven. Typicall this is located at `~/.m2/repository/`.
