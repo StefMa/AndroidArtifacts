@@ -8,11 +8,12 @@ import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.ValueSource
 import java.io.File
 
 @ExtendWith(AndroidTempDirectory::class)
 class AndroidArtifactsPluginTest {
-
 
     @Test
     fun `test apply should generate tasks`(@TempDir tempDir: File, @AndroidBuildScript buildScript: File) {
@@ -110,8 +111,15 @@ class AndroidArtifactsPluginTest {
                     "</dependency>"
             )
 
-    @Test
-    fun `test task androidArtifactRelease should generate jars`(@TempDir tempDir: File, @AndroidBuildScript buildScript: File) {
+    @ParameterizedTest(
+            name = "test task androidArtifactRelease should generate jars with Gradle version {arguments}"
+    )
+    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9-rc-2"])
+    fun `test task androidArtifactRelease should generate jars`(
+            gradleVersion: String,
+            @TempDir tempDir: File,
+            @AndroidBuildScript buildScript: File
+    ) {
         buildScript.appendText(
                 """
                         group = "guru.stefma"
@@ -139,7 +147,7 @@ class AndroidArtifactsPluginTest {
         }
 
         GradleRunner.create()
-                .default(tempDir)
+                .default(tempDir, gradleVersion)
                 .withArguments("androidArtifactRelease")
                 .build()
 
@@ -148,8 +156,15 @@ class AndroidArtifactsPluginTest {
         assertThat(File(tempDir, "/build/libs/${tempDir.name}-1.0-javadocs.jar")).exists()
     }
 
-    @Test
-    fun `test task androidArtifactRelease without sources, javadoc`(@TempDir tempDir: File, @AndroidBuildScript buildScript: File) {
+    @ParameterizedTest(
+            name = "test task androidArtifactRelease without sources, javadoc with Gradle version {arguments}"
+    )
+    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9-rc-2"])
+    fun `test task androidArtifactRelease without sources, javadoc`(
+            gradleVersion: String,
+            @TempDir tempDir: File,
+            @AndroidBuildScript buildScript: File
+    ) {
         buildScript.appendText(
                 """
                         group = "guru.stefma"
@@ -179,7 +194,7 @@ class AndroidArtifactsPluginTest {
         }
 
         GradleRunner.create()
-                .default(tempDir)
+                .default(tempDir, gradleVersion)
                 .withArguments("androidArtifactRelease")
                 .build()
 

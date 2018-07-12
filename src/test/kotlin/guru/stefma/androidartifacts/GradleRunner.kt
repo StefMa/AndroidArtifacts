@@ -6,7 +6,10 @@ import java.io.File
 /**
  * Setup the [GradleRunner] with some "defaults" to reduce a little bit boilerplate...
  */
-fun GradleRunner.default(projectDir: File) = this
+fun GradleRunner.default(
+        projectDir: File,
+        gradleVersion: String = "4.8.1"
+) = this
         .withPluginClasspath()
-        .withGradleVersion("4.8.1")
+        .withGradleVersion(gradleVersion)
         .withProjectDir(projectDir)

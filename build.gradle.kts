@@ -15,6 +15,7 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.2.0")
     testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
     testImplementation("org.assertj:assertj-core:3.10.0")
 }
