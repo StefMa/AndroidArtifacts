@@ -1,0 +1,21 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: stefma-docker-hub.bintray.io/android-build-env:0.2-alpha
+
+    steps:
+      - checkout
+
+      # Try to restore cache (see ho to save cache below 👇)
+      - restore_cache:
+          key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+      - run: echo "sdk.dir=$HOME/android-sdk" >> local.properties
+      - run: ./gradlew test --no-daemon
+
+       # Save the gradle folder for caching
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
