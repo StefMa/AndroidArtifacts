@@ -37,7 +37,7 @@ class AndroidArtifactsPlugin : Plugin<Project> {
             extension: AndroidArtifactsExtension,
             publishingContainer: PublicationContainer,
             variant: LibraryVariant,
-            publicationTasks: ListAvailablePublicationTasks
+            publicationTasks: ListGeneratedPublicationTasks
     ) {
         val aarPublicationName = variant.name.aarPublicationName
         publicationTasks.publicationNames += aarPublicationName

@@ -81,8 +81,8 @@ internal fun TaskContainer.createAndroidArtifactsDokkaTask(variantName: String):
     }
 }
 
-internal fun TaskContainer.createListAvailablePublicationTask(): ListAvailablePublicationTasks {
-    return create("androidArtifactGeneratedPublications", ListAvailablePublicationTasks::class.java)
+internal fun TaskContainer.createListAvailablePublicationTask(): ListGeneratedPublicationTasks {
+    return create("androidArtifactGeneratedPublications", ListGeneratedPublicationTasks::class.java)
 }
 
 private val String.androidArtifactsTaskName

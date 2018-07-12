@@ -10,7 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import java.io.File
 
 @ExtendWith(AndroidTempDirectory::class)
-class ListAvailablePublicationTasksTest {
+class ListGeneratedPublicationTasksTest {
 
     @Test
     fun `test executing task should print generated publications`(

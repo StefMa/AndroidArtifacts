@@ -8,7 +8,7 @@ import org.gradle.api.tasks.TaskAction
  *
  * The [publicationNames] will be set by the [AndroidArtifactsPlugin].
  */
-open class ListAvailablePublicationTasks : DefaultTask() {
+open class ListGeneratedPublicationTasks : DefaultTask() {
 
     init {
         group = "Publishing"
