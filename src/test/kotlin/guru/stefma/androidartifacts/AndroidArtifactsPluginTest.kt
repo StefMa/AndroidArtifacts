@@ -144,8 +144,6 @@ class AndroidArtifactsPluginTest {
                 .build()
 
         assertThat(File(tempDir, "/build/outputs/aar/${tempDir.name}-release.aar")).exists()
-        // TODO: Check why they aren't named like we describe in the development.
-        // Should be $tempDir.name-variantName-sources according to the doc
         assertThat(File(tempDir, "/build/libs/${tempDir.name}-1.0-sources.jar")).exists()
         assertThat(File(tempDir, "/build/libs/${tempDir.name}-1.0-javadocs.jar")).exists()
     }
