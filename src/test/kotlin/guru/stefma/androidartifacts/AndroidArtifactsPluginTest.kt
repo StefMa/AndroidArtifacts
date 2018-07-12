@@ -57,10 +57,6 @@ class AndroidArtifactsPluginTest {
                             artifactId = "androidartifacts"
                         }
 
-                        repositories {
-                            jcenter()
-                        }
-
                         dependencies {
                             implementation("guru.stefma.androidartifacts:androidartifacts:1.0.0")
                             api("guru.stefma.artifactorypublish:artifactorypublish:1.0.0")
@@ -108,6 +104,61 @@ class AndroidArtifactsPluginTest {
                     "<artifactId>bintrayrelease</artifactId>",
                     "<version>1.0.0</version>",
                     "<scope>provided</scope>",
+                    "</dependency>"
+            )
+
+    @Test
+    fun `test apply should generate pom for project correctly`(
+            @TempDir tempDir: File,
+            @AndroidBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        androidArtifact {
+                            artifactId = "androidartifacts"
+                        }
+
+                        dependencies {
+                            implementation(project(":awesome"))
+                        }
+                """
+        )
+        File(tempDir, "settings.gradle").apply {
+            parentFile.mkdirs()
+            writeText(
+                    """
+                       include(":awesome")
+                    """
+            )
+        }
+        File(tempDir, "awesome/build.gradle").apply {
+            parentFile.mkdirs()
+            writeText(
+                    """
+                        group = "guru.stefma"
+                        version = "1.0"
+                    """
+            )
+        }
+
+        GradleRunner.create()
+                .default(tempDir)
+                .withArguments("generatePomFileForReleaseAarPublication")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/releaseAar/pom-default.xml")
+        pomFile.assertContainsProjectAwesomeDependency()
+    }
+
+    private fun File.assertContainsProjectAwesomeDependency() =
+            assertThat(readText()).contains(
+                    "<dependency>",
+                    "<groupId>guru.stefma</groupId>",
+                    "<artifactId>awesome</artifactId>",
+                    "<version>1.0</version>",
+                    "<scope>compile</scope>",
                     "</dependency>"
             )
 
