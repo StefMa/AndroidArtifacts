@@ -13,11 +13,15 @@ annotation class TempDir
  *
  * The [File] should be annotated with [TempDir].
  */
-open class TempDirectory : Extension, AfterAllCallback, ParameterResolver {
+open class TempDirectory : Extension, BeforeEachCallback, AfterEachCallback, ParameterResolver {
 
-    protected var tempDir = createTempDir()
+    protected lateinit var tempDir: File
 
-    override fun afterAll(context: ExtensionContext) {
+    override fun beforeEach(context: ExtensionContext) {
+        tempDir = createTempDir()
+    }
+
+    override fun afterEach(context: ExtensionContext) {
         tempDir.deleteRecursively()
     }
 
@@ -44,18 +48,12 @@ annotation class AndroidBuildScript
  * at the test parameter...
  * You can modify it like you want. The files got created for each test (and reseted for each)
  */
-class AndroidTempDirectory : TempDirectory(), BeforeAllCallback, BeforeEachCallback, AfterEachCallback {
+class AndroidTempDirectory : TempDirectory() {
 
-    var buildScript: File? = null
+    private var buildScript: File? = null
 
-    override fun beforeAll(context: ExtensionContext) {
-        File(tempDir, "/src/main/AndroidManifest.xml").apply {
-            parentFile.mkdirs()
-            writeText("<manifest package=\"guru.stefma.androidartifacts.test\"/>")
-        }
-    }
-
-    override fun beforeEach(context: ExtensionContext?) {
+    override fun beforeEach(context: ExtensionContext) {
+        super.beforeEach(context)
         buildScript = File(tempDir, "build.gradle").apply {
             writeText(
                     """
@@ -74,9 +72,14 @@ class AndroidTempDirectory : TempDirectory(), BeforeAllCallback, BeforeEachCallb
                         """
             )
         }
+        File(tempDir, "/src/main/AndroidManifest.xml").apply {
+            parentFile.mkdirs()
+            writeText("<manifest package=\"guru.stefma.androidartifacts.test\"/>")
+        }
     }
 
-    override fun afterEach(context: ExtensionContext?) {
+    override fun afterEach(context: ExtensionContext) {
+        super.afterEach(context)
         buildScript!!.delete()
     }
 
