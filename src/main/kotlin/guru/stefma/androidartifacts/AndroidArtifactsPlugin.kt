@@ -13,9 +13,10 @@ class AndroidArtifactsPlugin : Plugin<Project> {
         project.applyMavenPublishPlugin()
         project.applyDokkaPlugin()
         val publicationContainer = project.publishingExtension.publications
+        val publicationTasks = project.tasks.createListAvailablePublicationTask()
         project.androidLibraryExtension.libraryVariants.all {
             project.tasks.createAndroidArtifactsTask(it.name)
-            project.createPublication(extension, publicationContainer, it)
+            project.createPublication(extension, publicationContainer, it, publicationTasks)
         }
     }
 
@@ -35,9 +36,12 @@ class AndroidArtifactsPlugin : Plugin<Project> {
     private fun Project.createPublication(
             extension: AndroidArtifactsExtension,
             publishingContainer: PublicationContainer,
-            variant: LibraryVariant
+            variant: LibraryVariant,
+            publicationTasks: ListAvailablePublicationTasks
     ) {
-        publishingContainer.create(variant.name.aarPublicationName, MavenPublication::class.java) {
+        val aarPublicationName = variant.name.aarPublicationName
+        publicationTasks.publicationNames += aarPublicationName
+        publishingContainer.create(aarPublicationName, MavenPublication::class.java) {
             it.addAarArtifact(this, variant.name)
             // Publish sources only if set to true
             if (extension.sources) it.addSourcesArtifact(this, variant)
