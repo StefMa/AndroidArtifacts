@@ -3,6 +3,11 @@ package guru.stefma.androidartifacts
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
+/**
+ * List all generated [publications][org.gradle.api.publish.Publication].
+ *
+ * The [publicationNames] will be set by the [AndroidArtifactsPlugin].
+ */
 open class ListAvailablePublicationTasks : DefaultTask() {
 
     init {
