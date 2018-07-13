@@ -19,7 +19,7 @@ private const val DEPENDENCIES_NODE_NAME = "dependencies"
 internal fun MavenPom.addDependenciesForConfiguration(configuration: Configuration, scope: String) = withXml {
     val node = it.asNode()
     val dependenciesNode = node.depthFirst()
-            .find { it?.toString() == DEPENDENCIES_NODE_NAME }
+            .find { (it as? Node)?.name() == DEPENDENCIES_NODE_NAME }
             .run {
                 if (this == null) {
                     node.appendNode(DEPENDENCIES_NODE_NAME)
@@ -33,7 +33,7 @@ internal fun MavenPom.addDependenciesForConfiguration(configuration: Configurati
 
 private fun Node.addDependency(dependency: Dependency, scope: String) {
     val dependencyNode = appendNode("dependency")
-    with(dependency) {
+    dependency.apply {
         dependencyNode.appendNode("groupId", group)
         dependencyNode.appendNode("artifactId", name)
         dependencyNode.appendNode("version", version)

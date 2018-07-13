@@ -73,8 +73,7 @@ class AndroidArtifactsPluginTest {
         val pomFile = File(tempDir, "/build/publications/releaseAar/pom-default.xml")
         pomFile.assertContainsAndroidArtifactsDependency()
         pomFile.assertContainsArtifactoryPublishDependency()
-        // This is not yet supported. See https://github.com/StefMa/AndroidArtifacts/issues/19
-        // pomFile.assertContainsBintrayReleaseDependency()
+        pomFile.assertContainsBintrayReleaseDependency()
     }
 
     private fun File.assertContainsAndroidArtifactsDependency() =
