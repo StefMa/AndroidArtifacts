@@ -56,7 +56,7 @@ class AndroidArtifactsPlugin : Plugin<Project> {
 
             it.pom {
                 val implementationConfig = configurations.getByName("implementation")
-                it.addDependenciesForConfiguration(implementationConfig)
+                it.addDependenciesForConfiguration(implementationConfig, "compile")
                 it.packaging = "aar"
             }
         }
