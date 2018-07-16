@@ -34,6 +34,10 @@ gradlePlugin {
             id = "guru.stefma.androidartifacts"
             implementationClass = "guru.stefma.androidartifacts.AndroidArtifactsPlugin"
         }
+        create("javaArtifacts") {
+            id = "guru.stefma.javaartifacts"
+            implementationClass = "guru.stefma.androidartifacts.JavaArtifactsPlugin"
+        }
     }
 }
 
