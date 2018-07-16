@@ -2,7 +2,9 @@ package guru.stefma.androidartifacts
 
 import com.android.build.gradle.api.LibraryVariant
 import com.android.builder.model.SourceProvider
+import org.gradle.api.Project
 import org.gradle.api.Task
+import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
@@ -25,6 +27,20 @@ internal fun TaskContainer.createAndroidArtifactsTask(variantName: String) {
 }
 
 /**
+ * Create the "basic" **androidArtifacts** tasks which is basically just a shorthand
+ * for the generated `publish$publicationNamePublicationToMavenLocal` task.
+ *
+ * This should be used to publish the artifacts to the mavenLocal.
+ */
+internal fun TaskContainer.createJavaArtifactsTask(publicationName: String) {
+    create("java".androidArtifactsTaskName) {
+        it.dependsOn("publish${publicationName.capitalize()}PublicationToMavenLocal")
+        it.group = TASKS_GROUP
+        it.description = "Publish jar for ${publicationName.capitalize()} to the local Maven repository."
+    }
+}
+
+/**
  * Create a new [Task] from the typ [Jar] with the name [String.sourcesTaskName]
  * which will put all [SourceProvider.getJavaDirectories] from the given [LibraryVariant.getSourceSets]
  * into the generated Jar file.
@@ -38,6 +54,27 @@ internal fun TaskContainer.createAndroidArtifactsSourcesTask(variant: LibraryVar
 
         task.group = TASKS_GROUP
         task.description = "Package the sources for the `androidArtifact${variant.name}` into a jar"
+    }
+}
+
+/**
+ * Create a new [Task] from the typ [Jar] with the name [String.sourcesTaskName]
+ * which will put all [org.gradle.api.tasks.SourceSet.getAllSource] from the given [JavaPluginConvention.getSourceSets]
+ * into the generated Jar file.
+ */
+internal fun TaskContainer.createJavaArtifactsSourcesTask(
+        javaConvention: JavaPluginConvention,
+        publicationName: String
+): Task {
+    return create("java".sourcesTaskName, Jar::class.java) { task ->
+        task.classifier = "sources"
+        javaConvention.sourceSets.forEach {
+            it.allSource
+            task.from(it.allSource)
+        }
+
+        task.group = TASKS_GROUP
+        task.description = "Package the sources for the `androidArtifact$publicationName` into a jar"
     }
 }
 
@@ -62,6 +99,19 @@ internal fun TaskContainer.createAndroidArtifactsJavadocTask(variant: LibraryVar
 
         it.group = TASKS_GROUP
         it.description = "Package the javadoc for the `androidArtifact${variant.name}` into a jar"
+    }
+}
+
+/**
+ * Creates a [Jar] task which will package the sources from the given [javadoc] tasks.
+ */
+internal fun TaskContainer.createJavaArtifactsJavadocTask(javadoc: Javadoc, publicationName: String): Task {
+    return create("java".javadocTaskName, Jar::class.java) {
+        it.classifier = "javadocs"
+        it.from(javadoc.destinationDir)
+
+        it.group = TASKS_GROUP
+        it.description = "Package the javadoc for the `androidArtifact${publicationName.capitalize()}` into a jar"
     }
 }
 
