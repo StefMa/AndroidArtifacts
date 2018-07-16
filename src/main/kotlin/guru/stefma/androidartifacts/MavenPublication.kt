@@ -2,9 +2,12 @@ package guru.stefma.androidartifacts
 
 import com.android.build.gradle.api.LibraryVariant
 import org.gradle.api.Project
+import org.gradle.api.file.SourceDirectorySet
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.publish.maven.MavenArtifact
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.api.tasks.SourceSet
+import org.gradle.api.tasks.SourceSetContainer
 import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.javadoc.Javadoc
 
@@ -40,7 +43,7 @@ internal fun MavenPublication.addJavaSourcesArtifact(
         project: Project,
         publicationName: String
 ) {
-    val javaConvention = project.extensions.getByType(JavaPluginConvention::class.java)
+    val javaConvention = project.convention.getPlugin(JavaPluginConvention::class.java)
     artifact(project.tasks.createJavaArtifactsSourcesTask(javaConvention, publicationName)) {
         it.classifier = "sources"
     }
