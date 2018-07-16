@@ -13,7 +13,11 @@ class JavaArtifactsPlugin : Plugin<Project> {
         val publicationName = "maven"
         project.tasks.createJavaArtifactsTask(publicationName)
         publicationTasks.publicationNames += publicationName
-        createPublication(extension, project, publicationName, publicationTasks)
+        // TODO: Think if we can do that better lazy somehow
+        // see https://docs.gradle.org/current/userguide/lazy_configuration.html
+        project.afterEvaluate {
+            createPublication(extension, project, publicationName, publicationTasks)
+        }
     }
 
     private fun Project.createJavaArtifactsExtension() =
