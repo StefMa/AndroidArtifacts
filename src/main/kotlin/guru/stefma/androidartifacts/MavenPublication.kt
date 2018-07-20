@@ -6,7 +6,6 @@ import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.publish.maven.MavenArtifact
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.TaskContainer
-import org.gradle.api.tasks.javadoc.Javadoc
 
 /**
  * Creates a new [MavenArtifact] by putting the generated `aar` file path into it
