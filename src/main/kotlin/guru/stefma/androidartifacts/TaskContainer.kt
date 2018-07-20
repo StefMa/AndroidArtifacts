@@ -106,8 +106,10 @@ internal fun TaskContainer.createAndroidArtifactsJavadocTask(variant: LibraryVar
  * Creates a [Jar] task which will package the sources from the [org.gradle.api.tasks.javadoc.Javadoc] output.
  */
 internal fun TaskContainer.createJavaArtifactsJavadocTask(publicationName: String): Task {
+    val javadocTask = getByName("javadoc") as Javadoc
+    javadocTask.isFailOnError = false
+
     return create("java".javadocTaskName, Jar::class.java) {
-        val javadocTask = getByName("javadoc")
         it.dependsOn(javadocTask)
         it.classifier = "javadocs"
         it.from(javadocTask.outputs)
