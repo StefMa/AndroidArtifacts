@@ -35,9 +35,7 @@ class JavaArtifactsPlugin : Plugin<Project> {
             // Publish sources only if set to true
             if (extension.sources) it.addJavaSourcesArtifact(project, "maven")
             // Publish javadoc only if set to true
-            if (extension.javadoc) {
-                it.addJavaJavadocArtifact(project, "maven")
-            }
+            if (extension.javadoc) it.addJavaJavadocArtifact(project, "maven")
 
             it.setupMetadata(project, extension)
         }
