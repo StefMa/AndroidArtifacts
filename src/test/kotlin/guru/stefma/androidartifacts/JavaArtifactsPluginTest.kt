@@ -3,6 +3,7 @@ package guru.stefma.androidartifacts
 import guru.stefma.androidartifacts.junit.JavaBuildScript
 import guru.stefma.androidartifacts.junit.JavaTempDirectory
 import guru.stefma.androidartifacts.junit.TempDir
+import org.assertj.core.api.AbstractCharSequenceAssert
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Test
@@ -73,22 +74,22 @@ class JavaArtifactsPluginTest {
 
     private fun File.assertContainsAndroidArtifactsDependency() =
             assertThat(readText()).contains(
-                    "<dependency>",
-                    "<groupId>guru.stefma.androidartifacts</groupId>",
-                    "<artifactId>androidartifacts</artifactId>",
-                    "<version>1.0.0</version>",
-                    "<scope>runtime</scope>",
-                    "</dependency>"
-            )
+                """    <dependency>
+      <groupId>guru.stefma.androidartifacts</groupId>
+      <artifactId>androidartifacts</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>"""
+        )
 
     private fun File.assertContainsArtifactoryPublishDependency() =
             assertThat(readText()).contains(
-                    "<dependency>",
-                    "<groupId>guru.stefma.artifactorypublish</groupId>",
-                    "<artifactId>artifactorypublish</artifactId>",
-                    "<version>1.0.0</version>",
-                    "<scope>compile</scope>",
-                    "</dependency>"
+                """    <dependency>
+      <groupId>guru.stefma.artifactorypublish</groupId>
+      <artifactId>artifactorypublish</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>"""
             )
 
     private fun File.assertNotContainBintrayReleaseDependency() =
@@ -156,7 +157,7 @@ class JavaArtifactsPluginTest {
     @ParameterizedTest(
             name = "test task androidArtifactRelease should generate jars with Gradle version {arguments}"
     )
-    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9"])
+    @ValueSource(strings = ["4.4"])
     fun `test task androidArtifactJava should generate jars`(
             gradleVersion: String,
             @TempDir tempDir: File,
@@ -201,7 +202,7 @@ class JavaArtifactsPluginTest {
     @ParameterizedTest(
             name = "test task androidArtifactRelease without sources, javadoc with Gradle version {arguments}"
     )
-    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9"])
+    @ValueSource(strings = ["4.4"])
     fun `test task androidArtifactJava without sources, javadoc`(
             gradleVersion: String,
             @TempDir tempDir: File,
