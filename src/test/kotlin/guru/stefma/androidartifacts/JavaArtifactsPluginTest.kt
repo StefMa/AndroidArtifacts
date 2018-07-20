@@ -68,9 +68,7 @@ class JavaArtifactsPluginTest {
         val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
         pomFile.assertContainsAndroidArtifactsDependency()
         pomFile.assertContainsArtifactoryPublishDependency()
-        // TODO: The pom contain the dependency but as runtime dep...
-        // This is wrong. According to the maven spec it should be provided
-        //pomFile.assertContainsBintrayReleaseDependency()
+        pomFile.assertNotContainBintrayReleaseDependency()
     }
 
     private fun File.assertContainsAndroidArtifactsDependency() =
@@ -79,7 +77,7 @@ class JavaArtifactsPluginTest {
                     "<groupId>guru.stefma.androidartifacts</groupId>",
                     "<artifactId>androidartifacts</artifactId>",
                     "<version>1.0.0</version>",
-                    "<scope>compile</scope>",
+                    "<scope>runtime</scope>",
                     "</dependency>"
             )
 
@@ -93,14 +91,11 @@ class JavaArtifactsPluginTest {
                     "</dependency>"
             )
 
-    private fun File.assertContainsBintrayReleaseDependency() =
-            assertThat(readText()).contains(
-                    "<dependency>",
+    private fun File.assertNotContainBintrayReleaseDependency() =
+            assertThat(readText()).doesNotContain(
                     "<groupId>guru.stefma.bintrayrelease</groupId>",
                     "<artifactId>bintrayrelease</artifactId>",
-                    "<version>1.0.0</version>",
-                    "<scope>provided</scope>",
-                    "</dependency>"
+                    "<scope>provided</scope>"
             )
 
     @Test
@@ -145,9 +140,7 @@ class JavaArtifactsPluginTest {
                 .build()
 
         val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
-        // TODO: This will be added as runtime pom.
-        // This is wrong. Should be compile ...
-        //pomFile.assertContainsProjectAwesomeDependency()
+        pomFile.assertContainsProjectAwesomeDependency()
     }
 
     private fun File.assertContainsProjectAwesomeDependency() =
@@ -156,7 +149,7 @@ class JavaArtifactsPluginTest {
                     "<groupId>guru.stefma</groupId>",
                     "<artifactId>awesome</artifactId>",
                     "<version>1.0</version>",
-                    "<scope>compile</scope>",
+                    "<scope>runtime</scope>",
                     "</dependency>"
             )
 
