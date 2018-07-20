@@ -28,7 +28,7 @@ internal fun TaskContainer.createAndroidArtifactsTask(variantName: String) {
 
 /**
  * Create the "basic" **androidArtifacts** tasks which is basically just a shorthand
- * for the generated `publish$publicationNamePublicationToMavenLocal` task.
+ * for the generated `publish${publicationName}PublicationToMavenLocal` task.
  *
  * This should be used to publish the artifacts to the mavenLocal.
  */
