@@ -65,8 +65,7 @@ internal fun MavenPublication.addJavaJavadocArtifact(
         project: Project,
         publicationName: String
 ) {
-    val javadoc = project.tasks.getByName("javadoc") as Javadoc
-    artifact(project.tasks.createJavaArtifactsJavadocTask(javadoc, publicationName)) {
+    artifact(project.tasks.createJavaArtifactsJavadocTask(publicationName)) {
         it.classifier = "javadoc"
     }
 }

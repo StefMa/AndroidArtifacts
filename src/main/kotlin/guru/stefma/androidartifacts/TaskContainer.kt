@@ -103,12 +103,14 @@ internal fun TaskContainer.createAndroidArtifactsJavadocTask(variant: LibraryVar
 }
 
 /**
- * Creates a [Jar] task which will package the sources from the given [javadoc] tasks.
+ * Creates a [Jar] task which will package the sources from the [org.gradle.jvm.Java]
  */
-internal fun TaskContainer.createJavaArtifactsJavadocTask(javadoc: Javadoc, publicationName: String): Task {
+internal fun TaskContainer.createJavaArtifactsJavadocTask(publicationName: String): Task {
     return create("java".javadocTaskName, Jar::class.java) {
+        val javadocTask = getByName("javadoc")
+        it.dependsOn(javadocTask)
         it.classifier = "javadocs"
-        it.from(javadoc.destinationDir)
+        it.from(javadocTask.outputs)
 
         it.group = TASKS_GROUP
         it.description = "Package the javadoc for the `androidArtifact${publicationName.capitalize()}` into a jar"
