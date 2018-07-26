@@ -2,6 +2,7 @@ package guru.stefma.androidartifacts
 
 import com.android.build.gradle.api.LibraryVariant
 import org.gradle.api.Project
+import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.publish.maven.MavenArtifact
 import org.gradle.api.publish.maven.MavenPublication
 import org.gradle.api.tasks.TaskContainer
@@ -22,7 +23,7 @@ internal fun MavenPublication.addAarArtifact(
 /**
  * Creates a new [MavenArtifact] by putting the [TaskContainer.createAndroidArtifactsSourcesTask] into it.
  */
-internal fun MavenPublication.addSourcesArtifact(
+internal fun MavenPublication.addAndroidSourcesArtifact(
         project: Project,
         variant: LibraryVariant
 ) {
@@ -32,13 +33,38 @@ internal fun MavenPublication.addSourcesArtifact(
 }
 
 /**
+ * Creates a new [MavenArtifact] by putting the [TaskContainer.createJavaArtifactsSourcesTask] into it.
+ */
+internal fun MavenPublication.addJavaSourcesArtifact(
+        project: Project,
+        publicationName: String
+) {
+    val javaConvention = project.convention.getPlugin(JavaPluginConvention::class.java)
+    artifact(project.tasks.createJavaArtifactsSourcesTask(javaConvention, publicationName)) {
+        it.classifier = "sources"
+    }
+}
+
+/**
  * Creates a new [MavenArtifact] by putting the [TaskContainer.createAndroidArtifactsJavadocTask] into it.
  */
-internal fun MavenPublication.addJavadocArtifact(
+internal fun MavenPublication.addAndroidJavadocArtifact(
         project: Project,
         variant: LibraryVariant
 ) {
     artifact(project.tasks.createAndroidArtifactsJavadocTask(variant)) {
+        it.classifier = "javadoc"
+    }
+}
+
+/**
+ * Creates a new [MavenArtifact] by putting the [TaskContainer.createJavaArtifactsJavadocTask] into it.
+ */
+internal fun MavenPublication.addJavaJavadocArtifact(
+        project: Project,
+        publicationName: String
+) {
+    artifact(project.tasks.createJavaArtifactsJavadocTask(publicationName)) {
         it.classifier = "javadoc"
     }
 }
@@ -62,12 +88,12 @@ internal fun MavenPublication.addDokkaArtifact(
  * Setup the "metadata" for this [MavenPublication].
  *
  * Currently it will setup the [MavenPublication.setVersion], [MavenPublication.setArtifactId] and
- * the [MavenPublication.setGroupId] based on the [AndroidArtifactsExtension.artifactId], [Project.getVersion] and
+ * the [MavenPublication.setGroupId] based on the [ArtifactsExtension.artifactId], [Project.getVersion] and
  * [Project.getGroup]
  */
 internal fun MavenPublication.setupMetadata(
         project: Project,
-        extension: AndroidArtifactsExtension
+        extension: ArtifactsExtension
 ) {
     version = project.version as String
     artifactId = extension.artifactId

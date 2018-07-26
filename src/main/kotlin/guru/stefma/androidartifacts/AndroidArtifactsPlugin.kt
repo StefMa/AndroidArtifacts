@@ -21,9 +21,7 @@ class AndroidArtifactsPlugin : Plugin<Project> {
     }
 
     private fun Project.createAndroidArtifactsExtension() =
-            extensions.create("androidArtifact", AndroidArtifactsExtension::class.java)
-
-    private fun Project.applyMavenPublishPlugin() = pluginManager.apply("maven-publish")
+            extensions.create("androidArtifact", ArtifactsExtension::class.java)
 
     /**
      * Applies the "org.jetbrains.dokka-android" plugin if we have already
@@ -34,7 +32,7 @@ class AndroidArtifactsPlugin : Plugin<Project> {
     }
 
     private fun Project.createPublication(
-            extension: AndroidArtifactsExtension,
+            extension: ArtifactsExtension,
             publishingContainer: PublicationContainer,
             variant: LibraryVariant,
             publicationTasks: ListGeneratedPublicationTasks
@@ -44,10 +42,10 @@ class AndroidArtifactsPlugin : Plugin<Project> {
         publishingContainer.create(aarPublicationName, MavenPublication::class.java) {
             it.addAarArtifact(this, variant.name)
             // Publish sources only if set to true
-            if (extension.sources) it.addSourcesArtifact(this, variant)
+            if (extension.sources) it.addAndroidSourcesArtifact(this, variant)
             // Publish javadoc only if set to true
             if (extension.javadoc) {
-                it.addJavadocArtifact(this, variant)
+                it.addAndroidJavadocArtifact(this, variant)
                 // Add dokka artifact if the kotlin plugin is applied...
                 if (hasKotlinPluginApplied) it.addDokkaArtifact(this, variant)
             }

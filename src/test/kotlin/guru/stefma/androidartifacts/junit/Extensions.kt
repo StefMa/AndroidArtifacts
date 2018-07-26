@@ -96,3 +96,50 @@ class AndroidTempDirectory : TempDirectory() {
     }
 
 }
+
+
+/**
+ * A annotation for the [JavaTempDirectory] extension
+ */
+annotation class JavaBuildScript
+
+/**
+ * Similar to the [AndroidTempDirectory] it will create a valid **build.gradle** file
+ * which directly apply the **java-library** plugin and the **guru.stefma.javaartifacts** plugin.
+ */
+class JavaTempDirectory : TempDirectory() {
+
+    private var buildScript: File? = null
+
+    override fun beforeEach(context: ExtensionContext) {
+        super.beforeEach(context)
+        buildScript = File(tempDir, "build.gradle").apply {
+            writeText(
+                    """
+                            plugins {
+                                id "java-library"
+                                id "guru.stefma.javaartifacts"
+                            }
+                        """
+            )
+        }
+    }
+
+    override fun afterEach(context: ExtensionContext) {
+        super.afterEach(context)
+        buildScript!!.delete()
+    }
+
+    override fun supportsParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Boolean {
+        return super.supportsParameter(parameterContext, extensionContext)
+                || (parameterContext.parameter.type == File::class.java) && parameterContext.isAnnotated(JavaBuildScript::class.java)
+    }
+
+    override fun resolveParameter(parameterContext: ParameterContext, extensionContext: ExtensionContext): Any {
+        if (parameterContext.isAnnotated(JavaBuildScript::class.java)) {
+            return buildScript!!
+        }
+        return super.resolveParameter(parameterContext, extensionContext)
+    }
+
+}

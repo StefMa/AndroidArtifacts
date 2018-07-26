@@ -1,6 +1,6 @@
 package guru.stefma.androidartifacts
 
-open class AndroidArtifactsExtension {
+open class ArtifactsExtension {
 
     var artifactId: String? = null
 
