@@ -49,3 +49,10 @@ This leads to the following available tasks:
 * androidArtifactJava
 * androidArtifactJavaJavadoc
 * androidArtifactJavaSources
+
+### Tasks
+One task which is available across these plugins is the `androidArtifactGeneratedPublications` task.
+This will display **all generated publication** names.
+
+This is quite useful if you want to find out *which* publication you want to use for different actions.
+Like publishing it to Bintray or Artifactory.
