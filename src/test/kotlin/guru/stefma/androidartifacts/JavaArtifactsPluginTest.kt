@@ -146,12 +146,12 @@ class JavaArtifactsPluginTest {
 
     private fun File.assertContainsProjectAwesomeDependency() =
             assertThat(readText()).contains(
-                    "<dependency>",
-                    "<groupId>guru.stefma</groupId>",
-                    "<artifactId>awesome</artifactId>",
-                    "<version>1.0</version>",
-                    "<scope>runtime</scope>",
-                    "</dependency>"
+                    """    <dependency>
+      <groupId>guru.stefma</groupId>
+      <artifactId>awesome</artifactId>
+      <version>1.0</version>
+      <scope>runtime</scope>
+    </dependency>"""
             )
 
     @ParameterizedTest(
