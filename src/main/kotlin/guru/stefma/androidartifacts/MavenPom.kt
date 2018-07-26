@@ -5,6 +5,21 @@ import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.Dependency
 import org.gradle.api.publish.maven.MavenPom
 
+/**
+ * This [Map] contains "pairs" with the **Gradle** [configurations][Configuration]
+ * which should be mapped to the respective maven pom scope.
+ *
+ * For more more info see:
+ * * [Maven docu](https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html#Dependency_Scope)
+ * * [GitHub issue](https://github.com/StefMa/AndroidArtifacts/issues/32)
+ */
+private val gradleConfigurationsToMavenPomScopes = mapOf(
+        "compileOnly" to null,
+        "runtimeOnly" to "runtime",
+        "implementation" to "runtime",
+        "api" to "compile"
+)
+
 private const val DEPENDENCIES_NODE_NAME = "dependencies"
 
 /**
