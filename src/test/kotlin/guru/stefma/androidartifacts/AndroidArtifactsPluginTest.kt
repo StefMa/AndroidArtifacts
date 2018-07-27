@@ -73,37 +73,34 @@ class AndroidArtifactsPluginTest {
         val pomFile = File(tempDir, "/build/publications/releaseAar/pom-default.xml")
         pomFile.assertContainsAndroidArtifactsDependency()
         pomFile.assertContainsArtifactoryPublishDependency()
-        pomFile.assertContainsBintrayReleaseDependency()
+        pomFile.assertNotContainBintrayReleaseDependency()
     }
 
     private fun File.assertContainsAndroidArtifactsDependency() =
             assertThat(readText()).contains(
-                    "<dependency>",
-                    "<groupId>guru.stefma.androidartifacts</groupId>",
-                    "<artifactId>androidartifacts</artifactId>",
-                    "<version>1.0.0</version>",
-                    "<scope>compile</scope>",
-                    "</dependency>"
+                    """    <dependency>
+      <groupId>guru.stefma.androidartifacts</groupId>
+      <artifactId>androidartifacts</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+    </dependency>"""
             )
 
     private fun File.assertContainsArtifactoryPublishDependency() =
             assertThat(readText()).contains(
-                    "<dependency>",
-                    "<groupId>guru.stefma.artifactorypublish</groupId>",
-                    "<artifactId>artifactorypublish</artifactId>",
-                    "<version>1.0.0</version>",
-                    "<scope>compile</scope>",
-                    "</dependency>"
+                    """    <dependency>
+      <groupId>guru.stefma.artifactorypublish</groupId>
+      <artifactId>artifactorypublish</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+    </dependency>"""
             )
 
-    private fun File.assertContainsBintrayReleaseDependency() =
-            assertThat(readText()).contains(
-                    "<dependency>",
+    private fun File.assertNotContainBintrayReleaseDependency() =
+            assertThat(readText()).doesNotContain(
                     "<groupId>guru.stefma.bintrayrelease</groupId>",
                     "<artifactId>bintrayrelease</artifactId>",
-                    "<version>1.0.0</version>",
-                    "<scope>provided</scope>",
-                    "</dependency>"
+                    "<scope>provided</scope>"
             )
 
     @Test
@@ -153,12 +150,12 @@ class AndroidArtifactsPluginTest {
 
     private fun File.assertContainsProjectAwesomeDependency() =
             assertThat(readText()).contains(
-                    "<dependency>",
-                    "<groupId>guru.stefma</groupId>",
-                    "<artifactId>awesome</artifactId>",
-                    "<version>1.0</version>",
-                    "<scope>compile</scope>",
-                    "</dependency>"
+                    """    <dependency>
+      <groupId>guru.stefma</groupId>
+      <artifactId>awesome</artifactId>
+      <version>1.0</version>
+      <scope>runtime</scope>
+    </dependency>"""
             )
 
     @ParameterizedTest(

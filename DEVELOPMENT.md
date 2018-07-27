@@ -34,11 +34,20 @@ The `*Javadoc` and `*Sources` task output will be created inside the `$project/b
 The published aar and jar's can be then found in your local maven. 
 Typically this is located at `~/.m2/repository/`.
 
-### KDoc support
+#### KDoc support
 As already mentioned above there is some **experimental** KDoc support.
 
 If the plugin detect that the `org.jetbrains.kotlin-android` plugin is applied it will create belong to the `javadoc` task (and output)
 a `dokka` task and output.
+
+#### Dependencies and POM generation
+Currently we only support the following dependency configurations:
+* `compileOnly`
+* `runtimeOnly` 
+* `implementation`
+* `api`
+
+All other configurations will be ignored and **not** added to the POM.
 
 ### JavaArtifacts Plugin
 #### Tasks
