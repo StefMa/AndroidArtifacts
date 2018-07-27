@@ -46,6 +46,7 @@ Currently we only support the following dependency configurations:
 * `runtimeOnly` 
 * `implementation`
 * `api`
+
 All other configurations will be ignored and **not** added to the POM.
 
 ### JavaArtifacts Plugin
