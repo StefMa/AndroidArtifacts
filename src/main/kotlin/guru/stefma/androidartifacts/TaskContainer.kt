@@ -81,21 +81,35 @@ internal fun TaskContainer.createJavaArtifactsSourcesTask(
 /**
  * Creates two tasks. One will create the real javadoc based on the
  * [SourceProvider.getJavaDirectories] from the given [LibraryVariant.getSourceSets].
+ * This will also add the [Javadoc.classpath] so that package names got resolved
+ * correctly.
  *
  * The second one [Task.dependsOn] the first one
  * and will then use the [Javadoc.destinationDir] and put it into a Jar file.
  */
-internal fun TaskContainer.createAndroidArtifactsJavadocTask(variant: LibraryVariant): Task {
+internal fun TaskContainer.createAndroidArtifactsJavadocTask(
+        project: Project,
+        variant: LibraryVariant
+): Task {
     val docHelperTask =
             create("androidArtifact${variant.name.capitalize()}JavadocHelper", Javadoc::class.java) {
                 it.source = (variant.javaCompiler as JavaCompile).source
+                // I don't know this should be done like this.
+                // But the JavaPlugin does the same.
+                // See `JavaPlugin.configureJavaDoc`
+                variant.sourceSets.forEach { sourceProvider ->
+                    it.classpath += project.files(sourceProvider.javaDirectories)
+                }
+                it.classpath += (variant.javaCompiler as JavaCompile).classpath
+                // excludes the from android generated R and BuildConfig class
+                it.exclude("**/R.*", "**/BuildConfig.*")
                 it.isFailOnError = false
             }
 
     return create(variant.name.javadocTaskName, Jar::class.java) {
         it.dependsOn(docHelperTask)
         it.classifier = "javadocs"
-        it.from(docHelperTask.destinationDir)
+        it.from(docHelperTask.outputs)
 
         it.group = TASKS_GROUP
         it.description = "Package the javadoc for the `androidArtifact${variant.name}` into a jar"
