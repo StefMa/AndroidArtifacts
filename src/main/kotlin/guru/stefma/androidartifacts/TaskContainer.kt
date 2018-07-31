@@ -9,6 +9,7 @@ import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.jvm.tasks.Jar
+import java.io.File
 
 private const val TASKS_GROUP = "Publishing"
 
@@ -94,14 +95,15 @@ internal fun TaskContainer.createAndroidArtifactsJavadocTask(
     val docHelperTask =
             create("androidArtifact${variant.name.capitalize()}JavadocHelper", Javadoc::class.java) {
                 it.source = (variant.javaCompiler as JavaCompile).source
-                // I don't know this should be done like this.
-                // But the JavaPlugin does the same.
-                // See `JavaPlugin.configureJavaDoc`
+                // The first two classpath(es) adds our own
+                // and the Android code.
                 variant.sourceSets.forEach { sourceProvider ->
                     it.classpath += project.files(sourceProvider.javaDirectories)
                 }
+                it.classpath += project.files(project.androidLibraryExtension.bootClasspath)
+                // This will add all the dependencies to the classpath
                 it.classpath += (variant.javaCompiler as JavaCompile).classpath
-                // excludes the from android generated R and BuildConfig class
+                // excludes the from Android generated R and BuildConfig class
                 it.exclude("**/R.*", "**/BuildConfig.*")
                 it.isFailOnError = false
             }
