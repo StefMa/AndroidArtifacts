@@ -52,7 +52,7 @@ internal fun MavenPublication.addAndroidJavadocArtifact(
         project: Project,
         variant: LibraryVariant
 ) {
-    artifact(project.tasks.createAndroidArtifactsJavadocTask(variant)) {
+    artifact(project.tasks.createAndroidArtifactsJavadocTask(project, variant)) {
         it.classifier = "javadoc"
     }
 }
