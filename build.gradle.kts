@@ -46,7 +46,7 @@ version = "1.1.1"
 configure<PublishExtension> {
     artifactId = "androidartifacts"
     userOrg = "stefma"
-    desc = "A Gradle Plugin which will"
+    desc = "A Gradle Plugin which will easify the process to publish Android and Java artifacts to the local maven"
     uploadName = "AndroidArtifacts"
     website = "https://github.com/StefMa/AndroidArtifacts"
 }
