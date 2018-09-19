@@ -1,6 +1,6 @@
 version: 2
 jobs:
-  build:
+  "test":
     machine:
       image: circleci/classic:latest
 
@@ -38,7 +38,7 @@ jobs:
             - ~/.gradle
           key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
 
-  publishDocs:
+  "publishDocs":
     machine:
       image: circleci/classic:latest
 
@@ -49,7 +49,7 @@ jobs:
     - run: npm install -g now
     - run: ./gradlew publishDocsToNow -PnowToken=$NOW_TOKEN
 
-  setDocsAlias:
+  "setDocsAlias":
     machine:
       image: circleci/classic:latest
 
@@ -64,9 +64,9 @@ workflows:
   version: 2
   build_and_publishDocs:
     jobs:
-    - build
-    - publishDocs
-    - setDocsAlias:
+    - "test"
+    - "publishDocs"
+    - "setDocsAlias":
         filters:
           branches:
             only:
