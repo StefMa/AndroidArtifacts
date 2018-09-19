@@ -59,13 +59,20 @@ tasks.create("publishDocsToNow") {
         exec {
             workingDir("$buildDir/now")
             val token = findProperty("nowToken")
-            if(token != null) {
+            if (token != null) {
                 commandLine("now", "--public", "--token", token)
             } else {
                 // Try to run without token...
                 commandLine("now", "--public")
             }
         }
+    }
+}
+
+tasks.create("createNowAlias") {
+    dependsOn("publishDocsToNow")
+
+    doLast {
         exec {
             workingDir("$buildDir/now")
             commandLine("now", "alias")
