@@ -6,7 +6,7 @@ jobs:
 
     environment:
       # Customize the JVM maximum heap limit
-      # Needs to be updated along with gradle jvmargs 👇
+      # Needs to be updated along with gradle jvmargs
       _JAVA_OPTIONS: "-Xmx2g"
 
     steps:
@@ -24,7 +24,7 @@ jobs:
       - run: echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$HOME/android-sdk/licenses/android-sdk-license"
       - run: echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$HOME/android-sdk/licenses/android-sdk-preview-license"
 
-      # Try to restore cache (see ho to save cache below 👇)
+      # Try to restore cache (see ho to save cache below)
       - restore_cache:
           key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
 
