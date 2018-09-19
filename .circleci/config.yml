@@ -49,7 +49,7 @@ jobs:
     - run: npm install -g now
     - run: ./gradlew publishDocsToNow -PnowToken=$NOW_TOKEN
 
-  "setDocsAlias":
+  "publishDocsWithAlias":
     machine:
       image: circleci/classic:latest
 
@@ -65,8 +65,19 @@ workflows:
   build_and_publishDocs:
     jobs:
     - "test"
-    - "publishDocs"
-    - "setDocsAlias":
+    - "publishDocs":
+        requires:
+          - "test"
+        filters:
+          branches:
+            ignore:
+            - master
+          tags:
+            ignore:
+            - /.*/
+    - "publishDocsWithAlias":
+        requires:
+          - "test"
         filters:
           branches:
             only:
