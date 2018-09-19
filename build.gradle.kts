@@ -1,6 +1,7 @@
 import guru.stefma.bintrayrelease.PublishExtension
 import guru.stefma.buildsrc.CreateNowDockerfile
 import guru.stefma.buildsrc.CreateNowEntrypointIndexHtml
+import guru.stefma.buildsrc.CreateNowJson
 import guru.stefma.buildsrc.MoveDokkaAndGradleSiteToNow
 
 plugins {
@@ -47,11 +48,12 @@ tasks.create("moveDocsToNow", MoveDokkaAndGradleSiteToNow::class.java) {
 }
 tasks.create("createNowDockerfile", CreateNowDockerfile::class.java)
 tasks.create("createNowEntrypoint", CreateNowEntrypointIndexHtml::class.java)
+tasks.create("createNowJson", CreateNowJson::class.java)
 
 // This task requires a valid now-cli installation...
 // Alternatively you can put a now token via gradle properties in.
 tasks.create("publishDocsToNow") {
-    dependsOn("moveDocsToNow", "createNowDockerfile", "createNowEntrypoint")
+    dependsOn("moveDocsToNow", "createNowDockerfile", "createNowEntrypoint", "createNowJson")
 
     doLast {
         exec {
@@ -63,6 +65,10 @@ tasks.create("publishDocsToNow") {
                 // Try to run without token...
                 commandLine("now", "--public")
             }
+        }
+        exec {
+            workingDir("$buildDir/now")
+            commandLine("now", "alias")
         }
     }
 }

@@ -78,8 +78,31 @@ open class CreateNowEntrypointIndexHtml : DefaultTask() {
     }
 
     @TaskAction
-    fun createDockerFile() {
+    fun createEntrypointIndexHtml() {
         indexHtmlFile.writeText(indexHtmlContent)
+    }
+
+}
+
+@CacheableTask
+open class CreateNowJson : DefaultTask() {
+
+    @Input
+    val nowJsonContent = """
+        {
+            "alias" : "androidartifacts"
+        }
+    """.trimIndent()
+
+    @OutputFile
+    val nowJsonFile = File("${project.rootProject.buildDir}/now/now.json").apply {
+        parentFile.mkdirs()
+        createNewFile()
+    }
+
+    @TaskAction
+    fun createNowJson() {
+        nowJsonFile.writeText(nowJsonContent)
     }
 
 }
