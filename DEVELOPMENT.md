@@ -65,3 +65,19 @@ This will display **all generated publication** names.
 
 This is quite useful if you want to find out *which* publication you want to use for different actions.
 Like publishing it to Bintray or Artifactory.
+
+## Publishing docs
+This plug has a setup to publish it's **Dokka** and [**Gradle Site**](https://github.com/gradle-guides/gradle-site-plugin) to [now.sh](https://now.sh).
+
+### Manually publishing
+To publish the Dokka and the Gradle Site just run the `publishDocsToNow` task.
+This will publish each of them to now. Implied that the now-cli is installed on the host.
+
+### Publishing via CI
+The CI is configured to publish both sites automatically.
+
+It will publish both documentations to a "now staging" domain (something like **now-kasklkasd.now.sh**) on 
+"all branches" expect **master** and expect all pushed **tags**.
+
+The CI will publish it to [androidartifacts.now.sh](androidartifacts.now.sh) when a branch got merged
+into the **master** branch or when we **tag **was pushed.

@@ -75,7 +75,13 @@ tasks.create("createNowAlias") {
     doLast {
         exec {
             workingDir("$buildDir/now")
-            commandLine("now", "alias")
+            val token = findProperty("nowToken")
+            if (token != null) {
+                commandLine("now", "alias", "--token", token)
+            } else {
+                // Try to run without token...
+                commandLine("now", "alias")
+            }
         }
     }
 }

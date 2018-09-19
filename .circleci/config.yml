@@ -44,6 +44,10 @@ jobs:
 
     steps:
     - checkout
+    
+    # Try to restore cache / Should be available cause previous test build
+    - restore_cache:
+          key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}    
 
     # First install now
     - run: npm install -g now
@@ -55,6 +59,10 @@ jobs:
 
     steps:
     - checkout
+    
+    # Try to restore cache / Should be available cause previous test build
+    - restore_cache:
+          key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}        
 
     # First install now
     - run: npm install -g now
