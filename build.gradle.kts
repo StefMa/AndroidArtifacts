@@ -1,8 +1,11 @@
 import guru.stefma.bintrayrelease.PublishExtension
 
 plugins {
-    id("java-gradle-plugin")
     kotlin("jvm") version "1.2.50"
+
+    id("org.jetbrains.dokka") version "0.9.17"
+    id("java-gradle-plugin")
+
     id("java-library")
     id("guru.stefma.bintrayrelease") version "1.0.0" apply false
 }
