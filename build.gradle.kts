@@ -1,4 +1,7 @@
 import guru.stefma.bintrayrelease.PublishExtension
+import guru.stefma.buildsrc.CreateNowDockerfile
+import guru.stefma.buildsrc.CreateNowEntrypointIndexHtml
+import guru.stefma.buildsrc.MoveDokkaAndGradleSiteToNow
 
 plugins {
     kotlin("jvm") version "1.2.50"
@@ -37,6 +40,33 @@ val githubSite = "https://github.com/StefMa/AndroidArtifacts"
 site {
     vcsUrl = githubSite
 }
+
+// Section for preparing to publish the docs to now.sh
+tasks.create("moveDocsToNow", MoveDokkaAndGradleSiteToNow::class.java) {
+    dependsOn("dokka", "generateSite")
+}
+tasks.create("createNowDockerfile", CreateNowDockerfile::class.java)
+tasks.create("createNowEntrypoint", CreateNowEntrypointIndexHtml::class.java)
+
+// This task requires a valid now-cli installation...
+// Alternatively you can put a now token via gradle properties in.
+tasks.create("publishDocsToNow") {
+    dependsOn("moveDocsToNow", "createNowDockerfile", "createNowEntrypoint")
+
+    doLast {
+        exec {
+            workingDir("$buildDir/now")
+            val token = findProperty("nowToken")
+            if(token != null) {
+                commandLine("now", "--public", "--token", token)
+            } else {
+                // Try to run without token...
+                commandLine("now", "--public")
+            }
+        }
+    }
+}
+// Section end
 
 gradlePlugin {
     plugins {
