@@ -161,7 +161,7 @@ class AndroidArtifactsPluginTest {
     @ParameterizedTest(
             name = "test task androidArtifactRelease should generate jars with Gradle version {arguments}"
     )
-    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9"])
+    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9", "4.10.2"])
     fun `test task androidArtifactRelease should generate jars`(
             gradleVersion: String,
             @TempDir tempDir: File,
@@ -206,7 +206,7 @@ class AndroidArtifactsPluginTest {
     @ParameterizedTest(
             name = "test task androidArtifactRelease without sources, javadoc with Gradle version {arguments}"
     )
-    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9"])
+    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9", "4.10.2"])
     fun `test task androidArtifactRelease without sources, javadoc`(
             gradleVersion: String,
             @TempDir tempDir: File,
