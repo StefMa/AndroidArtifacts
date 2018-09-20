@@ -156,7 +156,7 @@ internal fun TaskContainer.createAndroidArtifactsDokkaTask(variantName: String):
  * put the outut from the `dokka` tasks into the generated Jar file.
  */
 internal fun TaskContainer.createJavaArtifactsDokkaTask(publicationName: String): Task {
-    return create(publicationName.dokkaTaskName, Jar::class.java) {
+    return create("java".dokkaTaskName, Jar::class.java) {
         val dokkaTask = getByName("dokka")
         it.dependsOn(dokkaTask)
         it.classifier = "kdoc"
@@ -181,4 +181,4 @@ private val String.javadocTaskName
     get() = "androidArtifact${capitalize()}Javadoc"
 
 private val String.dokkaTaskName
-    get() = "androidArtifact${capitalize()}Dokka"
+    get() = "androidArtifact${capitalize()}Kdoc"
