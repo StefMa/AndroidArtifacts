@@ -1,6 +1,6 @@
 package guru.stefma.androidartifacts.kotlin
 
-import java.lang.System
+import org.mockito.Mockito
 
 /**
  * This **Exmaple** class will only be used to
@@ -27,6 +27,17 @@ class Example {
      */
     protected fun canBeOverriden() {
 
+    }
+
+    /**
+     * An example that shows that classes
+     * from dependencies (like the [org.junit.runners.JUnit4]) are
+     * inside the dokka.
+     *
+     * @return a valid [Mock] instance.
+     */
+    fun ignoreMe(): Mockito {
+        return Mockito()
     }
 
 }
