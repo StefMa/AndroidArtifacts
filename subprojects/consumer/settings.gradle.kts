@@ -7,4 +7,4 @@ pluginManagement {
 }
 
 rootProject.name = "consumer"
-include("java", "kotlin")
+include("android", "java", "kotlin")
