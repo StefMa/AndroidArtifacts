@@ -77,7 +77,7 @@ internal fun MavenPublication.addAndroidDokkaArtifact(
         variant: LibraryVariant
 ) {
     artifact(project.tasks.createAndroidArtifactsDokkaTask(variant.name)) {
-        it.classifier = "dokka"
+        it.classifier = "kdoc"
     }
 }
 
@@ -89,7 +89,7 @@ internal fun MavenPublication.addJavaDokkaArtifact(
         publicationName: String
 ) {
     artifact(project.tasks.createJavaArtifactsDokkaTask(publicationName)) {
-        it.classifier = "dokka"
+        it.classifier = "kdoc"
     }
 }
 

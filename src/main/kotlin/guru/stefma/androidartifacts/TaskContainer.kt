@@ -143,7 +143,7 @@ internal fun TaskContainer.createAndroidArtifactsDokkaTask(variantName: String):
     return create(variantName.dokkaTaskName, Jar::class.java) {
         val dokkaTask = getByName("dokka")
         it.dependsOn(dokkaTask)
-        it.classifier = "dokka"
+        it.classifier = "kdoc"
         it.from(dokkaTask.outputs)
 
         it.group = TASKS_GROUP
@@ -159,7 +159,7 @@ internal fun TaskContainer.createJavaArtifactsDokkaTask(publicationName: String)
     return create(publicationName.dokkaTaskName, Jar::class.java) {
         val dokkaTask = getByName("dokka")
         it.dependsOn(dokkaTask)
-        it.classifier = "dokka"
+        it.classifier = "kdoc"
         it.from(dokkaTask.outputs)
 
         it.group = TASKS_GROUP
