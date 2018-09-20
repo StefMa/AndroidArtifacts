@@ -1,5 +1,5 @@
 plugins {
-    id "org.jetbrains.kotlin.jvm" version "1.2.70"
+    kotlin("jvm") version "1.2.70"
 }
 
 repositories {
@@ -14,4 +14,4 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
 }
 
-sourceSets.main.kotlin.srcDir("../../../src/main/kotlin")
+kotlin.sourceSets.getByName("main").kotlin.srcDir("../../../src/main/kotlin")
