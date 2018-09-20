@@ -79,3 +79,7 @@ It will publish both documentations to a "now staging" domain (something like **
 
 The CI will publish it to [androidartifacts.now.sh](androidartifacts.now.sh) when a branch got merged
 into the **master** branch or when we **tag **was pushed.
+
+## Consumer
+For testing purpose (or for quick examples) there are some "consumers" inside this project.
+You can check them out in [`subprojects/consumer`](subprojects/consumer).
