@@ -25,6 +25,7 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("com.android.tools.build:gradle:3.1.3")
     implementation("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
+    implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.2.0")

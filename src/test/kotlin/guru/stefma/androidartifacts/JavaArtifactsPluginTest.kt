@@ -1,11 +1,13 @@
 package guru.stefma.androidartifacts
 
+import guru.stefma.androidartifacts.junit.AndroidBuildScript
 import guru.stefma.androidartifacts.junit.JavaBuildScript
 import guru.stefma.androidartifacts.junit.JavaTempDirectory
 import guru.stefma.androidartifacts.junit.TempDir
 import org.assertj.core.api.AbstractCharSequenceAssert
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.testkit.runner.GradleRunner
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
@@ -244,6 +246,32 @@ class JavaArtifactsPluginTest {
         assertThat(File(tempDir, "/build/libs/${tempDir.name}-1.0.jar")).exists()
         assertThat(File(tempDir, "/build/libs/${tempDir.name}-1.0-sources.jar")).doesNotExist()
         assertThat(File(tempDir, "/build/libs/${tempDir.name}-1.0-javadocs.jar")).doesNotExist()
+    }
+
+    @Test
+    fun `test apply kotlin should create dokka task`(@TempDir tempDir: File, @JavaBuildScript buildScript: File) {
+        buildScript.writeText(
+                """
+                        plugins {
+                            id "org.jetbrains.kotlin.jvm" version "1.2.50"
+                            id "guru.stefma.javaartifacts"
+                        }
+
+                        group = "guru.stefma"
+                        version = "1.0"
+                        javaArtifact {
+                            artifactId = "androidartifacts"
+                        }
+                """
+        )
+
+        val buildResult = GradleRunner.create()
+                .default(tempDir)
+                .withArguments("tasks")
+                .build()
+
+        assertThat(buildResult.output).contains("androidArtifactJavaKdoc")
+        assertThat(buildResult.output).contains("androidArtifactJavaKdoc")
     }
 
 }

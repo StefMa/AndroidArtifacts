@@ -20,8 +20,15 @@ internal val Project.publishingExtension
  * Is true if either the `kotlin-android` or the `org.jetbrains.kotlin.android` plugin
  * is applied...
  */
-internal val Project.hasKotlinPluginApplied
+internal val Project.hasKotlinAndroidPluginApplied
     get() = pluginManager.hasPlugin("kotlin-android") || pluginManager.hasPlugin("org.jetbrains.kotlin.android")
+
+/**
+ * Is true if either the `kotlin` or the `org.jetbrains.kotlin.jvm` plugin
+ * is applied...
+ */
+internal val Project.hasKotlinJvmPluginApplied
+    get() = pluginManager.hasPlugin("kotlin") || pluginManager.hasPlugin("org.jetbrains.kotlin.jvm")
 
 /**
  * Applies the **maven-publish** plugin

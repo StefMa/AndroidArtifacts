@@ -28,7 +28,7 @@ class AndroidArtifactsPlugin : Plugin<Project> {
      * applied the "kotlin-android" or "org.jetbrains.kotlin.android" plugin...
      */
     private fun Project.applyDokkaPlugin() = with(pluginManager) {
-        if (hasKotlinPluginApplied) apply("org.jetbrains.dokka-android")
+        if (hasKotlinAndroidPluginApplied) apply("org.jetbrains.dokka-android")
     }
 
     private fun Project.createPublication(
@@ -47,7 +47,7 @@ class AndroidArtifactsPlugin : Plugin<Project> {
             if (extension.javadoc) {
                 it.addAndroidJavadocArtifact(this, variant)
                 // Add dokka artifact if the kotlin plugin is applied...
-                if (hasKotlinPluginApplied) it.addDokkaArtifact(this, variant)
+                if (hasKotlinAndroidPluginApplied) it.addAndroidDokkaArtifact(this, variant)
             }
 
             it.setupMetadata(this, extension)

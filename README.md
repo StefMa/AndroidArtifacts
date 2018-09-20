@@ -8,21 +8,21 @@
 A super easy way to create Android and Java artifacts.
 
 ## Description
-This is a simple helper for configure the `maven-publish` plugin.
+This is a helper to configure the [`maven-publish`](https://docs.gradle.org/current/userguide/publishing_maven.html) Gradle plugin.
 It will create all the possible [`publications`](https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven:publications) 
-for your Android or Java project.
+for your Android, Java and Kotlin projects.
 
 ## Plugins
 This project provides two different plugins.
 The `guru.stefma.androidartifacts` & the `guru.stefma.javaartifacts` plugin.
 
 Well, as the name reveals the first one should be used in **Android** projects
-while the second one can be used in standalone **Java** projects.
+while the second one can be used in standalone **Java** and/or **Kotlin** projects.
 
-The following describes the setup for the `androidartifacts` plugin.
-But since it shares the same API with the `javaartifacts` the setup is quite similar.
+The following describes the setup for the `guru.stefma.androidartifacts` plugin.
+But since it shares the same API with the `guru.stefma.javaartifacts` the setup is quite similar.
 
-For mor information checkout the [development documentation](DEVELOPMENT.md).
+For more information checkout the [development documentation](DEVELOPMENT.md).
 
 ## How to apply
 You can use it as a standalone plugin in the following way:
@@ -44,7 +44,7 @@ buildscript {
 Then you can apply the plugin to your **module** `build.gradle`:
 ```groovy
 apply plugin: "com.android.library"
-apply plugin: "org.jetbrains.kotlin-android" //1
+apply plugin: "org.jetbrains.kotlin.android" //1
 apply plugin: "guru.stefma.androidartifacts" //2
 
 version = "1.0.0"
@@ -53,17 +53,23 @@ androidArtifact {
     artifactId = 'androidartifacts'
 }
 ```
-* **//1:** The Kotlin plugin is optional of course. But if you add it, it will generate a KDoc together with a javadoc.
-* **//2:** The **AndroidArtifacts** plugin should always be added **after** android library and kotlin-android plugin.
+* **//1:** The Kotlin plugin is optional for this plugin of course. But if you add it, it will generate a KDoc.
+* **//2:** The `guru.stefma.androidartifacts` plugin should always be added **after** the `com.android.library`  
+and the `org.jetbrains.kotlin.android` plugin.
 
 The plugin will automatically create some tasks - based on your setup - for you. 
 Just run `./gradlew tasks` to see a list of them. 
 All generated tasks are "prefixed" with `androidArtifact`.
 
 ## Publish
-To finally publish you library to your local maven just run of the available `androidArtfactAar*` task.
+To finally publish you library to your local maven just run one of the available `androidArtfact[BuildType|Java]` task.
 
-E.g. the following will publish the **release** build type:
+E.g. the following will publish the **release** build type in **Android** projects:
 ```
 ./gradlew :awesomeLib:androidArtifactRelease
+```
+
+This wil publish your Java/Kotlin project:
+```
+./gradlew :awesomeLib:androidArtifactJava
 ```

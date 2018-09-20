@@ -143,11 +143,27 @@ internal fun TaskContainer.createAndroidArtifactsDokkaTask(variantName: String):
     return create(variantName.dokkaTaskName, Jar::class.java) {
         val dokkaTask = getByName("dokka")
         it.dependsOn(dokkaTask)
-        it.classifier = "dokka"
+        it.classifier = "kdoc"
         it.from(dokkaTask.outputs)
 
         it.group = TASKS_GROUP
         it.description = "Package the kdoc for the `androidArtifact$variantName` into a jar"
+    }
+}
+
+/**
+ * Creates a new [Jar] tasks which depends on the by the dokka generated `dokka` tasks and
+ * put the outut from the `dokka` tasks into the generated Jar file.
+ */
+internal fun TaskContainer.createJavaArtifactsDokkaTask(publicationName: String): Task {
+    return create("java".dokkaTaskName, Jar::class.java) {
+        val dokkaTask = getByName("dokka")
+        it.dependsOn(dokkaTask)
+        it.classifier = "kdoc"
+        it.from(dokkaTask.outputs)
+
+        it.group = TASKS_GROUP
+        it.description = "Package the kdoc for the `androidArtifact$publicationName` into a jar"
     }
 }
 
@@ -165,4 +181,4 @@ private val String.javadocTaskName
     get() = "androidArtifact${capitalize()}Javadoc"
 
 private val String.dokkaTaskName
-    get() = "androidArtifact${capitalize()}Dokka"
+    get() = "androidArtifact${capitalize()}Kdoc"
