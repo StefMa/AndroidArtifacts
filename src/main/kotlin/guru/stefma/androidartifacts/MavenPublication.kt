@@ -77,10 +77,7 @@ internal fun MavenPublication.addDokkaArtifact(
         variant: LibraryVariant
 ) {
     artifact(project.tasks.createAndroidArtifactsDokkaTask(variant.name)) {
-        // TODO: Think avout the classifier.
-        // Should be maybe just javadoc and replaced the original javadoc
-        // if we use kotlin...
-        it.classifier = "${variant.name}Dokka"
+        it.classifier = "dokka"
     }
 }
 
