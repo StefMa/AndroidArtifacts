@@ -41,7 +41,7 @@ jobs:
 
   # This job will publish the consumers from
   # the subprojects/consumers dir into the local maven
-  "buildConsumers":
+  "buildConsumersAndStore":
     machine:
       image: circleci/classic:latest
 
@@ -108,7 +108,7 @@ workflows:
   build_and_publishDocs:
     jobs:
     - "test"
-    - "buildConsumers"
+    - "buildConsumersAndStore"
     - "publishDocs":
         requires:
           - "test"
