@@ -1,4 +1,4 @@
-package guru.stefma.androidartifacts.java;
+package guru.stefma.androidartifacts.android.java;
 
 import org.mockito.Mockito;
 
