@@ -72,11 +72,23 @@ internal fun MavenPublication.addJavaJavadocArtifact(
 /**
  * Creates a new [MavenArtifact] by putting the [TaskContainer.createAndroidArtifactsDokkaTask] into it.
  */
-internal fun MavenPublication.addDokkaArtifact(
+internal fun MavenPublication.addAndroidDokkaArtifact(
         project: Project,
         variant: LibraryVariant
 ) {
     artifact(project.tasks.createAndroidArtifactsDokkaTask(variant.name)) {
+        it.classifier = "dokka"
+    }
+}
+
+/**
+ * Creates a new [MavenArtifact] by putting the [TaskContainer.createJavaArtifactsDokkaTask] into it.
+ */
+internal fun MavenPublication.addJavaDokkaArtifact(
+        project: Project,
+        publicationName: String
+) {
+    artifact(project.tasks.createJavaArtifactsDokkaTask(publicationName)) {
         it.classifier = "dokka"
     }
 }
