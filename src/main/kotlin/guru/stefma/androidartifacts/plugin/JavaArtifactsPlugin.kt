@@ -1,9 +1,20 @@
-package guru.stefma.androidartifacts
+package guru.stefma.androidartifacts.plugin
 
+import guru.stefma.androidartifacts.*
+import guru.stefma.androidartifacts.task.ListGeneratedPublicationNamesTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
 
+/**
+ * This Plugin will simplify the process to create a [publications][org.gradle.api.publish.Publication]
+ * for your **Java or Kotlin Library**.
+ *
+ * It will generate a new [org.gradle.api.publish.Publication] with the name **maven**
+ * and set up some tasks (e.g. for packaging the javadoc/kdoc or sources) for it.
+ *
+ * This makes is very easily to publish your Library to the local maven repository.
+ */
 class JavaArtifactsPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
@@ -35,19 +46,19 @@ class JavaArtifactsPlugin : Plugin<Project> {
             extension: ArtifactsExtension,
             project: Project,
             publicationName: String,
-            publicationTasks: ListGeneratedPublicationTasks
+            publicationNames: ListGeneratedPublicationNamesTask
     ) {
-        publicationTasks.publicationNames += publicationName
+        publicationNames.publicationNames += publicationName
         project.publishingExtension.publications.create(publicationName, MavenPublication::class.java) {
             it.from(project.components.getByName("java"))
             // Publish sources only if set to true
-            if (extension.sources) it.addJavaSourcesArtifact(project, publicationName)
+            if (extension.sources) it.addJavaSourcesArtifact(project)
             // Publish javadoc only if set to true
             if (extension.javadoc) {
-                it.addJavaJavadocArtifact(project, publicationName)
+                it.addJavaJavadocArtifact(project)
 
                 // Add dokka artifact if the kotlin plugin is applied...
-                if (project.hasKotlinJvmPluginApplied) it.addJavaDokkaArtifact(project, publicationName)
+                if (project.hasKotlinJvmPluginApplied) it.addJavaDokkaArtifact(project)
             }
 
             it.setupMetadata(project, extension)

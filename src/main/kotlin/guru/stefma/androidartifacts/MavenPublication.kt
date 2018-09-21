@@ -35,12 +35,9 @@ internal fun MavenPublication.addAndroidSourcesArtifact(
 /**
  * Creates a new [MavenArtifact] by putting the [TaskContainer.createJavaArtifactsSourcesTask] into it.
  */
-internal fun MavenPublication.addJavaSourcesArtifact(
-        project: Project,
-        publicationName: String
-) {
+internal fun MavenPublication.addJavaSourcesArtifact(project: Project) {
     val javaConvention = project.convention.getPlugin(JavaPluginConvention::class.java)
-    artifact(project.tasks.createJavaArtifactsSourcesTask(javaConvention, publicationName)) {
+    artifact(project.tasks.createJavaArtifactsSourcesTask(javaConvention)) {
         it.classifier = "sources"
     }
 }
@@ -60,11 +57,8 @@ internal fun MavenPublication.addAndroidJavadocArtifact(
 /**
  * Creates a new [MavenArtifact] by putting the [TaskContainer.createJavaArtifactsJavadocTask] into it.
  */
-internal fun MavenPublication.addJavaJavadocArtifact(
-        project: Project,
-        publicationName: String
-) {
-    artifact(project.tasks.createJavaArtifactsJavadocTask(publicationName)) {
+internal fun MavenPublication.addJavaJavadocArtifact(project: Project) {
+    artifact(project.tasks.createJavaArtifactsJavadocTask()) {
         it.classifier = "javadoc"
     }
 }
@@ -84,11 +78,8 @@ internal fun MavenPublication.addAndroidDokkaArtifact(
 /**
  * Creates a new [MavenArtifact] by putting the [TaskContainer.createJavaArtifactsDokkaTask] into it.
  */
-internal fun MavenPublication.addJavaDokkaArtifact(
-        project: Project,
-        publicationName: String
-) {
-    artifact(project.tasks.createJavaArtifactsDokkaTask(publicationName)) {
+internal fun MavenPublication.addJavaDokkaArtifact(project: Project) {
+    artifact(project.tasks.createJavaArtifactsDokkaTask()) {
         it.classifier = "kdoc"
     }
 }

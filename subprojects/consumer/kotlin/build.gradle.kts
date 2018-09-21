@@ -1,7 +1,7 @@
 plugins {
     kotlin("jvm") version "1.2.70"
 }
-apply<guru.stefma.androidartifacts.JavaArtifactsPlugin>()
+apply<guru.stefma.androidartifacts.plugin.JavaArtifactsPlugin>()
 
 version = "0.0.1"
 group = "guru.stefma.androidartifacts.consumer"

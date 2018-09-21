@@ -4,7 +4,7 @@ import com.android.build.gradle.tasks.LintGlobalTask
 import com.android.builder.model.AndroidLibrary
 
 apply(plugin = "com.android.library")
-apply<guru.stefma.androidartifacts.AndroidArtifactsPlugin>()
+apply<guru.stefma.androidartifacts.plugin.AndroidArtifactsPlugin>()
 
 version = "0.0.1"
 group = "guru.stefma.androidartifacts.consumer"

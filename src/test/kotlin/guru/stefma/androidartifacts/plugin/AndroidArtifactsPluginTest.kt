@@ -1,5 +1,6 @@
-package guru.stefma.androidartifacts
+package guru.stefma.androidartifacts.plugin
 
+import guru.stefma.androidartifacts.default
 import guru.stefma.androidartifacts.junit.AndroidBuildScript
 import guru.stefma.androidartifacts.junit.AndroidTempDirectory
 import guru.stefma.androidartifacts.junit.TempDir

@@ -16,7 +16,7 @@ buildscript {
 
 apply(plugin = "com.android.library")
 apply(plugin = "org.jetbrains.kotlin.android")
-apply<guru.stefma.androidartifacts.AndroidArtifactsPlugin>()
+apply<guru.stefma.androidartifacts.plugin.AndroidArtifactsPlugin>()
 
 version = "0.0.1"
 group = "guru.stefma.androidartifacts.consumer"

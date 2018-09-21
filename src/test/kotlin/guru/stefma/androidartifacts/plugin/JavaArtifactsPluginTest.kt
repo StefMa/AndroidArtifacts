@@ -1,13 +1,11 @@
-package guru.stefma.androidartifacts
+package guru.stefma.androidartifacts.plugin
 
-import guru.stefma.androidartifacts.junit.AndroidBuildScript
+import guru.stefma.androidartifacts.default
 import guru.stefma.androidartifacts.junit.JavaBuildScript
 import guru.stefma.androidartifacts.junit.JavaTempDirectory
 import guru.stefma.androidartifacts.junit.TempDir
-import org.assertj.core.api.AbstractCharSequenceAssert
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.testkit.runner.GradleRunner
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.junit.jupiter.params.ParameterizedTest
