@@ -41,6 +41,32 @@ buildscript {
 }
 ```
 
+<details>
+<summary><b>For the `master-SNAPSHOT` version click here</b></summary>
+
+```groovy
+buildscript {
+    repositories {
+        jcenter()
+        google()
+        maven { url "https://jitpack.io" }
+    }
+    dependencies {
+        classpath "com.github.stefma.androidartifacts:androidartifacts:master-SNAPSHOT"
+    }
+}
+```    
+
+Please note that this may be fail for the first attempts because [JitPack](https://jitpack.io)
+build the plugin on the fly.
+Please just try it again after some minutes until JitPack have build the plugin.
+
+It can also happen that your current `master-SNAPSHOT` is locally outdated. 
+If so just run `./gradlew --refresh-dependencies`.
+This will force Gradle to update all dependencies **and plugins**.
+</details>
+<br>
+
 Then you can apply the plugin to your **module** `build.gradle`:
 ```groovy
 apply plugin: "com.android.library"
