@@ -9,7 +9,6 @@ import org.gradle.api.tasks.TaskContainer
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.jvm.tasks.Jar
-import java.io.File
 
 private const val TASKS_GROUP = "Publishing"
 
@@ -23,7 +22,7 @@ internal fun TaskContainer.createAndroidArtifactsTask(variantName: String) {
     create(variantName.androidArtifactsTaskName) {
         it.dependsOn("publish${variantName.capitalize()}AarPublicationToMavenLocal")
         it.group = TASKS_GROUP
-        it.description = "Publish aar for ${variantName.capitalize()} to the local Maven repository."
+        it.description = "Publish an AAR for '$variantName' to the local Maven repository."
     }
 }
 
@@ -37,7 +36,7 @@ internal fun TaskContainer.createJavaArtifactsTask(publicationName: String) {
     create("java".androidArtifactsTaskName) {
         it.dependsOn("publish${publicationName.capitalize()}PublicationToMavenLocal")
         it.group = TASKS_GROUP
-        it.description = "Publish jar for ${publicationName.capitalize()} to the local Maven repository."
+        it.description = "Publish an JAR for '$publicationName' to the local Maven repository."
     }
 }
 
@@ -54,7 +53,7 @@ internal fun TaskContainer.createAndroidArtifactsSourcesTask(variant: LibraryVar
         }
 
         task.group = TASKS_GROUP
-        task.description = "Package the sources for the `androidArtifact${variant.name}` into a jar"
+        task.description = "Package the sources for the 'androidArtifact${variant.name.capitalize()}' into a JAR"
     }
 }
 
@@ -63,10 +62,7 @@ internal fun TaskContainer.createAndroidArtifactsSourcesTask(variant: LibraryVar
  * which will put all [org.gradle.api.tasks.SourceSet.getAllSource] from the given [JavaPluginConvention.getSourceSets]
  * into the generated Jar file.
  */
-internal fun TaskContainer.createJavaArtifactsSourcesTask(
-        javaConvention: JavaPluginConvention,
-        publicationName: String
-): Task {
+internal fun TaskContainer.createJavaArtifactsSourcesTask(javaConvention: JavaPluginConvention): Task {
     return create("java".sourcesTaskName, Jar::class.java) { task ->
         task.classifier = "sources"
         javaConvention.sourceSets.forEach {
@@ -75,7 +71,7 @@ internal fun TaskContainer.createJavaArtifactsSourcesTask(
         }
 
         task.group = TASKS_GROUP
-        task.description = "Package the sources for the `androidArtifact$publicationName` into a jar"
+        task.description = "Package the sources for the 'androidArtifactJava' into a JAR"
     }
 }
 
@@ -114,14 +110,14 @@ internal fun TaskContainer.createAndroidArtifactsJavadocTask(
         it.from(docHelperTask.outputs)
 
         it.group = TASKS_GROUP
-        it.description = "Package the javadoc for the `androidArtifact${variant.name}` into a jar"
+        it.description = "Package the javadoc for the 'androidArtifact${variant.name.capitalize()}' into a JAR"
     }
 }
 
 /**
  * Creates a [Jar] task which will package the sources from the [org.gradle.api.tasks.javadoc.Javadoc] output.
  */
-internal fun TaskContainer.createJavaArtifactsJavadocTask(publicationName: String): Task {
+internal fun TaskContainer.createJavaArtifactsJavadocTask(): Task {
     val javadocTask = getByName("javadoc") as Javadoc
     javadocTask.isFailOnError = false
 
@@ -131,7 +127,7 @@ internal fun TaskContainer.createJavaArtifactsJavadocTask(publicationName: Strin
         it.from(javadocTask.outputs)
 
         it.group = TASKS_GROUP
-        it.description = "Package the javadoc for the `androidArtifact${publicationName.capitalize()}` into a jar"
+        it.description = "Package the javadoc for the 'androidArtifactJava` into a JAR"
     }
 }
 
@@ -147,7 +143,7 @@ internal fun TaskContainer.createAndroidArtifactsDokkaTask(variantName: String):
         it.from(dokkaTask.outputs)
 
         it.group = TASKS_GROUP
-        it.description = "Package the kdoc for the `androidArtifact$variantName` into a jar"
+        it.description = "Package the kdoc for the 'androidArtifact${variantName.capitalize()}' into a JAR"
     }
 }
 
@@ -155,7 +151,7 @@ internal fun TaskContainer.createAndroidArtifactsDokkaTask(variantName: String):
  * Creates a new [Jar] tasks which depends on the by the dokka generated `dokka` tasks and
  * put the outut from the `dokka` tasks into the generated Jar file.
  */
-internal fun TaskContainer.createJavaArtifactsDokkaTask(publicationName: String): Task {
+internal fun TaskContainer.createJavaArtifactsDokkaTask(): Task {
     return create("java".dokkaTaskName, Jar::class.java) {
         val dokkaTask = getByName("dokka")
         it.dependsOn(dokkaTask)
@@ -163,7 +159,7 @@ internal fun TaskContainer.createJavaArtifactsDokkaTask(publicationName: String)
         it.from(dokkaTask.outputs)
 
         it.group = TASKS_GROUP
-        it.description = "Package the kdoc for the `androidArtifact$publicationName` into a jar"
+        it.description = "Package the kdoc for the 'androidArtifactJava' into a JAR"
     }
 }
 

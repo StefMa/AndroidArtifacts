@@ -41,13 +41,13 @@ class JavaArtifactsPlugin : Plugin<Project> {
         project.publishingExtension.publications.create(publicationName, MavenPublication::class.java) {
             it.from(project.components.getByName("java"))
             // Publish sources only if set to true
-            if (extension.sources) it.addJavaSourcesArtifact(project, publicationName)
+            if (extension.sources) it.addJavaSourcesArtifact(project)
             // Publish javadoc only if set to true
             if (extension.javadoc) {
-                it.addJavaJavadocArtifact(project, publicationName)
+                it.addJavaJavadocArtifact(project)
 
                 // Add dokka artifact if the kotlin plugin is applied...
-                if (project.hasKotlinJvmPluginApplied) it.addJavaDokkaArtifact(project, publicationName)
+                if (project.hasKotlinJvmPluginApplied) it.addJavaDokkaArtifact(project)
             }
 
             it.setupMetadata(project, extension)
