@@ -92,11 +92,11 @@ gradlePlugin {
     plugins {
         create("androidArtifacts") {
             id = "guru.stefma.androidartifacts"
-            implementationClass = "guru.stefma.androidartifacts.AndroidArtifactsPlugin"
+            implementationClass = "guru.stefma.androidartifacts.plugin.AndroidArtifactsPlugin"
         }
         create("javaArtifacts") {
             id = "guru.stefma.javaartifacts"
-            implementationClass = "guru.stefma.androidartifacts.JavaArtifactsPlugin"
+            implementationClass = "guru.stefma.androidartifacts.plugin.JavaArtifactsPlugin"
         }
     }
 }
