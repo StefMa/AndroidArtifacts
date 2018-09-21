@@ -4,6 +4,15 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication
 
+/**
+ * This Plugin will simplify the process to create a [publications][org.gradle.api.publish.Publication]
+ * for your **Java or Kotlin Library**.
+ *
+ * It will generate a new [org.gradle.api.publish.Publication] with the name **maven**
+ * and set up some tasks (e.g. for packaging the javadoc/kdoc or sources) for it.
+ *
+ * This makes is very easily to publish your Library to the local maven repository.
+ */
 class JavaArtifactsPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {

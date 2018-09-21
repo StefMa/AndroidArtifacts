@@ -6,6 +6,15 @@ import org.gradle.api.Project
 import org.gradle.api.publish.PublicationContainer
 import org.gradle.api.publish.maven.MavenPublication
 
+/**
+ * This Plugin will simplify the process to create [publications][org.gradle.api.publish.Publication]
+ * for your **Android Library**.
+ *
+ * It will generate for all available **build types** a new [org.gradle.api.publish.Publication]
+ * and set up some tasks (e.g. for packaging the javadoc or sources) for it.
+ *
+ * This makes is very easily to publish your Android Library to the local maven repository.
+ */
 class AndroidArtifactsPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
