@@ -1,5 +1,6 @@
-package guru.stefma.androidartifacts
+package guru.stefma.androidartifacts.task
 
+import guru.stefma.androidartifacts.default
 import guru.stefma.androidartifacts.junit.*
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.testkit.runner.GradleRunner

@@ -1,6 +1,7 @@
 package guru.stefma.androidartifacts.plugin
 
 import guru.stefma.androidartifacts.*
+import guru.stefma.androidartifacts.task.ListGeneratedPublicationNamesTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.maven.MavenPublication

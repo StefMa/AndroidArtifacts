@@ -2,6 +2,7 @@ package guru.stefma.androidartifacts
 
 import com.android.build.gradle.api.LibraryVariant
 import com.android.builder.model.SourceProvider
+import guru.stefma.androidartifacts.task.ListGeneratedPublicationNamesTask
 import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPluginConvention

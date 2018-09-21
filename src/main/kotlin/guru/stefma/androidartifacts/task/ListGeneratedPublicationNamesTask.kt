@@ -1,4 +1,4 @@
-package guru.stefma.androidartifacts
+package guru.stefma.androidartifacts.task
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
