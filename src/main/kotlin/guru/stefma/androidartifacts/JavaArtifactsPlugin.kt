@@ -35,9 +35,9 @@ class JavaArtifactsPlugin : Plugin<Project> {
             extension: ArtifactsExtension,
             project: Project,
             publicationName: String,
-            publicationTasks: ListGeneratedPublicationTasks
+            publicationNames: ListGeneratedPublicationNamesTask
     ) {
-        publicationTasks.publicationNames += publicationName
+        publicationNames.publicationNames += publicationName
         project.publishingExtension.publications.create(publicationName, MavenPublication::class.java) {
             it.from(project.components.getByName("java"))
             // Publish sources only if set to true

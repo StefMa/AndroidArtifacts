@@ -35,10 +35,10 @@ class AndroidArtifactsPlugin : Plugin<Project> {
             extension: ArtifactsExtension,
             publishingContainer: PublicationContainer,
             variant: LibraryVariant,
-            publicationTasks: ListGeneratedPublicationTasks
+            publicationNames: ListGeneratedPublicationNamesTask
     ) {
         val aarPublicationName = variant.name.aarPublicationName
-        publicationTasks.publicationNames += aarPublicationName
+        publicationNames.publicationNames += aarPublicationName
         publishingContainer.create(aarPublicationName, MavenPublication::class.java) {
             it.addAarArtifact(this, variant.name)
             // Publish sources only if set to true

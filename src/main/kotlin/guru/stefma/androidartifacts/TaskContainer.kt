@@ -53,7 +53,7 @@ internal fun TaskContainer.createAndroidArtifactsSourcesTask(variant: LibraryVar
         }
 
         task.group = TASKS_GROUP
-        task.description = "Package the sources for the 'androidArtifact${variant.name.capitalize()}' into a JAR"
+        task.description = "Package the sources for the 'androidArtifact${variant.name.capitalize()}' into a JAR."
     }
 }
 
@@ -71,7 +71,7 @@ internal fun TaskContainer.createJavaArtifactsSourcesTask(javaConvention: JavaPl
         }
 
         task.group = TASKS_GROUP
-        task.description = "Package the sources for the 'androidArtifactJava' into a JAR"
+        task.description = "Package the sources for the 'androidArtifactJava' into a JAR."
     }
 }
 
@@ -110,7 +110,7 @@ internal fun TaskContainer.createAndroidArtifactsJavadocTask(
         it.from(docHelperTask.outputs)
 
         it.group = TASKS_GROUP
-        it.description = "Package the javadoc for the 'androidArtifact${variant.name.capitalize()}' into a JAR"
+        it.description = "Package the javadoc for the 'androidArtifact${variant.name.capitalize()}' into a JAR."
     }
 }
 
@@ -127,7 +127,7 @@ internal fun TaskContainer.createJavaArtifactsJavadocTask(): Task {
         it.from(javadocTask.outputs)
 
         it.group = TASKS_GROUP
-        it.description = "Package the javadoc for the 'androidArtifactJava` into a JAR"
+        it.description = "Package the javadoc for the 'androidArtifactJava` into a JAR."
     }
 }
 
@@ -143,7 +143,7 @@ internal fun TaskContainer.createAndroidArtifactsDokkaTask(variantName: String):
         it.from(dokkaTask.outputs)
 
         it.group = TASKS_GROUP
-        it.description = "Package the kdoc for the 'androidArtifact${variantName.capitalize()}' into a JAR"
+        it.description = "Package the kdoc for the 'androidArtifact${variantName.capitalize()}' into a JAR."
     }
 }
 
@@ -159,12 +159,18 @@ internal fun TaskContainer.createJavaArtifactsDokkaTask(): Task {
         it.from(dokkaTask.outputs)
 
         it.group = TASKS_GROUP
-        it.description = "Package the kdoc for the 'androidArtifactJava' into a JAR"
+        it.description = "Package the kdoc for the 'androidArtifactJava' into a JAR."
     }
 }
 
-internal fun TaskContainer.createListAvailablePublicationTask(): ListGeneratedPublicationTasks {
-    return create("androidArtifactGeneratedPublications", ListGeneratedPublicationTasks::class.java)
+/**
+ * Creates a task from the type [ListGeneratedPublicationNamesTask].
+ */
+internal fun TaskContainer.createListAvailablePublicationTask(): ListGeneratedPublicationNamesTask {
+    return create("androidArtifactGeneratedPublications", ListGeneratedPublicationNamesTask::class.java) {
+        it.group = TASKS_GROUP
+        it.description = "Print a list of all generated publications."
+    }
 }
 
 private val String.androidArtifactsTaskName
