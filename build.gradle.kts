@@ -5,7 +5,7 @@ import guru.stefma.buildsrc.CreateNowJson
 import guru.stefma.buildsrc.MoveDokkaAndGradleSiteToNow
 
 plugins {
-    kotlin("jvm") version "1.2.50"
+    kotlin("jvm") version "1.2.70"
 
     id("org.jetbrains.dokka") version "0.9.17"
     id("com.github.gradle-guides.site") version "0.1"
@@ -23,14 +23,14 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("com.android.tools.build:gradle:3.1.3")
+    implementation("com.android.tools.build:gradle:3.1.4")
     implementation("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.2.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.2.0")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.2.0")
-    testImplementation("org.assertj:assertj-core:3.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
+    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+    testImplementation("org.assertj:assertj-core:3.11.1")
 }
 
 tasks.withType(Test::class.java) {
