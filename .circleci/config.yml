@@ -17,8 +17,8 @@ jobs:
       - run: echo "org.gradle.jvmargs=-Xmx2G" >> gradle.properties
 
       # Download/Install Android SDK for testing
-      - run: wget -q https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
-      - run: unzip -q sdk-tools-linux-3859397.zip
+      - run: wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+      - run: unzip -q sdk-tools-linux-4333796.zip
       - run: mkdir $HOME/android-sdk
       - run: mv tools $HOME/android-sdk/tools
       - run: mkdir $HOME/android-sdk/licenses
@@ -55,8 +55,8 @@ jobs:
     - checkout
 
     # Download/Install Android SDK for testing
-    - run: wget -q https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip
-    - run: unzip -q sdk-tools-linux-3859397.zip
+    - run: wget -q https://dl.google.com/android/repository/sdk-tools-linux-4333796.zip
+    - run: unzip -q sdk-tools-linux-4333796.zip
     - run: mkdir $HOME/android-sdk
     - run: mv tools $HOME/android-sdk/tools
     - run: mkdir $HOME/android-sdk/licenses
