@@ -27,7 +27,7 @@ For more information checkout the [development documentation](DEVELOPMENT.md).
 ## How to apply
 You can use it as a standalone plugin in the following way:
 
-Put these lines into your **project** `build.gradle`
+1. Put these lines into your **project** `build.gradle`
 ```groovy
 buildscript {
     repositories {
@@ -67,7 +67,7 @@ This will force Gradle to update all dependencies **and plugins**.
 </details>
 <br>
 
-Then you can apply the plugin to your **module** `build.gradle`:
+2. Then you can apply the plugin to your **module** `build.gradle`:
 ```groovy
 apply plugin: "com.android.library"
 apply plugin: "org.jetbrains.kotlin.android" //1
