@@ -24,4 +24,5 @@ dependencies {
     implementation("org.mockito:mockito-core:2.22.0")
     runtimeOnly("com.squareup.okio:okio:2.0.0")
     compileOnly("com.jakewharton.timber:timber:4.7.1")
+    implementation(fileTree(mapOf("include" to arrayOf("*.jar"), "dir" to "libs")))
 }
