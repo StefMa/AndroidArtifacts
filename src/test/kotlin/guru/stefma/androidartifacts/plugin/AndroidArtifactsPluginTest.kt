@@ -104,6 +104,37 @@ class AndroidArtifactsPluginTest {
                     "<scope>provided</scope>"
             )
 
+
+    @Test
+    fun `test apply with unknown dependencies should ignore it in pom`(
+            @TempDir tempDir: File,
+            @AndroidBuildScript buildScript: File) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        androidArtifact {
+                            artifactId = "androidartifacts"
+                        }
+
+                        dependencies {
+                            implementation(fileTree(include: ['*.jar'], dir: 'libs'))
+                        }
+                """
+        )
+
+        val buildResult = GradleRunner.create()
+                .default(tempDir)
+                .withArguments("generatePomFileForReleaseAarPublication", "-i")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/releaseAar/pom-default.xml")
+        // Empty dependencies tag
+        assertThat(pomFile.readText()).contains("<dependencies/>")
+        assertThat(buildResult.output)
+                .contains("One of your dependency has either: 'no group', 'no version' or 'no artifactId")
+    }
+
     @Test
     fun `test apply with license should generate pom correctly for Gradle version 4dot8 (and up)`(
             @TempDir tempDir: File,
