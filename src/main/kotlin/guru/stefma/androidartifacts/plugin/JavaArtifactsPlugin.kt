@@ -14,20 +14,25 @@ import org.gradle.api.publish.maven.MavenPublication
  * and set up some tasks (e.g. for packaging the javadoc/kdoc or sources) for it.
  *
  * This makes is very easily to publish your Library to the local maven repository.
+ *
+ * > **Note:**  This will only do all the stuff when the `java-library` plugin
+ *              is applied. Otherwise it does **nothing**!
  */
 class JavaArtifactsPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val extension = project.createJavaArtifactsExtension()
-        project.applyMavenPublishPlugin()
-        project.applyDokkaPlugin()
-        val publicationTasks = project.tasks.createListAvailablePublicationTask()
-        val publicationName = "maven"
-        project.tasks.createJavaArtifactsTask(publicationName)
-        // TODO: Think if we can do that better lazy somehow
-        // see https://docs.gradle.org/current/userguide/lazy_configuration.html
-        project.afterEvaluate {
-            createPublication(extension, project, publicationName, publicationTasks)
+        project.pluginManager.withPlugin("java-library") {
+            val extension = project.createJavaArtifactsExtension()
+            project.applyMavenPublishPlugin()
+            project.applyDokkaPlugin()
+            val publicationTasks = project.tasks.createListAvailablePublicationTask()
+            val publicationName = "maven"
+            project.tasks.createJavaArtifactsTask(publicationName)
+            // TODO: Think if we can do that better lazy somehow
+            // see https://docs.gradle.org/current/userguide/lazy_configuration.html
+            project.afterEvaluate {
+                createPublication(extension, project, publicationName, publicationTasks)
+            }
         }
     }
 
