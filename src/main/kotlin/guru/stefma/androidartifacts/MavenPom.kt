@@ -68,6 +68,15 @@ private fun MavenPom.addDependenciesForConfiguration(configuration: Configuratio
 }
 
 private fun Node.addDependency(dependency: Dependency, scope: String) {
+    if (dependency.group == null
+            || dependency.version == null
+            || dependency.name == "undefinied") {
+        logger.info("One of your dependency has either: 'no group', 'no version' or 'no artifactId'\n" +
+                "We ignore it!"
+        )
+        return
+    }
+
     val dependencyNode = appendNode("dependency")
     dependency.apply {
         dependencyNode.appendNode("groupId", group)
