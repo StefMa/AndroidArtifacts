@@ -16,18 +16,23 @@ import org.gradle.api.publish.maven.MavenPublication
  * and set up some tasks (e.g. for packaging the javadoc or sources) for it.
  *
  * This makes is very easily to publish your Android Library to the local maven repository.
+ *
+ * > **Note:**  This will only do all the stuff when the `com.android.library` plugin
+ *              is applied. Otherwise it does **nothing**!
  */
 class AndroidArtifactsPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val extension = project.createAndroidArtifactsExtension()
-        project.applyMavenPublishPlugin()
-        project.applyDokkaPlugin()
-        val publicationContainer = project.publishingExtension.publications
-        val publicationTasks = project.tasks.createListAvailablePublicationTask()
-        project.androidLibraryExtension.libraryVariants.all {
-            project.tasks.createAndroidArtifactsTask(it.name)
-            project.createPublication(extension, publicationContainer, it, publicationTasks)
+        project.pluginManager.withPlugin("com.android.library") {
+            val extension = project.createAndroidArtifactsExtension()
+            project.applyMavenPublishPlugin()
+            project.applyDokkaPlugin()
+            val publicationContainer = project.publishingExtension.publications
+            val publicationTasks = project.tasks.createListAvailablePublicationTask()
+            project.androidLibraryExtension.libraryVariants.all {
+                project.tasks.createAndroidArtifactsTask(it.name)
+                project.createPublication(extension, publicationContainer, it, publicationTasks)
+            }
         }
     }
 
