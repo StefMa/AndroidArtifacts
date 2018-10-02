@@ -19,18 +19,24 @@ internal val Project.publishingExtension
 /**
  * Is true if either the `kotlin-android` or the `org.jetbrains.kotlin.android` plugin
  * is applied...
+ *
+ * @see PluginIds
  */
 internal val Project.hasKotlinAndroidPluginApplied
-    get() = pluginManager.hasPlugin("kotlin-android") || pluginManager.hasPlugin("org.jetbrains.kotlin.android")
+    get() = pluginManager.hasPlugin(PluginIds.kotlinAndroidLegacy) || pluginManager.hasPlugin(PluginIds.kotlinAndroid)
 
 /**
  * Is true if either the `kotlin` or the `org.jetbrains.kotlin.jvm` plugin
  * is applied...
+ *
+ * @see PluginIds
  */
 internal val Project.hasKotlinJvmPluginApplied
-    get() = pluginManager.hasPlugin("kotlin") || pluginManager.hasPlugin("org.jetbrains.kotlin.jvm")
+    get() = pluginManager.hasPlugin(PluginIds.kotlinJvmLegacy) || pluginManager.hasPlugin(PluginIds.kotlinJvm)
 
 /**
- * Applies the **maven-publish** plugin
+ * Applies the **maven-publish** plugin.
+ *
+ * @see PluginIds
  */
-internal fun Project.applyMavenPublishPlugin() = pluginManager.apply("maven-publish")
+internal fun Project.applyMavenPublishPlugin() = pluginManager.apply(PluginIds.mavenPublish)

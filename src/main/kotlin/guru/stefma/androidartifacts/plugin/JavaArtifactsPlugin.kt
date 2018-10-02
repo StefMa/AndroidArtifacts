@@ -15,24 +15,42 @@ import org.gradle.api.publish.maven.MavenPublication
  *
  * This makes is very easily to publish your Library to the local maven repository.
  *
- * > **Note:**  This will only do all the stuff when the `java-library` plugin
- *              is applied. Otherwise it does **nothing**!
+ * > **Note:**  This will only do all the stuff when the `java-library`, `kotlin`
+ *              **or** `org.jetbrains.kotlin.jvm` plugin is applied.
+ *              Otherwise it does **nothing**!
  */
 class JavaArtifactsPlugin : Plugin<Project> {
 
+    private var alreadySetup = false
+
     override fun apply(project: Project) {
-        project.pluginManager.withPlugin("java-library") {
-            val extension = project.createJavaArtifactsExtension()
-            project.applyMavenPublishPlugin()
-            project.applyDokkaPlugin()
-            val publicationTasks = project.tasks.createListAvailablePublicationTask()
-            val publicationName = "maven"
-            project.tasks.createJavaArtifactsTask(publicationName)
-            // TODO: Think if we can do that better lazy somehow
-            // see https://docs.gradle.org/current/userguide/lazy_configuration.html
-            project.afterEvaluate {
-                createPublication(extension, project, publicationName, publicationTasks)
-            }
+        project.pluginManager.withPlugin(PluginIds.javaLibrary) {
+            setupArtifacts(project)
+        }
+
+        project.pluginManager.withPlugin(PluginIds.kotlinJvm) {
+            setupArtifacts(project)
+        }
+
+        project.pluginManager.withPlugin(PluginIds.kotlinJvmLegacy) {
+            setupArtifacts(project)
+        }
+    }
+
+    private fun setupArtifacts(project: Project) {
+        if (alreadySetup) return
+        alreadySetup = true
+
+        val extension = project.createJavaArtifactsExtension()
+        project.applyMavenPublishPlugin()
+        project.applyDokkaPlugin()
+        val publicationTasks = project.tasks.createListAvailablePublicationTask()
+        val publicationName = "maven"
+        project.tasks.createJavaArtifactsTask(publicationName)
+        // TODO: Think if we can do that better lazy somehow
+        // see https://docs.gradle.org/current/userguide/lazy_configuration.html
+        project.afterEvaluate {
+            createPublication(extension, project, publicationName, publicationTasks)
         }
     }
 
@@ -42,9 +60,11 @@ class JavaArtifactsPlugin : Plugin<Project> {
     /**
      * Applies the "org.jetbrains.dokka" plugin if we have already
      * applied the "kotlin" or "org.jetbrains.kotlin.jvm" plugin...
+     *
+     * @see PluginIds
      */
     private fun Project.applyDokkaPlugin() = with(pluginManager) {
-        if (hasKotlinJvmPluginApplied) apply("org.jetbrains.dokka")
+        if (hasKotlinJvmPluginApplied) apply(PluginIds.dokkaJvm)
     }
 
     private fun createPublication(

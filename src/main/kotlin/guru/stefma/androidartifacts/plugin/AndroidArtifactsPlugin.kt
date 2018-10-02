@@ -23,7 +23,7 @@ import org.gradle.api.publish.maven.MavenPublication
 class AndroidArtifactsPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        project.pluginManager.withPlugin("com.android.library") {
+        project.pluginManager.withPlugin(PluginIds.androidLibrary) {
             val extension = project.createAndroidArtifactsExtension()
             project.applyMavenPublishPlugin()
             project.applyDokkaPlugin()
@@ -42,9 +42,11 @@ class AndroidArtifactsPlugin : Plugin<Project> {
     /**
      * Applies the "org.jetbrains.dokka-android" plugin if we have already
      * applied the "kotlin-android" or "org.jetbrains.kotlin.android" plugin...
+     *
+     * @see PluginIds
      */
     private fun Project.applyDokkaPlugin() = with(pluginManager) {
-        if (hasKotlinAndroidPluginApplied) apply("org.jetbrains.dokka-android")
+        if (hasKotlinAndroidPluginApplied) apply(PluginIds.dokkaAndroid)
     }
 
     private fun Project.createPublication(
