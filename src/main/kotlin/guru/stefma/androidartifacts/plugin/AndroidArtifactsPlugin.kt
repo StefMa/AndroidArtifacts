@@ -16,18 +16,23 @@ import org.gradle.api.publish.maven.MavenPublication
  * and set up some tasks (e.g. for packaging the javadoc or sources) for it.
  *
  * This makes is very easily to publish your Android Library to the local maven repository.
+ *
+ * > **Note:**  This will only do all the stuff when the `com.android.library` plugin
+ *              is applied. Otherwise it does **nothing**!
  */
 class AndroidArtifactsPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
-        val extension = project.createAndroidArtifactsExtension()
-        project.applyMavenPublishPlugin()
-        project.applyDokkaPlugin()
-        val publicationContainer = project.publishingExtension.publications
-        val publicationTasks = project.tasks.createListAvailablePublicationTask()
-        project.androidLibraryExtension.libraryVariants.all {
-            project.tasks.createAndroidArtifactsTask(it.name)
-            project.createPublication(extension, publicationContainer, it, publicationTasks)
+        project.pluginManager.withPlugin(PluginIds.androidLibrary) {
+            val extension = project.createAndroidArtifactsExtension()
+            project.applyMavenPublishPlugin()
+            project.applyDokkaPlugin()
+            val publicationContainer = project.publishingExtension.publications
+            val publicationTasks = project.tasks.createListAvailablePublicationTask()
+            project.androidLibraryExtension.libraryVariants.all {
+                project.tasks.createAndroidArtifactsTask(it.name)
+                project.createPublication(extension, publicationContainer, it, publicationTasks)
+            }
         }
     }
 
@@ -37,9 +42,11 @@ class AndroidArtifactsPlugin : Plugin<Project> {
     /**
      * Applies the "org.jetbrains.dokka-android" plugin if we have already
      * applied the "kotlin-android" or "org.jetbrains.kotlin.android" plugin...
+     *
+     * @see PluginIds
      */
     private fun Project.applyDokkaPlugin() = with(pluginManager) {
-        if (hasKotlinAndroidPluginApplied) apply("org.jetbrains.dokka-android")
+        if (hasKotlinAndroidPluginApplied) apply(PluginIds.dokkaAndroid)
     }
 
     private fun Project.createPublication(

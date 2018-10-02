@@ -14,10 +14,33 @@ import org.gradle.api.publish.maven.MavenPublication
  * and set up some tasks (e.g. for packaging the javadoc/kdoc or sources) for it.
  *
  * This makes is very easily to publish your Library to the local maven repository.
+ *
+ * > **Note:**  This will only do all the stuff when the `java-library`, `kotlin`
+ *              **or** `org.jetbrains.kotlin.jvm` plugin is applied.
+ *              Otherwise it does **nothing**!
  */
 class JavaArtifactsPlugin : Plugin<Project> {
 
+    private var alreadySetup = false
+
     override fun apply(project: Project) {
+        project.pluginManager.withPlugin(PluginIds.javaLibrary) {
+            setupArtifacts(project)
+        }
+
+        project.pluginManager.withPlugin(PluginIds.kotlinJvm) {
+            setupArtifacts(project)
+        }
+
+        project.pluginManager.withPlugin(PluginIds.kotlinJvmLegacy) {
+            setupArtifacts(project)
+        }
+    }
+
+    private fun setupArtifacts(project: Project) {
+        if (alreadySetup) return
+        alreadySetup = true
+
         val extension = project.createJavaArtifactsExtension()
         project.applyMavenPublishPlugin()
         project.applyDokkaPlugin()
@@ -37,9 +60,11 @@ class JavaArtifactsPlugin : Plugin<Project> {
     /**
      * Applies the "org.jetbrains.dokka" plugin if we have already
      * applied the "kotlin" or "org.jetbrains.kotlin.jvm" plugin...
+     *
+     * @see PluginIds
      */
     private fun Project.applyDokkaPlugin() = with(pluginManager) {
-        if (hasKotlinJvmPluginApplied) apply("org.jetbrains.dokka")
+        if (hasKotlinJvmPluginApplied) apply(PluginIds.dokkaJvm)
     }
 
     private fun createPublication(
