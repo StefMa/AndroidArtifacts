@@ -5,6 +5,7 @@ import guru.stefma.androidartifacts.*
 import guru.stefma.androidartifacts.task.ListGeneratedPublicationNamesTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.publish.PublicationContainer
 import org.gradle.api.publish.maven.MavenPublication
 
@@ -73,6 +74,18 @@ class AndroidArtifactsPlugin : Plugin<Project> {
             it.pom {
                 it.packaging = "aar"
                 it.addConfigurations(configurations)
+
+                // Add the license if available
+                extension.licenseSpec?.apply {
+                    it.licenses {
+                        it.license {
+                            it.name.set(name)
+                            it.url.set(url)
+                            it.comments.set(comments)
+                            it.distribution.set(distribution)
+                        }
+                    }
+                }
             }
         }
     }

@@ -87,6 +87,20 @@ class JavaArtifactsPlugin : Plugin<Project> {
             }
 
             it.setupMetadata(project, extension)
+
+            // Add the license if available
+            extension.licenseSpec?.apply {
+                it.pom {
+                    it.licenses {
+                        it.license {
+                            it.name.set(name)
+                            it.url.set(url)
+                            it.comments.set(comments)
+                            it.distribution.set(distribution)
+                        }
+                    }
+                }
+            }
         }
     }
 

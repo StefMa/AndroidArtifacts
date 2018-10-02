@@ -100,6 +100,48 @@ class JavaArtifactsPluginTest {
             )
 
     @Test
+    fun `test apply with license should generate pom correctly`(
+            @TempDir tempDir: File,
+            @JavaBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        javaArtifact {
+                            artifactId = "androidartifacts"
+                            license {
+                                name = "Apache License, Version 2.0"
+                                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                                distribution = "repo"
+                                comments = "A business-friendly OSS license"
+                            }
+                        }
+                """
+        )
+
+        GradleRunner.create()
+                .default(tempDir)
+                .withArguments("generatePomFileForMavenPublication")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
+        pomFile.assertContainsLicenses()
+    }
+
+    private fun File.assertContainsLicenses() =
+            assertThat(readText()).contains(
+                    """  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>"""
+            )
+
+    @Test
     fun `test apply should generate pom for project correctly`(
             @TempDir tempDir: File,
             @JavaBuildScript buildScript: File
