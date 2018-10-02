@@ -10,6 +10,12 @@ version = "0.0.1"
 group = "guru.stefma.androidartifacts.consumer"
 configure<guru.stefma.androidartifacts.ArtifactsExtension> {
     artifactId = "android"
+    license {
+        name = "Apache License, Version 2.0"
+        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        distribution = "repo"
+        comments = "A business-friendly OSS license"
+    }
 }
 
 configure<LibraryExtension> {
