@@ -7,6 +7,8 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.publish.PublicationContainer
 import org.gradle.api.publish.maven.MavenPublication
+import org.gradle.util.GradleVersion
+import org.gradle.util.VersionNumber
 
 /**
  * This Plugin will simplify the process to create [publications][org.gradle.api.publish.Publication]
@@ -73,6 +75,21 @@ class AndroidArtifactsPlugin : Plugin<Project> {
             it.pom {
                 it.packaging = "aar"
                 it.addConfigurations(configurations)
+
+                // Add the license if available and Gradle version
+                // is better than 4.7
+                if (GradleVersionComparator(gradle.gradleVersion).betterThan("4.7")) {
+                    extension.licenseSpec?.apply {
+                        it.licenses {
+                            it.license {
+                                it.name.set(name)
+                                it.url.set(url)
+                                it.comments.set(comments)
+                                it.distribution.set(distribution)
+                            }
+                        }
+                    }
+                }
             }
         }
     }

@@ -100,6 +100,86 @@ class JavaArtifactsPluginTest {
             )
 
     @Test
+    fun `test apply with license should generate pom correctly for Gradle version 4dot8 (and up)`(
+            @TempDir tempDir: File,
+            @JavaBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        javaArtifact {
+                            artifactId = "androidartifacts"
+                            license {
+                                name = "Apache License, Version 2.0"
+                                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                                distribution = "repo"
+                                comments = "A business-friendly OSS license"
+                            }
+                        }
+                """
+        )
+
+        GradleRunner.create()
+                .default(tempDir, "4.8")
+                .withArguments("generatePomFileForMavenPublication")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
+        pomFile.assertContainsLicenses()
+    }
+
+    private fun File.assertContainsLicenses() =
+            assertThat(readText()).contains(
+                    """  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>"""
+            )
+
+    @Test
+    fun `test apply with license should ignore license in pom for Gradle version 4dot7 (and below)`(
+            @TempDir tempDir: File,
+            @JavaBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        javaArtifact {
+                            artifactId = "androidartifacts"
+                            license {
+                                name = "Apache License, Version 2.0"
+                                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                                distribution = "repo"
+                                comments = "A business-friendly OSS license"
+                            }
+                        }
+                """
+        )
+
+        GradleRunner.create()
+                .default(tempDir, "4.7")
+                .withArguments("generatePomFileForMavenPublication")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
+        pomFile.assertDoesNotContainLicenses()
+    }
+
+    private fun File.assertDoesNotContainLicenses() =
+            assertThat(readText()).doesNotContain(
+                    "<name>Apache License, Version 2.0</name>",
+                    " <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>",
+                    "<distribution>repo</distribution>",
+                    "<comments>A business-friendly OSS license</comments>"
+            )
+
+    @Test
     fun `test apply should generate pom for project correctly`(
             @TempDir tempDir: File,
             @JavaBuildScript buildScript: File

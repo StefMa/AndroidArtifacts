@@ -77,11 +77,18 @@ version = "1.0.0"
 group = "guru.stefma.androidartifacts"
 androidArtifact {
     artifactId = 'androidartifacts'
+    license { // 3
+        name = "Apache License, Version 2.0"
+        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+        distribution = "repo"
+        comments = "A business-friendly OSS license"
+    }
 }
 ```
 * **//1:** The Kotlin plugin is optional for this plugin of course. But if you add it, it will generate a KDoc.
 * **//2:** The `guru.stefma.androidartifacts` plugin should always be added **after** the `com.android.library`  
 and the `org.jetbrains.kotlin.android` plugin.
+* **//3:** Add a license to the POM file. Will only be added with Gradle 4.8 and up.
 
 The plugin will automatically create some tasks - based on your setup - for you. 
 Just run `./gradlew tasks` to see a list of them. 
