@@ -1,9 +1,9 @@
 package guru.stefma.androidartifacts.plugin
 
-import guru.stefma.androidartifacts.default
-import guru.stefma.androidartifacts.junit.AndroidBuildScript
-import guru.stefma.androidartifacts.junit.AndroidTempDirectory
-import guru.stefma.androidartifacts.junit.TempDir
+import guru.stefma.androidartifacts.internal.default
+import guru.stefma.androidartifacts.internal.junit.AndroidBuildScript
+import guru.stefma.androidartifacts.internal.junit.AndroidTempDirectory
+import guru.stefma.androidartifacts.internal.junit.TempDir
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Disabled

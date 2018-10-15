@@ -1,4 +1,4 @@
-package guru.stefma.androidartifacts
+package guru.stefma.androidartifacts.internal
 
 import org.gradle.testkit.runner.GradleRunner
 import java.io.File
