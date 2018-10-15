@@ -57,6 +57,54 @@ class UmbrellaArtifactsPluginTest : AbstractTest {
         }
     }
 
+    @Test
+    @ExtendWith(TempDirectory::class)
+    fun `apply artifacts after kotlin-jvm should generate tasks`(
+            @TempDir tempDir: File
+    ) {
+        val buildScript = """
+                            plugins {
+                                id("org.jetbrains.kotlin.jvm") version "1.2.71"
+                                id("guru.stefma.artifacts")
+                            }
+
+                            group = "guru.stefma"
+                            version = "1"
+                            javaArtifact {
+                                artifactId = "umbrella"
+                            }
+                        """
+        withGradleRunner(tempDir, buildScript, "tasks") {
+            output.assertContainJavaArtifactsTasks()
+            assertThat(output).contains("androidArtifactJavaKdoc")
+            output.assertMavenPublicationTask()
+        }
+    }
+
+    @Test
+    @ExtendWith(TempDirectory::class)
+    fun `apply artifacts before kotlin-jvm should generate tasks`(
+            @TempDir tempDir: File
+    ) {
+        val buildScript = """
+                            plugins {
+                                id("guru.stefma.artifacts")
+                                id("org.jetbrains.kotlin.jvm") version "1.2.71"
+                            }
+
+                            group = "guru.stefma"
+                            version = "1"
+                            javaArtifact {
+                                artifactId = "umbrella"
+                            }
+                        """
+        withGradleRunner(tempDir, buildScript, "tasks") {
+            output.assertContainJavaArtifactsTasks()
+            assertThat(output).contains("androidArtifactJavaKdoc")
+            output.assertMavenPublicationTask()
+        }
+    }
+
     private fun String.assertContainJavaArtifactsTasks() =
             assertThat(this).contains("androidArtifactJava", "androidArtifactJavaJavadoc", "androidArtifactJavaSources")
 
