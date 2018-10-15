@@ -90,6 +90,10 @@ tasks.create("createNowAlias") {
 
 gradlePlugin {
     plugins {
+        create("umbrellaArtifacts") {
+            id = "guru.stefma.artifacts"
+            implementationClass = "guru.stefma.androidartifacts.plugin.UmbrellaArtifactsPlugin"
+        }
         create("androidArtifacts") {
             id = "guru.stefma.androidartifacts"
             implementationClass = "guru.stefma.androidartifacts.plugin.AndroidArtifactsPlugin"

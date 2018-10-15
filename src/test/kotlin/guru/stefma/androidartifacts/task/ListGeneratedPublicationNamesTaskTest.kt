@@ -1,7 +1,7 @@
 package guru.stefma.androidartifacts.task
 
-import guru.stefma.androidartifacts.default
-import guru.stefma.androidartifacts.junit.*
+import guru.stefma.androidartifacts.internal.default
+import guru.stefma.androidartifacts.internal.junit.*
 import org.assertj.core.api.Assertions.assertThat
 import org.gradle.testkit.runner.GradleRunner
 import org.junit.jupiter.api.Test

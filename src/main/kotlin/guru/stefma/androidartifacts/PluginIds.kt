@@ -4,6 +4,9 @@ package guru.stefma.androidartifacts
  * A list of plugin ids
  */
 internal object PluginIds {
+    val androidArtifacts = "guru.stefma.androidartifacts"
+    val javaArtifacts = "guru.stefma.javaartifacts"
+
     val kotlinAndroidLegacy = "kotlin-android"
     val kotlinAndroid = "org.jetbrains.kotlin.android"
 

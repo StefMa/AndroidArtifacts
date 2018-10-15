@@ -9,23 +9,28 @@ A super easy way to create Android and Java artifacts.
 
 ## Description
 This is a helper to configure the [`maven-publish`](https://docs.gradle.org/current/userguide/publishing_maven.html) Gradle plugin.
-It will create all the possible [`publications`](https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven:publications) 
+It will create all "possible" [`publications`](https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven:publications) 
 for your Android, Java and Kotlin projects.
 
 ## Plugins
-This project provides two different plugins.
+This project provides basically two plugins.
 The `guru.stefma.androidartifacts` & the `guru.stefma.javaartifacts` plugin.
 
 Well, as the name reveals the first one should be used in **Android** projects
-while the second one can be used in standalone **Java** and/or **Kotlin** projects.
+while the second one has to be used in pure **Java** and/or **Kotlin** projects.
 
-The following describes the setup for the `guru.stefma.androidartifacts` plugin.
-But since it shares the same API with the `guru.stefma.javaartifacts` the setup is quite similar.
+However. Because it is easier for consumers - like you - to don't handle multiple
+plugins in the same environment (e.g. an Android App which has a pure Kotlin module)
+there is an additional plugin **`guru.stefma.artifacts`**.
+
+This plugin will take care of applying the **correct** plugin for the current
+environment. So you don't have to decide if you should apply the `guru.stefma.androidartifacts`
+or the `guru.stefma.javaartifacts` plugin.
 
 For more information checkout the [development documentation](DEVELOPMENT.md).
 
 ## How to apply
-You can use it as a standalone plugin in the following way:
+To apply the plugin you have to setup your build scripts in the following way:
 
 1. Put these lines into your **project** `build.gradle`
 ```groovy
@@ -71,13 +76,13 @@ This will force Gradle to update all dependencies **and plugins**.
 ```groovy
 apply plugin: "com.android.library"
 apply plugin: "org.jetbrains.kotlin.android" //1
-apply plugin: "guru.stefma.androidartifacts" //2
+apply plugin: "guru.stefma.artifacts" //2
 
 version = "1.0.0"
 group = "guru.stefma.androidartifacts"
-androidArtifact {
+androidArtifact { // 3
     artifactId = 'androidartifacts'
-    license { // 3
+    license { // 4
         name = "Apache License, Version 2.0"
         url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
         distribution = "repo"
@@ -85,12 +90,14 @@ androidArtifact {
     }
 }
 ```
-* **//1:** The Kotlin plugin is optional for this plugin of course. But if you add it, it will generate a KDoc.
-* **//2:** The `guru.stefma.androidartifacts` plugin should always be added **after** the `com.android.library`  
+* **//1:** The Kotlin plugin is optional for this plugin of course. But if you add it, the plugin will generate a KDoc.
+* **//2:** The `guru.stefma.artifacts` plugin should always be added **after** the `com.android.library`  
 and the `org.jetbrains.kotlin.android` plugin.
-* **//3:** Add a license to the POM file. Will only be added with Gradle 4.8 and up.
+* **//4:** The extension is either named `androidArtifact` **or** `javaArtifact`. Depending on the environment.
+* **//3:** Add a license to the POM file. Will only be added with **Gradle 4.8** and up.
 
-The plugin will automatically create some tasks - based on your setup - for you. 
+## Tasks
+The plugin will automatically create some tasks based on your (Android BuildType/Flavors) setup for you. 
 Just run `./gradlew tasks` to see a list of them. 
 All generated tasks are "prefixed" with `androidArtifact`.
 
@@ -99,10 +106,10 @@ To finally publish you library to your local maven just run one of the available
 
 E.g. the following will publish the **release** build type in **Android** projects:
 ```
-./gradlew :awesomeLib:androidArtifactRelease
+./gradlew androidArtifactRelease
 ```
 
 This wil publish your Java/Kotlin project:
 ```
-./gradlew :awesomeLib:androidArtifactJava
+./gradlew androidArtifactJava
 ```

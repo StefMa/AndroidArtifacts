@@ -1,4 +1,4 @@
-package guru.stefma.androidartifacts.junit
+package guru.stefma.androidartifacts.internal.junit
 
 import org.junit.jupiter.api.extension.*
 import java.io.File

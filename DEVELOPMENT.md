@@ -1,10 +1,17 @@
 # AndroidArtifacts Development
+When you are interested in the internals or details of that plugin read on.
 
 ## Plugins
-This projects provides two plugins.
-The `guru.stefma.androidartifacts` and the `guru.stefma.javaartifacts` plugin.
+This projects provides basically **three** plugins.
+The `guru.stefma.androidartifacts` and the `guru.stefma.javaartifacts` plugins are 
+the "core" plugins which do the actually "work". 
+They are set up the `publishing {}` block for the current project.
 
-Both plugins share the same API. The `ArtifactsExtension`.
+The `guru.stefma.artifacts` plugin is an "umbrella" plugin which will
+only apply the correct "worker plugin" - based on the current environment.
+
+Anyway. Both worker plugins share the same API. 
+The [`ArtifactsExtension`](src/main/kotlin/guru/stefma/androidartifacts/ArtifactsExtension.kt).
 Beside of this I want to make sure that each generated `Task` should be
 named and behave similar in each plugin.
 
@@ -18,10 +25,11 @@ The following tasks are available for a default Android library with a `release`
 * androidArtifactReleaseJavadoc
 * androidArtifactReleaseSources
 
-If you library provides more than these two **default** build types more tasks 
-with the respective build type name will be created.
+If you library provides more than these two **default** BuildTypes (release & debug) 
+more tasks with the respective BuildType name will be created.
 
-If the `org.jetbrains.kotlin.android` plugin is applied there will be also a `androidArtifactDebugKdoc` and `androidArtifactReleaseKdoc` task.
+When the `kotlin-android` or the `org.jetbrains.kotlin.android` plugin 
+is applied there will be also a `androidArtifactDebugKdoc` and `androidArtifactReleaseKdoc` task.
 
 #### Tasks output
 The output for the `androidArtifact{$libraryVariant}` is expected at `$project/build/generated/outputs/aar/$projectName-$variantName.aar`.
@@ -30,7 +38,7 @@ This is the default output path for the `assemble{$libraryVariant}` task which i
 The `*Javadoc`, `*Sources` and `*Kdoc` task output will be created inside the `$project/build/libs/$projectName-$version-$type.jar` 
 (while `$type` is either `javadocs`, `sources` or `kdoc`).
 
-The published aar and jar's can be then found in your local maven. 
+The published aar can be then found in your local maven. 
 Typically this is located at `~/.m2/repository/`.
 
 #### Dependencies and POM generation
@@ -52,7 +60,7 @@ This leads to the following available tasks:
 * androidArtifactJavaJavadoc
 * androidArtifactJavaSources
 
-If the `org.jetbrains.kotlin.jvm` plugin is applied there will be also a `androidArtifactJavaKdoc` task.
+When the `kotlin` or the `org.jetbrains.kotlin.jvm` plugin is applied there will be also a `androidArtifactJavaKdoc` task.
 
 #### Tasks output
 All of the generated jar's can be found inside the `$project/build/libs/$projectName-$version-$type.jar` directory.
@@ -69,7 +77,7 @@ This plugin has a setup to publish it's **Dokka** and [**Gradle Site**](https://
 
 ### Manually publishing
 To publish the Dokka and the Gradle Site just run the `publishDocsToNow` task.
-This will publish each of them to now. Implied that the now-cli is installed on the host.
+This will publish each of them to now.sh. Implied that the now-cli is installed on the host.
 
 ### Publishing via CI
 The CI is configured to publish both sites automatically.
