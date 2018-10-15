@@ -13,7 +13,7 @@ It will create all "possible" [`publications`](https://docs.gradle.org/current/u
 for your Android, Java and Kotlin projects.
 
 ## Plugins
-This project provides basically two different plugins.
+This project provides basically two plugins.
 The `guru.stefma.androidartifacts` & the `guru.stefma.javaartifacts` plugin.
 
 Well, as the name reveals the first one should be used in **Android** projects
@@ -93,7 +93,7 @@ androidArtifact { // 3
 * **//1:** The Kotlin plugin is optional for this plugin of course. But if you add it, the plugin will generate a KDoc.
 * **//2:** The `guru.stefma.artifacts` plugin should always be added **after** the `com.android.library`  
 and the `org.jetbrains.kotlin.android` plugin.
-* **//4:** The extension is either named `androidArtifcat` **or** `javaArtifact`. Depending on the environment.
+* **//4:** The extension is either named `androidArtifact` **or** `javaArtifact`. Depending on the environment.
 * **//3:** Add a license to the POM file. Will only be added with **Gradle 4.8** and up.
 
 ## Tasks

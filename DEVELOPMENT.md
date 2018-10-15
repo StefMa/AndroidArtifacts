@@ -8,7 +8,7 @@ the "core" plugins which do the actually "work".
 They are set up the `publishing {}` block for the current project.
 
 The `guru.stefma.artifacts` plugin is an "umbrella" plugin which will
-only apply the current "worker plugin" - based on the current environment.
+only apply the correct "worker plugin" - based on the current environment.
 
 Anyway. Both worker plugins share the same API. 
 The [`ArtifactsExtension`](src/main/kotlin/guru/stefma/androidartifacts/ArtifactsExtension.kt).
@@ -26,7 +26,7 @@ The following tasks are available for a default Android library with a `release`
 * androidArtifactReleaseSources
 
 If you library provides more than these two **default** BuildTypes (release & debug) 
-more tasks  with the respective BuildType name will be created.
+more tasks with the respective BuildType name will be created.
 
 When the `kotlin-android` or the `org.jetbrains.kotlin.android` plugin 
 is applied there will be also a `androidArtifactDebugKdoc` and `androidArtifactReleaseKdoc` task.
