@@ -106,7 +106,7 @@ gradlePlugin {
 }
 
 group = "guru.stefma.androidartifacts"
-version = "1.1.1"
+version = "1.2.0"
 // The description will also be used for the `com.github.gradle-guides.site` plugin
 description = "A Gradle Plugin which will easify the process to publish Android and Java artifacts to the local maven"
 configure<PublishExtension> {
