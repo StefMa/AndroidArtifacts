@@ -93,8 +93,8 @@ androidArtifact { // 3
 * **//1:** The Kotlin plugin is optional for this plugin of course. But if you add it, the plugin will generate a KDoc.
 * **//2:** The `guru.stefma.artifacts` plugin should always be added **after** the `com.android.library`  
 and the `org.jetbrains.kotlin.android` plugin.
-* **//4:** The extension is either named `androidArtifact` **or** `javaArtifact`. Depending on the environment.
-* **//3:** Add a license to the POM file. Will only be added with **Gradle 4.8** and up.
+* **//3:** The extension is either named `androidArtifact` **or** `javaArtifact`. Depending on the environment.
+* **//4:** Add a license to the POM file. Will only be added with **Gradle 4.8** and up.
 
 ## Tasks
 The plugin will automatically create some tasks based on your (Android BuildType/Flavors) setup for you. 
