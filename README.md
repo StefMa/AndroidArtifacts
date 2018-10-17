@@ -57,7 +57,7 @@ buildscript {
         maven { url "https://jitpack.io" }
     }
     dependencies {
-        classpath "com.github.stefma.androidartifacts:androidartifacts:master-SNAPSHOT"
+        classpath "com.github.stefma:androidartifacts:master-SNAPSHOT"
     }
 }
 ```    
