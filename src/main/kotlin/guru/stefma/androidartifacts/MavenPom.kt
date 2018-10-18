@@ -70,7 +70,7 @@ private fun MavenPom.addDependenciesForConfiguration(configuration: Configuratio
 private fun Node.addDependency(dependency: Dependency, scope: String) {
     if (dependency.group == null
             || dependency.version == null
-            || dependency.name == "undefined") {
+            || dependency.name == "unspecified") {
         logger.info("One of your dependency has either: 'no group', 'no version' or 'no artifactId'\n" +
                 "We ignore it!"
         )
