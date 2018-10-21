@@ -72,15 +72,15 @@ class AndroidArtifactsPlugin : Plugin<Project> {
 
             it.setupMetadata(this, extension)
 
-            it.pom {
-                it.packaging = "aar"
-                it.addConfigurations(configurations)
+            it.pom { pom ->
+                pom.packaging = "aar"
+                pom.addConfigurations(configurations)
 
                 // Add the license if available and Gradle version
                 // is better than 4.7
                 if (GradleVersionComparator(gradle.gradleVersion).betterThan("4.7")) {
                     extension.licenseSpec?.apply {
-                        it.licenses {
+                        pom.licenses {
                             it.license {
                                 it.name.set(name)
                                 it.url.set(url)
@@ -90,6 +90,10 @@ class AndroidArtifactsPlugin : Plugin<Project> {
                         }
                     }
                 }
+
+                pom.url.set(extension.url)
+                pom.description.set(extension.description)
+                pom.name.set(extension.name)
             }
         }
     }

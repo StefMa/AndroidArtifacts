@@ -88,12 +88,12 @@ class JavaArtifactsPlugin : Plugin<Project> {
 
             it.setupMetadata(project, extension)
 
-            // Add the license if available and Gradle version
-            // is better than 4.7
-            if (GradleVersionComparator(project.gradle.gradleVersion).betterThan("4.7")) {
-                extension.licenseSpec?.apply {
-                    it.pom {
-                        it.licenses {
+            it.pom { pom ->
+                // Add the license if available and Gradle version
+                // is better than 4.7
+                if (GradleVersionComparator(project.gradle.gradleVersion).betterThan("4.7")) {
+                    extension.licenseSpec?.apply {
+                        pom.licenses {
                             it.license {
                                 it.name.set(name)
                                 it.url.set(url)
@@ -103,7 +103,13 @@ class JavaArtifactsPlugin : Plugin<Project> {
                         }
                     }
                 }
+
+
+                pom.url.set(extension.url)
+                pom.description.set(extension.description)
+                pom.name.set(extension.name)
             }
+
         }
     }
 

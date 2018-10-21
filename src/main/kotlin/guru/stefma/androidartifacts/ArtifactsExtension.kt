@@ -37,6 +37,32 @@ open class ArtifactsExtension {
         licenseSpec = LicenseSpec()
         action.execute(licenseSpec!!)
     }
+
+    /**
+     * The human readable name of this artifact.
+     *
+     * This might differ from the [artifactId]. Example:
+     * - name: Material Components for Android
+     * - artifactId: (com.android.support:design)
+     */
+    var name: String? = null
+
+    /**
+     * The url of the project.
+     *
+     * This is a nice to have property and a nice gesture for projects users
+     * that they know where the project lives.
+     */
+    var url: String? = null
+
+    /**
+     * A short description about this artifact
+     *
+     * What is it good for, how does it differ from other artifacts in the same group? Example
+     * - artifactId: org.reactivestreams:reactive-streams
+     * - description: A Protocol for Asynchronous Non-Blocking Data Sequence
+     */
+    var description: String? = null
 }
 
 class LicenseSpec {
