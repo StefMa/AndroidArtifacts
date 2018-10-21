@@ -1,6 +1,7 @@
 package guru.stefma.androidartifacts
 
 import org.gradle.api.Action
+import org.gradle.api.publish.maven.MavenPom
 
 open class ArtifactsExtension {
 
@@ -25,47 +26,39 @@ open class ArtifactsExtension {
      */
     var javadoc: Boolean = true
 
-    internal var licenseSpec: LicenseSpec? = null
+    internal var customPomConfiguration: (Action<MavenPom>)? = null
 
     /**
-     * Set a license to the POM file.
+     * Add additional field to the pom by using the [MavenPom] API
      *
-     * Default is null. Means there will be no <license>-Tag
-     * inside the POM.
+     * ```
+     * javaArtifact {
+     *    artifactId = '$artifactId'
+     *    pom {
+     *        name = "Awesome library"
+     *        description = "Make your project great again"
+     *        url = 'https://github.com/$user/$projectname'
+     *        licenses {
+     *            license {
+     *                name = 'The Apache License, Version 2.0'
+     *                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+     *            }
+     *        }
+     *
+     *        developers {
+     *            developer {
+     *                id = '$user'
+     *                name = '$fullname'
+     *                email = 'dev@eloper.com'
+     *                url = 'https://github.com/$user'
+     *            }
+     *        }
+     *     }
+     * }
+     * ```
      */
-    fun license(action: Action<LicenseSpec>) {
-        licenseSpec = LicenseSpec()
-        action.execute(licenseSpec!!)
+    fun pom(block: Action<MavenPom>) {
+        customPomConfiguration = block
     }
-}
 
-class LicenseSpec {
-
-    /**
-     * The name of the license.
-     */
-    var name: String? = null
-
-    /**
-     * The url of the license.
-     */
-    var url: String? = null
-
-    /**
-     * The distribution type where your artifact
-     * will be mainly consumed.
-     *
-     * E.g. "repo" or "manually".
-     * See also [https://maven.apache.org/pom.html#Licenses][https://maven.apache.org/pom.html#Licenses]
-     */
-    var distribution: String? = null
-
-    /**
-     * Some comments about why you have choosen this
-     * license.
-     *
-     * E.g.
-     * > A business-friendly OSS license
-     */
-    var comments: String? = null
 }
