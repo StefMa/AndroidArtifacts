@@ -100,14 +100,17 @@ open class ArtifactsExtension {
 }
 
 class LicenseSpec {
+
     /**
      * The name of the license.
      */
     var name: String? = null
+
     /**
      * The url of the license.
      */
     var url: String? = null
+
     /**
      * The distribution type where your artifact
      * will be mainly consumed.
@@ -116,6 +119,7 @@ class LicenseSpec {
      * See also [https://maven.apache.org/pom.html#Licenses][https://maven.apache.org/pom.html#Licenses]
      */
     var distribution: String? = null
+
     /**
      * Some comments about why you have choosen this
      * license.
@@ -124,5 +128,4 @@ class LicenseSpec {
      * > A business-friendly OSS license
      */
     var comments: String? = null
-
 }

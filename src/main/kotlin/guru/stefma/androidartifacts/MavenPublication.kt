@@ -97,20 +97,32 @@ internal fun MavenPublication.setupMetadata(
     artifactId = extension.artifactId
     groupId = project.group as String
 
-    pom.name.set(extension.name ?: project.name)
-    pom.description.set(extension.description ?: project.description)
-    pom.url.set(extension.url)
+    if (GradleVersionComparator(project.gradle.gradleVersion).betterThan("4.7")) {
+        pom.name.set(extension.name ?: project.name)
+        pom.description.set(extension.description ?: project.description)
+        pom.url.set(extension.url)
 
-    // Add deprecated license property if available
-    extension.licenseSpec?.let { license ->
-        pom.licenses {
-            it.license {
-                it.name.set(license.name)
-                it.url.set(license.url)
-                it.comments.set(license.comments)
-                it.distribution.set(license.distribution)
+        // Add deprecated license property if available
+        extension.licenseSpec?.let { license ->
+            pom.licenses {
+                it.license {
+                    it.name.set(license.name)
+                    it.url.set(license.url)
+                    it.comments.set(license.comments)
+                    it.distribution.set(license.distribution)
+                }
             }
         }
+    } else {
+        // TODO add meta information using `pom.withXml {  }`
+        if (extension.name != null) logger.warn(
+                "property 'name' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
+        if (extension.description != null) logger.warn(
+                "property 'description' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
+        if (extension.url != null) logger.warn(
+                "property 'url' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
+        if (extension.licenseSpec != null) logger.warn(
+                "property 'license' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
     }
 }
 
