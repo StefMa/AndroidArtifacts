@@ -13,12 +13,12 @@ configure<guru.stefma.androidartifacts.ArtifactsExtension> {
     name = "AndroidArtifacts Android example"
     description = "Sample implementation generating aar artifacts and sources from an android library project"
     url = "https://github.com/StefMa/AndroidArtifacts"
-    license {
+    license(Action{
         name = "Apache License, Version 2.0"
         url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
         distribution = "repo"
         comments = "A business-friendly OSS license"
-    }
+    })
 }
 
 configure<LibraryExtension> {
