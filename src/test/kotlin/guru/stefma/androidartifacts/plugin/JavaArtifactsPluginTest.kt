@@ -382,4 +382,48 @@ class JavaArtifactsPluginTest {
         assertThat(buildResult.output).contains("androidArtifactJavaKdoc")
     }
 
+    @Test
+    fun `test pom closure allows setting of custom pom properties`(
+            @TempDir tempDir: File,
+            @JavaBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        javaArtifact {
+                            artifactId = "androidartifacts"
+                            name = "Android Artifacts"
+                            description = "Example description"
+                            url = "https://github.com/StefMa/AndroidArtifacts"
+
+                            pom {
+                                name = "Overridden name"
+                                withXml {
+                                    asNode().appendNode('customProperty', 'custom value')
+                                }
+                            }
+                        }
+                """
+        )
+
+        GradleRunner.create()
+                .default(tempDir)
+                .withArguments("generatePomFileForMavenPublication")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
+        pomFile.assertContainsDescription()
+        pomFile.assertContainsUrl()
+        pomFile.assertDoesNotContainName()
+        pomFile.assertContainsOverriddenName()
+        pomFile.assertContainsCustomProperty()
+
+    }
+
+    private fun File.assertContainsOverriddenName() =
+            assertThat(readText()).contains("<name>Overridden name</name>")
+
+    private fun File.assertContainsCustomProperty() =
+            assertThat(readText()).contains("<customProperty>custom value</customProperty>")
 }
