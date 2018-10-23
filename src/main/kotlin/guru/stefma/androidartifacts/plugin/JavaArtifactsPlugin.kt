@@ -75,6 +75,7 @@ class JavaArtifactsPlugin : Plugin<Project> {
     ) {
         publicationNames.publicationNames += publicationName
         project.publishingExtension.publications.create(publicationName, MavenPublication::class.java) {
+            // Adds jar artifacts and and configures dependencies in pom
             it.from(project.components.getByName("java"))
             // Publish sources only if set to true
             if (extension.sources) it.addJavaSourcesArtifact(project)
@@ -88,6 +89,7 @@ class JavaArtifactsPlugin : Plugin<Project> {
 
             it.setupMetadata(project, extension)
 
+            // Apply custom pom configuration, allowing to override everything
             extension.customPomConfiguration?.execute(it.pom)
         }
     }

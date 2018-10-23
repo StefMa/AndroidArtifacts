@@ -26,6 +26,43 @@ open class ArtifactsExtension {
      */
     var javadoc: Boolean = true
 
+    /**
+     * The human readable name of this artifact.
+     *
+     * This might differ from the [artifactId]. Example:
+     * - name: Material Components for Android
+     * - artifactId: (com.android.support:design)
+     */
+    var name: String? = null
+    /**
+     * The url of the project.
+     *
+     * This is a nice to have property and a nice gesture for projects users
+     * that they know where the project lives.
+     */
+    var url: String? = null
+    /**
+     * A short description about this artifact
+     *
+     * What is it good for, how does it differ from other artifacts in the same group? Example
+     * - artifactId: org.reactivestreams:reactive-streams
+     * - description: A Protocol for Asynchronous Non-Blocking Data Sequence
+     */
+    var description: String? = null
+
+    internal var licenseSpec: LicenseSpec? = null
+
+    /**
+     * Set a license to the POM file.
+     *
+     * Default is null. Means there will be no <license>-Tag
+     * inside the POM.
+     */
+    fun license(action: Action<LicenseSpec>) {
+        licenseSpec = LicenseSpec()
+        action.execute(licenseSpec!!)
+    }
+
     internal var customPomConfiguration: (Action<MavenPom>)? = null
 
     /**
@@ -57,8 +94,35 @@ open class ArtifactsExtension {
      * }
      * ```
      */
-    fun pom(block: Action<MavenPom>) {
-        customPomConfiguration = block
+    fun pom(action: Action<MavenPom>) {
+        customPomConfiguration = action
     }
+}
+
+class LicenseSpec {
+    /**
+     * The name of the license.
+     */
+    var name: String? = null
+    /**
+     * The url of the license.
+     */
+    var url: String? = null
+    /**
+     * The distribution type where your artifact
+     * will be mainly consumed.
+     *
+     * E.g. "repo" or "manually".
+     * See also [https://maven.apache.org/pom.html#Licenses][https://maven.apache.org/pom.html#Licenses]
+     */
+    var distribution: String? = null
+    /**
+     * Some comments about why you have choosen this
+     * license.
+     *
+     * E.g.
+     * > A business-friendly OSS license
+     */
+    var comments: String? = null
 
 }

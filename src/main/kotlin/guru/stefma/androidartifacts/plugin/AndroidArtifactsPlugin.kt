@@ -68,8 +68,15 @@ class AndroidArtifactsPlugin : Plugin<Project> {
                 if (hasKotlinAndroidPluginApplied) it.addAndroidDokkaArtifact(this, variant)
             }
 
+            // Android artifacts are always aar
+            it.pom.packaging = "aar"
+
             it.setupMetadata(this, extension)
 
+            // add dependencies
+            it.pom.addConfigurations(configurations)
+
+            // Apply custom pom configuration, allowing to override everything
             extension.customPomConfiguration?.execute(it.pom)
         }
     }
