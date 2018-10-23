@@ -110,6 +110,9 @@ class JavaArtifactsPluginTest {
                         version = "1.0"
                         javaArtifact {
                             artifactId = "androidartifacts"
+                            name = "Android Artifacts"
+                            description = "Example description"
+                            url = "https://github.com/StefMa/AndroidArtifacts"
                             license {
                                 name = "Apache License, Version 2.0"
                                 url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
@@ -127,6 +130,9 @@ class JavaArtifactsPluginTest {
 
         val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
         pomFile.assertContainsLicenses()
+        pomFile.assertContainsName()
+        pomFile.assertContainsDescription()
+        pomFile.assertContainsUrl()
     }
 
     private fun File.assertContainsLicenses() =
@@ -141,6 +147,15 @@ class JavaArtifactsPluginTest {
   </licenses>"""
             )
 
+    private fun File.assertContainsName() =
+            assertThat(readText()).contains("<name>Android Artifacts</name>")
+
+    private fun File.assertContainsDescription() =
+            assertThat(readText()).contains("<description>Example description</description>")
+
+    private fun File.assertContainsUrl() =
+            assertThat(readText()).contains("<url>https://github.com/StefMa/AndroidArtifacts</url>")
+
     @Test
     fun `test apply with license should ignore license in pom for Gradle version 4dot7 (and below)`(
             @TempDir tempDir: File,
@@ -152,6 +167,9 @@ class JavaArtifactsPluginTest {
                         version = "1.0"
                         javaArtifact {
                             artifactId = "androidartifacts"
+                            name = "Android Artifacts"
+                            description = "Example description"
+                            url = "https://github.com/StefMa/AndroidArtifacts"
                             license {
                                 name = "Apache License, Version 2.0"
                                 url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
@@ -169,15 +187,27 @@ class JavaArtifactsPluginTest {
 
         val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
         pomFile.assertDoesNotContainLicenses()
+        pomFile.assertDoesNotContainName()
+        pomFile.assertDoesNotContainDescription()
+        pomFile.assertDoesNotContainUrl()
     }
 
     private fun File.assertDoesNotContainLicenses() =
             assertThat(readText()).doesNotContain(
                     "<name>Apache License, Version 2.0</name>",
-                    " <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>",
+                    "<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>",
                     "<distribution>repo</distribution>",
                     "<comments>A business-friendly OSS license</comments>"
             )
+
+    private fun File.assertDoesNotContainName() =
+            assertThat(readText()).doesNotContain("<name>Android Artifacts</name>")
+
+    private fun File.assertDoesNotContainDescription() =
+            assertThat(readText()).doesNotContain("<description>Example description</description>")
+
+    private fun File.assertDoesNotContainUrl() =
+            assertThat(readText()).doesNotContain("<url>https://github.com/StefMa/AndroidArtifacts</url>")
 
     @Test
     fun `test apply should generate pom for project correctly`(
