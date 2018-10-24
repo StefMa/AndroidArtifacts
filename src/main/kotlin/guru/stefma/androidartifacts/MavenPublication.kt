@@ -102,7 +102,6 @@ internal fun MavenPublication.setupMetadata(
         pom.description.set(extension.description ?: project.description)
         pom.url.set(extension.url)
 
-        // Add deprecated license property if available
         extension.licenseSpec?.let { license ->
             pom.licenses {
                 it.license {
