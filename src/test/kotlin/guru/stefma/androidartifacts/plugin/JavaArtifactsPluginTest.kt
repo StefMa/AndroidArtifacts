@@ -426,4 +426,117 @@ class JavaArtifactsPluginTest {
 
     private fun File.assertContainsCustomProperty() =
             assertThat(readText()).contains("<customProperty>custom value</customProperty>")
+
+
+    @Test
+    fun `test license closure works with pom closure`(
+            @TempDir tempDir: File,
+            @JavaBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "net.grandcentrix.thirtyinch"
+                        version = "1.0"
+                        javaArtifact {
+                            artifactId = "thirtyinch"
+                            name = "ThirtyInch"
+                            license {
+                                name = "Apache License, Version 2.0"
+                                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                            }
+
+                            pom {
+                                organization {
+                                   name = "grandcentrix GmbH"
+                                   url = "https://grandcentrix.net/"
+                                }
+                            }
+                        }
+                """
+        )
+
+        GradleRunner.create()
+                .default(tempDir)
+                .withArguments("generatePomFileForMavenPublication")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
+        val pomText = pomFile.readText()
+        assertThat(pomText).contains(
+                "<artifactId>thirtyinch</artifactId>",
+                "<name>ThirtyInch</name>"
+        )
+
+
+        val licenseNodes = pomText.nodesByName("license")
+        assertThat(licenseNodes).hasSize(1)
+        assertThat(licenseNodes.first()).contains(
+                "<name>Apache License, Version 2.0</name>",
+                "<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>"
+        )
+
+        val orgNodes = pomText.nodesByName("organization")
+        assertThat(orgNodes).hasSize(1)
+        assertThat(orgNodes.first()).contains(
+                "<name>grandcentrix GmbH</name>",
+                "<url>https://grandcentrix.net/</url>"
+        )
+    }
+
+    private fun String.nodesByName(name: String): List<String> =
+            "<$name>[\\s\\S]*?<\\/$name>".toRegex().findAll(this).toList().map { it.value }
+
+
+    @Test
+    fun `test pom license closure adds a not and doesn't override license closure`(
+            @TempDir tempDir: File,
+            @JavaBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "net.grandcentrix.thirtyinch"
+                        version = "1.0"
+                        javaArtifact {
+                            artifactId = "thirtyinch"
+                            name = "ThirtyInch"
+                            license {
+                                name = "Apache License, Version 2.0"
+                                url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
+                            }
+
+                            pom {
+                                licenses {
+                                    license {
+                                        name = "The MIT License"
+                                        url = "http://opensource.org/licenses/MIT"
+                                    }
+                                }
+                            }
+                        }
+                """
+        )
+
+        GradleRunner.create()
+                .default(tempDir)
+                .withArguments("generatePomFileForMavenPublication")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
+        val pomText = pomFile.readText()
+        assertThat(pomText).contains(
+                "<artifactId>thirtyinch</artifactId>",
+                "<name>ThirtyInch</name>"
+        )
+
+        val licenseNodes = pomText.nodesByName("license")
+        assertThat(licenseNodes).hasSize(2)
+        assertThat(licenseNodes.joinToString()).contains(
+                "<name>Apache License, Version 2.0</name>",
+                "<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>",
+
+                "<name>The MIT License</name>",
+                "<url>http://opensource.org/licenses/MIT</url>"
+        )
+
+    }
 }
