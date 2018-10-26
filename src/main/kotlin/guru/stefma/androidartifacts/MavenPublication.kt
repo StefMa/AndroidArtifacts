@@ -85,11 +85,9 @@ internal fun MavenPublication.addJavaDokkaArtifact(project: Project) {
 }
 
 /**
- * Setup the "metadata" for this [MavenPublication].
- *
- * Currently it will setup the [MavenPublication.setVersion], [MavenPublication.setArtifactId] and
- * the [MavenPublication.setGroupId] based on the [ArtifactsExtension.artifactId], [Project.getVersion] and
- * [Project.getGroup]
+ * Setup the "metadata" for this [MavenPublication]. Combines existing information from the [project] (like
+ * [Project.getVersion] and [Project.getGroup]) with information defined in [extension]. All the information is used to
+ * generate the pom file
  */
 internal fun MavenPublication.setupMetadata(
         project: Project,
@@ -98,6 +96,33 @@ internal fun MavenPublication.setupMetadata(
     version = project.version as String
     artifactId = extension.artifactId
     groupId = project.group as String
+
+    if (GradleVersionComparator(project.gradle.gradleVersion).betterThan("4.7")) {
+        pom.name.set(extension.name ?: project.name)
+        pom.description.set(extension.description ?: project.description)
+        pom.url.set(extension.url)
+
+        // TODO: Remove we in 2.0.0
+        // license is deprecated
+        extension.licenseSpec?.let { license ->
+            pom.licenses {
+                it.license {
+                    it.name.set(license.name)
+                    it.url.set(license.url)
+                    it.comments.set(license.comments)
+                    it.distribution.set(license.distribution)
+                }
+            }
+        }
+    } else {
+        // TODO add meta information using `pom.withXml {  }`
+        if (extension.name != null) logger.warn(
+                "property 'name' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
+        if (extension.description != null) logger.warn(
+                "property 'description' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
+        if (extension.url != null) logger.warn(
+                "property 'url' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
+    }
 }
 
 /**

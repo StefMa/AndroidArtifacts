@@ -1,6 +1,8 @@
 package guru.stefma.androidartifacts
 
+import org.gradle.api.Project
 import org.gradle.api.Action
+import org.gradle.api.publish.maven.MavenPom
 
 open class ArtifactsExtension {
 
@@ -25,6 +27,40 @@ open class ArtifactsExtension {
      */
     var javadoc: Boolean = true
 
+    /**
+     * The human readable name of this artifact.
+     *
+     * This might differ from the [artifactId].
+     * ### Example:
+     * * name: Material Components for Android
+     * * artifactId: (com.android.support:design)
+     *
+     * Default is [Project.getName].
+     */
+    var name: String? = null
+
+    /**
+     * The url of the project.
+     *
+     * This is a nice to have property and a nice gesture for projects users
+     * that they know where the project lives.
+     *
+     * Default is `null`.
+     */
+    var url: String? = null
+
+    /**
+     * A short description about this artifact
+     *
+     * What is it good for, how does it differ from other artifacts in the same group?
+     * ### Example:
+     * * artifactId: org.reactivestreams:reactive-streams
+     * * description: A Protocol for Asynchronous Non-Blocking Data Sequence
+     *
+     * Default is [Project.getDescription].
+     */
+    var description: String? = null
+
     internal var licenseSpec: LicenseSpec? = null
 
     /**
@@ -33,9 +69,45 @@ open class ArtifactsExtension {
      * Default is null. Means there will be no <license>-Tag
      * inside the POM.
      */
+    @Deprecated(message = "Use pom(Action<MavenPom)")
     fun license(action: Action<LicenseSpec>) {
         licenseSpec = LicenseSpec()
         action.execute(licenseSpec!!)
+    }
+
+    internal var customPomConfiguration: (Action<MavenPom>)? = null
+
+    /**
+     * Add additional field to the pom by using the [MavenPom] API
+     *
+     * ```
+     * javaArtifact {
+     *    artifactId = '$artifactId'
+     *    pom {
+     *        name = "Awesome library"
+     *        description = "Make your project great again"
+     *        url = 'https://github.com/$user/$projectname'
+     *        licenses {
+     *            license {
+     *                name = 'The Apache License, Version 2.0'
+     *                url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+     *            }
+     *        }
+     *
+     *        developers {
+     *            developer {
+     *                id = '$user'
+     *                name = '$fullname'
+     *                email = 'dev@eloper.com'
+     *                url = 'https://github.com/$user'
+     *            }
+     *        }
+     *     }
+     * }
+     * ```
+     */
+    fun pom(action: Action<MavenPom>) {
+        customPomConfiguration = action
     }
 }
 

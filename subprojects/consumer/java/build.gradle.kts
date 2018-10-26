@@ -7,12 +7,15 @@ version = "0.0.1"
 group = "guru.stefma.androidartifacts.consumer"
 configure<guru.stefma.androidartifacts.ArtifactsExtension> {
     artifactId = "java"
-    license {
+    name = "AndroidArtifacts Java example"
+    description = "Sample implementation generating artifacts for pure java projects"
+    url = "https://github.com/StefMa/AndroidArtifacts"
+    license(Action{
         name = "Apache License, Version 2.0"
         url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
         distribution = "repo"
         comments = "A business-friendly OSS license"
-    }
+    })
 }
 
 repositories {

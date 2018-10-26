@@ -82,11 +82,8 @@ version = "1.0.0"
 group = "guru.stefma.androidartifacts"
 androidArtifact { // 3
     artifactId = 'androidartifacts'
-    license { // 4
-        name = "Apache License, Version 2.0"
-        url = "https://www.apache.org/licenses/LICENSE-2.0.txt"
-        distribution = "repo"
-        comments = "A business-friendly OSS license"
+    pom { // 4
+        
     }
 }
 ```
@@ -94,7 +91,7 @@ androidArtifact { // 3
 * **//2:** The `guru.stefma.artifacts` plugin should always be added **after** the `com.android.library`  
 and the `org.jetbrains.kotlin.android` plugin.
 * **//3:** The extension is either named `androidArtifact` **or** `javaArtifact`. Depending on the environment.
-* **//4:** Add a license to the POM file. Will only be added with **Gradle 4.8** and up.
+* **//4:** Customize the POM file directly. See also [this doc](https://docs.gradle.org/current/dsl/org.gradle.api.publish.maven.MavenPom.html) for more.
 
 ## Tasks
 The plugin will automatically create some tasks based on your (Android BuildType/Flavors) setup for you. 

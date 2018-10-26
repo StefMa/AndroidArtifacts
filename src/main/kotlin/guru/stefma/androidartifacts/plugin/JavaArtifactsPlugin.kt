@@ -75,6 +75,7 @@ class JavaArtifactsPlugin : Plugin<Project> {
     ) {
         publicationNames.publicationNames += publicationName
         project.publishingExtension.publications.create(publicationName, MavenPublication::class.java) {
+            // Adds jar artifacts and and configures dependencies in pom
             it.from(project.components.getByName("java"))
             // Publish sources only if set to true
             if (extension.sources) it.addJavaSourcesArtifact(project)
@@ -88,22 +89,8 @@ class JavaArtifactsPlugin : Plugin<Project> {
 
             it.setupMetadata(project, extension)
 
-            // Add the license if available and Gradle version
-            // is better than 4.7
-            if (GradleVersionComparator(project.gradle.gradleVersion).betterThan("4.7")) {
-                extension.licenseSpec?.apply {
-                    it.pom {
-                        it.licenses {
-                            it.license {
-                                it.name.set(name)
-                                it.url.set(url)
-                                it.comments.set(comments)
-                                it.distribution.set(distribution)
-                            }
-                        }
-                    }
-                }
-            }
+            // Apply custom pom configuration, allowing to override everything
+            extension.customPomConfiguration?.execute(it.pom)
         }
     }
 
