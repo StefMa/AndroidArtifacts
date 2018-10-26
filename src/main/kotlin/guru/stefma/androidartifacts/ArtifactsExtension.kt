@@ -69,6 +69,7 @@ open class ArtifactsExtension {
      * Default is null. Means there will be no <license>-Tag
      * inside the POM.
      */
+    @Deprecated(message = "Use pom(Action<MavenPom)")
     fun license(action: Action<LicenseSpec>) {
         licenseSpec = LicenseSpec()
         action.execute(licenseSpec!!)

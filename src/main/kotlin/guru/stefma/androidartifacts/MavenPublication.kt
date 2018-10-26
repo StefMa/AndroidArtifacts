@@ -102,6 +102,8 @@ internal fun MavenPublication.setupMetadata(
         pom.description.set(extension.description ?: project.description)
         pom.url.set(extension.url)
 
+        // TODO: Remove we in 2.0.0
+        // license is deprecated
         extension.licenseSpec?.let { license ->
             pom.licenses {
                 it.license {
@@ -120,8 +122,6 @@ internal fun MavenPublication.setupMetadata(
                 "property 'description' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
         if (extension.url != null) logger.warn(
                 "property 'url' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
-        if (extension.licenseSpec != null) logger.warn(
-                "property 'license' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
     }
 }
 
