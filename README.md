@@ -29,10 +29,9 @@ or the `guru.stefma.javaartifacts` plugin.
 
 For more information checkout the [development documentation](DEVELOPMENT.md).
 
-## How to apply
-To apply the plugin you have to setup your build scripts in the following way:
-
-1. Put these lines into your **project** `build.gradle`
+## How to use
+### Add to your project
+To add the plugin you have to add the following dependency to your **project** `build.gradle` first:
 ```groovy
 buildscript {
     repositories {
@@ -72,26 +71,50 @@ This will force Gradle to update all dependencies **and plugins**.
 </details>
 <br>
 
-2. Then you can apply the plugin to your **module** `build.gradle`:
+### Apply the plugin
+Then you are able to apply the plugin in each of your **module** `build.gradle` files:
 ```groovy
-apply plugin: "com.android.library"
-apply plugin: "org.jetbrains.kotlin.android" //1
-apply plugin: "guru.stefma.artifacts" //2
+// Add depending plugins. See in the configuration section 👇 for more
+apply plugin: "guru.stefma.artifacts"
 
 version = "1.0.0"
 group = "guru.stefma.androidartifacts"
-androidArtifact { // 3
+androidArtifact {
     artifactId = 'androidartifacts'
-    pom { // 4
-        
-    }
 }
 ```
-* **//1:** The Kotlin plugin is optional for this plugin of course. But if you add it, the plugin will generate a KDoc.
-* **//2:** The `guru.stefma.artifacts` plugin should always be added **after** the `com.android.library`  
-and the `org.jetbrains.kotlin.android` plugin.
-* **//3:** The extension is either named `androidArtifact` **or** `javaArtifact`. Depending on the environment.
-* **//4:** Customize the POM file directly. See also [this doc](https://docs.gradle.org/current/dsl/org.gradle.api.publish.maven.MavenPom.html) for more.
+
+### Configuration
+#### Depending plugins
+The `guru.stema.artifacts` plugin needs at least one of the following depending plugins to do their work. 
+Otherwise the plugin does nothing:
+* `com.android.library`
+* `java-library`
+* `kotlin`
+* `org.jetbrains.kotlin.jvm`
+
+Please note that the plugin should be always added **after** the depending plugins.
+This limitation might change in the future.
+
+#### Extension name
+The name of the extension (`androidArtifact` in the sample above) depends on the **depending plugin**.
+When the `com.android.library` plugin is added it is named `androidArtifact`. 
+On pure Java or Kotlin projects it will be named `javaArtifact`.
+
+#### Properties
+The following properties are available in the extension:
+
+| Name   |      Mandatory      |  Description |
+|----------|---------------|------|
+| artifactId | ✅ | The artifactId. This is the string after the first colon in a dependency. |
+| sources | ❌ | Set to true will generate a *-sources.jar. Fallback is `true`. | 
+| javadoc | ❌ | Set to true will generate a *-javadoc.jar. In Kotlin projects it will also generate a *-kdoc.jar. Fallback is `true`. | 
+| name | ❌ | The name of your project. Fallback is [`Project.name`](https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html#getName--). |
+| url | ❌ | An URL to your project. Probably something like `https://github.com/$username/$project` |
+| description | ❌ | A description about your project. Fallback is [`Project.description`](https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html#getDescription--). |
+| pom | ❌ | Call this **method** to customize the generated POM file. See also [this doc](https://docs.gradle.org/current/dsl/org.gradle.api.publish.maven.MavenPom.html).
+
+> **Note:** The top-level name, url and description will also be added to the POM file! 
 
 ## Tasks
 The plugin will automatically create some tasks based on your (Android BuildType/Flavors) setup for you. 
