@@ -114,6 +114,8 @@ The following properties are available in the extension:
 | description | ❌ | A description about your project. Fallback is [`Project.description`](https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html#getDescription--). |
 | pom | ❌ | Call this **method** to customize the generated POM file. See also [this doc](https://docs.gradle.org/current/dsl/org.gradle.api.publish.maven.MavenPom.html).
 
+> **Note:** The top-level name, url and description will also be added to the POM file! 
+
 ## Tasks
 The plugin will automatically create some tasks based on your (Android BuildType/Flavors) setup for you. 
 Just run `./gradlew tasks` to see a list of them. 
