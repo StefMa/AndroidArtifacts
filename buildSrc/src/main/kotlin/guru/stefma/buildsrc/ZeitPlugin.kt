@@ -21,7 +21,7 @@ class ZeitPlugin : Plugin<Project> {
 
             it.doLast {
                 project.exec {
-                    it.workingDir("${project.buildDir}/now")
+                    it.workingDir("${project.rootProject.buildDir}/now")
                     val token = project.findProperty("nowToken")
                     if (token != null) {
                         it.commandLine("now", "--public", "--token", token)
@@ -38,7 +38,7 @@ class ZeitPlugin : Plugin<Project> {
 
             it.doLast {
                 project.exec {
-                    it.workingDir("${project.buildDir}/now")
+                    it.workingDir("${project.rootProject.buildDir}/now")
                     val token = project.findProperty("nowToken")
                     if (token != null) {
                         it.commandLine("now", "alias", "--token", token)
