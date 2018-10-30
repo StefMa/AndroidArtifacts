@@ -1,8 +1,10 @@
+import java.net.URL
 import guru.stefma.bintrayrelease.PublishExtension
 import guru.stefma.buildsrc.CreateNowDockerfile
 import guru.stefma.buildsrc.CreateNowEntrypointIndexHtml
 import guru.stefma.buildsrc.CreateNowJson
 import guru.stefma.buildsrc.MoveDokkaAndGradleSiteToNow
+import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     kotlin("jvm") version "1.2.70"
@@ -53,6 +55,14 @@ tasks.withType(Test::class.java) {
 // This will add the android tools into the "test classpath"
 tasks.withType<PluginUnderTestMetadata> {
     pluginClasspath.from(optionalPlugins)
+}
+
+tasks.withType<DokkaTask> {
+    withGroovyBuilder {
+        "externalDocumentationLink" {
+            "setUrl"(URL("https://docs.gradle.org/${gradle.gradleVersion}/javadoc/"))
+        }
+    }
 }
 
 site {
