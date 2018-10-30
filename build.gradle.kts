@@ -27,20 +27,30 @@ repositories {
     google()
 }
 
+val optionalPlugins by configurations.creating {
+    configurations["compileOnly"].extendsFrom(this)
+}
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("com.android.tools.build:gradle:3.1.4")
     implementation("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
 
+    optionalPlugins("com.android.tools.build:gradle:3.1.4")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
-    testRuntime("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
     testImplementation("org.assertj:assertj-core:3.11.1")
 }
 
 tasks.withType(Test::class.java) {
     useJUnitPlatform()
+}
+
+// This will add the android tools into the "test classpath"
+tasks.withType<PluginUnderTestMetadata> {
+    pluginClasspath.from(optionalPlugins)
 }
 
 site {
