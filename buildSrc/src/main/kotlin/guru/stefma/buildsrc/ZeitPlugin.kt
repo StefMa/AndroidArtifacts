@@ -15,14 +15,12 @@ class ZeitPlugin : Plugin<Project> {
         tasks.register("createNowEntrypoint", CreateNowEntrypointIndexHtml::class.java)
         tasks.register("createNowJson", CreateNowJson::class.java)
 
-        // This task requires a valid now-cli installation...
-        // Alternatively you can put a now token via gradle properties in.
-        tasks.register("publishDocsToNow") {
+        tasks.register("publishDocsToNow", DefaultZeitTask::class.java) {
             it.dependsOn(tasksNamed("moveDocsToNow", "createNowDockerfile", "createNowEntrypoint", "createNowJson"))
             it.executeWithNowCommand(project, "--public")
         }
 
-        tasks.register("createNowAlias") {
+        tasks.register("createNowAlias", DefaultZeitTask::class.java) {
             it.dependsOn(tasksNamed("publishDocsToNow"))
             it.executeWithNowCommand(project, "alias")
         }
@@ -35,14 +33,14 @@ class ZeitPlugin : Plugin<Project> {
  *
  * The given [command] will be chained into the `now` command.
  */
-private fun Task.executeWithNowCommand(project: Project, command: String) = doLast {
+private fun DefaultZeitTask.executeWithNowCommand(project: Project, command: String) = doLast {
     project.exec {
         it.workingDir("${project.rootProject.buildDir}/now")
-        val token = project.findProperty("nowToken")
-        if (token != null) {
-            it.commandLine("now", command, "--token", token)
+        if (zeitToken != null) {
+            // When a token is available run with token...
+            it.commandLine("now", command, "--token", zeitToken)
         } else {
-            // Try to run without token...
+            // ... otherwise try to run without a token
             it.commandLine("now", command)
         }
     }

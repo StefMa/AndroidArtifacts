@@ -2,8 +2,23 @@ package guru.stefma.buildsrc
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.*
+import org.gradle.api.tasks.options.Option
 import java.io.File
 
+/**
+ * This task could be used to attach the Zeit token via the command line.
+ *
+ * Something like
+ * ```
+ * $ gradle zeitTask --zeitToken=1234
+ * ```
+ */
+open class DefaultZeitTask : DefaultTask() {
+
+    @Option(description = "Set the token to the now command")
+    var zeitToken: String? = null
+
+}
 
 /**
  * This task will move the $rootProject/buildDir/dokka and $rootProject/buildDir/docs/site directories
