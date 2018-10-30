@@ -13,16 +13,13 @@ import java.io.File
 open class MoveDokkaAndGradleSiteToNow : DefaultTask() {
 
     @OutputDirectory
-    val nowDirectory = File("${project.rootProject.buildDir}/now/").apply {
-        parentFile.mkdirs()
-        mkdir()
-    }
+    val nowDirectory = File(project.rootProject.buildDir, "now/")
 
     @InputDirectory
-    val dokkaDirectory = File("${project.rootProject.buildDir}/dokka/")
+    val dokkaDirectory = File(project.rootProject.buildDir, "dokka/")
 
     @InputDirectory
-    val gradleSiteDirectory = File("${project.rootProject.buildDir}/docs/site/")
+    val gradleSiteDirectory = File(project.rootProject.buildDir, "docs/site/")
 
     @TaskAction
     fun moveDirectories() {
@@ -45,10 +42,7 @@ open class CreateNowDockerfile : DefaultTask() {
     """.trimIndent()
 
     @OutputFile
-    val dockerFile = File("${project.rootProject.buildDir}/now/Dockerfile").apply {
-        parentFile.mkdirs()
-        createNewFile()
-    }
+    val dockerFile = File(project.rootProject.buildDir, "now/Dockerfile")
 
     @TaskAction
     fun createDockerFile() {
@@ -72,10 +66,7 @@ open class CreateNowEntrypointIndexHtml : DefaultTask() {
     """.trimIndent()
 
     @OutputFile
-    val indexHtmlFile = File("${project.rootProject.buildDir}/now/index.html").apply {
-        parentFile.mkdirs()
-        createNewFile()
-    }
+    val indexHtmlFile = File(project.rootProject.buildDir, "now/index.html")
 
     @TaskAction
     fun createEntrypointIndexHtml() {
@@ -95,10 +86,7 @@ open class CreateNowJson : DefaultTask() {
     """.trimIndent()
 
     @OutputFile
-    val nowJsonFile = File("${project.rootProject.buildDir}/now/now.json").apply {
-        parentFile.mkdirs()
-        createNewFile()
-    }
+    val nowJsonFile = File(project.rootProject.buildDir, "now/now.json")
 
     @TaskAction
     fun createNowJson() {
