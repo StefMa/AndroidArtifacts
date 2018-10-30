@@ -14,6 +14,8 @@ plugins {
 
     id("java-library")
     id("guru.stefma.bintrayrelease") version "1.0.0" apply false
+
+    id("guru.stefma.androidartifacts.zeit")
 }
 apply(plugin = "guru.stefma.bintrayrelease")
 
@@ -56,51 +58,6 @@ tasks.withType<PluginUnderTestMetadata> {
 site {
     vcsUrl = githubSite
 }
-
-// Section for preparing to publish the docs to now.sh
-tasks.create("moveDocsToNow", MoveDokkaAndGradleSiteToNow::class.java) {
-    dependsOn("dokka", "generateSite")
-}
-tasks.create("createNowDockerfile", CreateNowDockerfile::class.java)
-tasks.create("createNowEntrypoint", CreateNowEntrypointIndexHtml::class.java)
-tasks.create("createNowJson", CreateNowJson::class.java)
-
-// This task requires a valid now-cli installation...
-// Alternatively you can put a now token via gradle properties in.
-tasks.create("publishDocsToNow") {
-    dependsOn("moveDocsToNow", "createNowDockerfile", "createNowEntrypoint", "createNowJson")
-
-    doLast {
-        exec {
-            workingDir("$buildDir/now")
-            val token = findProperty("nowToken")
-            if (token != null) {
-                commandLine("now", "--public", "--token", token)
-            } else {
-                // Try to run without token...
-                commandLine("now", "--public")
-            }
-        }
-    }
-}
-
-tasks.create("createNowAlias") {
-    dependsOn("publishDocsToNow")
-
-    doLast {
-        exec {
-            workingDir("$buildDir/now")
-            val token = findProperty("nowToken")
-            if (token != null) {
-                commandLine("now", "alias", "--token", token)
-            } else {
-                // Try to run without token...
-                commandLine("now", "alias")
-            }
-        }
-    }
-}
-// Section end
 
 gradlePlugin {
     plugins {
