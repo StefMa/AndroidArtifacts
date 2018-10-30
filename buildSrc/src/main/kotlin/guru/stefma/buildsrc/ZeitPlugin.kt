@@ -2,6 +2,7 @@ package guru.stefma.buildsrc
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.tasks.TaskContainer
 
 class ZeitPlugin : Plugin<Project> {
@@ -18,39 +19,33 @@ class ZeitPlugin : Plugin<Project> {
         // Alternatively you can put a now token via gradle properties in.
         tasks.register("publishDocsToNow") {
             it.dependsOn(tasksNamed("moveDocsToNow", "createNowDockerfile", "createNowEntrypoint", "createNowJson"))
-
-            it.doLast {
-                project.exec {
-                    it.workingDir("${project.rootProject.buildDir}/now")
-                    val token = project.findProperty("nowToken")
-                    if (token != null) {
-                        it.commandLine("now", "--public", "--token", token)
-                    } else {
-                        // Try to run without token...
-                        it.commandLine("now", "--public")
-                    }
-                }
-            }
+            it.executeWithNowCommand(project, "--public")
         }
 
         tasks.register("createNowAlias") {
             it.dependsOn(tasksNamed("publishDocsToNow"))
-
-            it.doLast {
-                project.exec {
-                    it.workingDir("${project.rootProject.buildDir}/now")
-                    val token = project.findProperty("nowToken")
-                    if (token != null) {
-                        it.commandLine("now", "alias", "--token", token)
-                    } else {
-                        // Try to run without token...
-                        it.commandLine("now", "alias")
-                    }
-                }
-            }
+            it.executeWithNowCommand(project, "alias")
         }
     }
 
+}
+
+/**
+ * This will call [Project.exec] inside a [Task.doLast] action.
+ *
+ * The given [command] will be chained into the `now` command.
+ */
+private fun Task.executeWithNowCommand(project: Project, command: String) = doLast {
+    project.exec {
+        it.workingDir("${project.rootProject.buildDir}/now")
+        val token = project.findProperty("nowToken")
+        if (token != null) {
+            it.commandLine("now", command, "--token", token)
+        } else {
+            // Try to run without token...
+            it.commandLine("now", command)
+        }
+    }
 }
 
 /**
