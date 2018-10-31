@@ -4,6 +4,7 @@ import groovy.util.Node
 import org.gradle.api.artifacts.Configuration
 import org.gradle.api.artifacts.ConfigurationContainer
 import org.gradle.api.artifacts.Dependency
+import org.gradle.api.artifacts.ModuleDependency
 import org.gradle.api.publish.maven.MavenPom
 
 /**
@@ -84,4 +85,17 @@ private fun Node.addDependency(dependency: Dependency, scope: String) {
         dependencyNode.appendNode("version", version)
     }
     dependencyNode.appendNode("scope", scope)
+
+    dependencyNode.addExclusions(dependency)
+}
+
+private fun Node.addExclusions(dep: Dependency) = (dep as? ModuleDependency)?.let { dependency ->
+    if (dependency.excludeRules.isEmpty()) return@let
+
+    val exclusionsNode = appendNode("exclusions")
+    dependency.excludeRules.forEach {
+        val exclusion = exclusionsNode.appendNode("exclusion")
+        exclusion.appendNode("groupId", it.group ?: "*")
+        exclusion.appendNode("artifactId", it.module ?: "*")
+    }
 }
