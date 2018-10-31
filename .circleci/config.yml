@@ -86,7 +86,7 @@ jobs:
 
     # First install now
     - run: npm install -g now
-    - run: ./gradlew publishDocsToNow -PnowToken=$NOW_TOKEN
+    - run: ./gradlew publishDocsToNow --zeitToken=$NOW_TOKEN
 
   # Same as "publishDocs" but will set an alias afterwards
   "publishDocsWithAlias":
@@ -102,7 +102,7 @@ jobs:
 
     # First install now
     - run: npm install -g now
-    - run: ./gradlew publishDocsToNow createNowAlias -PnowToken=$NOW_TOKEN
+    - run: ./gradlew publishDocsToNow createNowAlias --zeitToken=$NOW_TOKEN
 
 workflows:
   version: 2
