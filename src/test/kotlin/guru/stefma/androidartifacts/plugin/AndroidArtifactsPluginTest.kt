@@ -104,6 +104,76 @@ class AndroidArtifactsPluginTest {
                     "<scope>provided</scope>"
             )
 
+    @Test
+    fun `test exclusion of dependencies`(
+            @TempDir tempDir: File,
+            @AndroidBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        androidArtifact {
+                            artifactId = "androidartifacts"
+                        }
+
+                        dependencies {
+                            implementation("guru.stefma.androidartifacts:androidartifacts:1.0.0") {
+                                exclude group: "org.jetbrains.dokka" // exclude both dokka dependencies
+                                exclude module: "kotlin-stdlib-jdk8" // exclude kotlin jvm
+                            }
+                            api("guru.stefma.artifactorypublish:artifactorypublish:1.0.0") {
+                                exclude group: "org.jfrog.buildinfo", module: "build-info-extractor-gradle"
+                            }
+                        }
+                """
+        )
+
+        GradleRunner.create()
+                .default(tempDir)
+                .withArguments("generatePomFileForReleaseAarPublication")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/releaseAar/pom-default.xml")
+        pomFile.assertContainsAndroidArtifactsWithExclusionsDependency()
+        pomFile.assertContainsArtifactoryPublishWithExclusionsDependency()
+    }
+
+    private fun File.assertContainsAndroidArtifactsWithExclusionsDependency() =
+            assertThat(readText()).contains(
+                    """    <dependency>
+      <groupId>guru.stefma.artifactorypublish</groupId>
+      <artifactId>artifactorypublish</artifactId>
+      <version>1.0.0</version>
+      <scope>compile</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jfrog.buildinfo</groupId>
+          <artifactId>build-info-extractor-gradle</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>"""
+            )
+
+    private fun File.assertContainsArtifactoryPublishWithExclusionsDependency() =
+            assertThat(readText()).contains(
+                    """    <dependency>
+      <groupId>guru.stefma.androidartifacts</groupId>
+      <artifactId>androidartifacts</artifactId>
+      <version>1.0.0</version>
+      <scope>runtime</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.jetbrains.dokka</groupId>
+          <artifactId>*</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>*</groupId>
+          <artifactId>kotlin-stdlib-jdk8</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>"""
+            )
 
     @Test
     fun `test apply with unknown dependencies should ignore it in pom`(
