@@ -1,20 +1,21 @@
+import java.net.URL
 import guru.stefma.bintrayrelease.PublishExtension
 import guru.stefma.buildsrc.CreateNowDockerfile
 import guru.stefma.buildsrc.CreateNowEntrypointIndexHtml
 import guru.stefma.buildsrc.CreateNowJson
 import guru.stefma.buildsrc.MoveDokkaAndGradleSiteToNow
+import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     kotlin("jvm") version "1.2.70"
 
-    id("org.jetbrains.dokka") version "0.9.17"
-    id("com.github.gradle-guides.site") version "0.1"
     id("com.gradle.plugin-publish") version "0.10.0"
     `java-gradle-plugin`
 
     id("java-library")
     id("guru.stefma.bintrayrelease") version "1.0.0" apply false
 
+    id("guru.stefma.androidartifacts.docs")
     id("guru.stefma.androidartifacts.zeit")
 }
 apply(plugin = "guru.stefma.bintrayrelease")
@@ -23,6 +24,11 @@ group = "guru.stefma.androidartifacts"
 version = "1.2.0"
 description = "A Gradle Plugin which will easify the process to publish Android and Java artifacts to the local maven"
 val githubSite = "https://github.com/StefMa/AndroidArtifacts"
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
 
 repositories {
     jcenter()
@@ -55,8 +61,11 @@ tasks.withType<PluginUnderTestMetadata> {
     pluginClasspath.from(optionalPlugins)
 }
 
-site {
+docs {
     vcsUrl = githubSite
+    externalDocLinks.apply {
+        add("https://docs.gradle.org/${gradle.gradleVersion}/javadoc/")
+    }
 }
 
 gradlePlugin {

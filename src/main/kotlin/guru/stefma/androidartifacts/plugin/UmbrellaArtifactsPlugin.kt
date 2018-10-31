@@ -12,9 +12,9 @@ import org.gradle.api.plugins.PluginManager
  * based on the already applied plugins.
  *
  * It make use of the [PluginManager.withPlugin] to detect if the
- * [**com.android.library**][PluginIds.androidLibrary] plugin (for the **guru.stefma.androidartifacts** plugin)
- * or one of [**java-library**][PluginIds.javaLibrary], [**kotlin**][PluginIds.kotlinJvm] or
- * [**org.jetbrains.kotlin.jvm**][PluginIds.kotlinJvm] is applied.
+ * **com.android.library** plugin (for the **guru.stefma.androidartifacts** plugin)
+ * or one of **java-library**, **kotlin** or
+ * **org.jetbrains.kotlin.jvm** is applied.
  */
 class UmbrellaArtifactsPlugin : Plugin<Project> {
 
