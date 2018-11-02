@@ -115,13 +115,11 @@ internal fun MavenPublication.setupMetadata(
             }
         }
     } else {
-        // TODO add meta information using `pom.withXml {  }`
-        if (extension.name != null) logger.warn(
-                "property 'name' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
-        if (extension.description != null) logger.warn(
-                "property 'description' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
-        if (extension.url != null) logger.warn(
-                "property 'url' of artifact '${extension.artifactId}' is not supported, please upgrade to Gradle 4.8+")
+        pom.withXml {
+            it.asNode().appendNode("name", extension.name ?: project.name)
+            it.asNode().appendNode("description", extension.description ?: project.description)
+            extension.url?.let { url -> it.asNode().appendNode("url", url) }
+        }
     }
 }
 

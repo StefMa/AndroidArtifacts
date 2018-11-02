@@ -205,6 +205,40 @@ class AndroidArtifactsPluginTest {
                 .contains("One of your dependency has either: 'no group', 'no version' or 'no artifactId")
     }
 
+    @ParameterizedTest(
+            name = "test name desc and url in pom with Gradle version {arguments}"
+    )
+    @ValueSource(strings = ["4.7", "4.8"])
+    fun `test name desc and url in pom`(
+            gradleVersion: String,
+            @TempDir tempDir: File,
+            @AndroidBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        androidArtifact {
+                            artifactId = "androidartifacts"
+
+                            name = "AndroidFacts"
+                            description = "An awesome Gradle plugin for Android publishing"
+                            url = "https://github.com/StefMa/AndroidArtifacts"
+                        }
+                """
+        )
+
+        GradleRunner.create()
+                .default(tempDir, gradleVersion)
+                .withArguments("generatePomFileForReleaseAarPublication")
+                .build()
+
+        val pomFile = File(tempDir, "/build/publications/releaseAar/pom-default.xml")
+        assertThat(pomFile.readText()).contains("<name>AndroidFacts</name>")
+        assertThat(pomFile.readText()).contains("<description>An awesome Gradle plugin for Android publishing</description>")
+        assertThat(pomFile.readText()).contains("<url>https://github.com/StefMa/AndroidArtifacts</url>")
+    }
+
     @Test
     fun `test apply with license should generate pom correctly for Gradle version 4dot8 (and up)`(
             @TempDir tempDir: File,
