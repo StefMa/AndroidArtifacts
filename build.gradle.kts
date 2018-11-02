@@ -21,7 +21,7 @@ plugins {
 apply(plugin = "guru.stefma.bintrayrelease")
 
 group = "guru.stefma.androidartifacts"
-version = "1.2.0"
+version = "1.3.0"
 description = "A Gradle Plugin which will easify the process to publish Android and Java artifacts to the local maven"
 val githubSite = "https://github.com/StefMa/AndroidArtifacts"
 
