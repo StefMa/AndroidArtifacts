@@ -74,17 +74,17 @@ class JavaArtifactsPluginTest {
 
     private fun File.assertContainsAndroidArtifactsDependency() =
             assertThat(readText()).contains(
-                """    <dependency>
+                    """    <dependency>
       <groupId>guru.stefma.androidartifacts</groupId>
       <artifactId>androidartifacts</artifactId>
       <version>1.0.0</version>
       <scope>runtime</scope>
     </dependency>"""
-        )
+            )
 
     private fun File.assertContainsArtifactoryPublishDependency() =
             assertThat(readText()).contains(
-                """    <dependency>
+                    """    <dependency>
       <groupId>guru.stefma.artifactorypublish</groupId>
       <artifactId>artifactorypublish</artifactId>
       <version>1.0.0</version>
@@ -187,9 +187,9 @@ class JavaArtifactsPluginTest {
 
         val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
         pomFile.assertDoesNotContainLicenses()
-        pomFile.assertDoesNotContainName()
-        pomFile.assertDoesNotContainDescription()
-        pomFile.assertDoesNotContainUrl()
+        assertThat(pomFile.readText()).contains("<name>Android Artifacts</name>")
+        assertThat(pomFile.readText()).contains("<description>Example description</description>")
+        assertThat(pomFile.readText()).contains("<url>https://github.com/StefMa/AndroidArtifacts</url>")
     }
 
     private fun File.assertDoesNotContainLicenses() =
@@ -199,15 +199,6 @@ class JavaArtifactsPluginTest {
                     "<distribution>repo</distribution>",
                     "<comments>A business-friendly OSS license</comments>"
             )
-
-    private fun File.assertDoesNotContainName() =
-            assertThat(readText()).doesNotContain("<name>Android Artifacts</name>")
-
-    private fun File.assertDoesNotContainDescription() =
-            assertThat(readText()).doesNotContain("<description>Example description</description>")
-
-    private fun File.assertDoesNotContainUrl() =
-            assertThat(readText()).doesNotContain("<url>https://github.com/StefMa/AndroidArtifacts</url>")
 
     @Test
     fun `test apply should generate pom for project correctly`(
@@ -415,7 +406,7 @@ class JavaArtifactsPluginTest {
         val pomFile = File(tempDir, "/build/publications/maven/pom-default.xml")
         pomFile.assertContainsDescription()
         pomFile.assertContainsUrl()
-        pomFile.assertDoesNotContainName()
+        assertThat(pomFile.readText()).doesNotContain("<name>Android Artifacts</name>")
         pomFile.assertContainsOverriddenName()
         pomFile.assertContainsCustomProperty()
 
