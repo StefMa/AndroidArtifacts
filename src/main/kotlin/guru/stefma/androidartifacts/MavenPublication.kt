@@ -117,7 +117,10 @@ internal fun MavenPublication.setupMetadata(
     } else {
         pom.withXml {
             it.asNode().appendNode("name", extension.name ?: project.name)
-            it.asNode().appendNode("description", extension.description ?: project.description)
+            val desc = extension.description ?: project.description ?: "-"
+            if (desc != "-") {
+                it.asNode().appendNode("description", desc)
+            }
             extension.url?.let { url -> it.asNode().appendNode("url", url) }
         }
     }
