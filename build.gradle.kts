@@ -44,7 +44,7 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
 
-    optionalPlugins("com.android.tools.build:gradle:3.1.4")
+    optionalPlugins("com.android.tools.build:gradle:3.3.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
