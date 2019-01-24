@@ -8,7 +8,7 @@ import java.io.File
  */
 fun GradleRunner.default(
         projectDir: File,
-        gradleVersion: String = "4.8.1",
+        gradleVersion: String = "4.10.2",
         pluginClasspath: Boolean = true
 ) = this
         .apply { if(pluginClasspath) withPluginClasspath() }
