@@ -40,6 +40,17 @@ jobs:
             - ~/.gradle
           key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
 
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test_results/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test_results/ \;
+          when: always
+      - store_test_results:
+          path: ~/test_results
+      - store_artifacts:
+          path: ~/test_results
+
   # This job will publish the consumers from
   # the subprojects/consumers dir into the local maven
   "buildConsumersAndStore":
