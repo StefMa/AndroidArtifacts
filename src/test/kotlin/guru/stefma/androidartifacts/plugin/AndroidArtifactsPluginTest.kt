@@ -465,6 +465,108 @@ class AndroidArtifactsPluginTest {
         assertThat(File(tempDir, "/build/libs/").listFiles()).isNull()
     }
 
+    @Test
+    fun `test AGP 3dot2dot1 should not print warning with Gradle version 4dot10dot2`(
+            @TempDir tempDir: File,
+            @AndroidBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        androidArtifact {
+                            artifactId = "androidartifacts"
+                        }
+
+                        repositories {
+                            jcenter()
+                            google()
+                        }
+                """
+        )
+        File(tempDir, "settings.gradle").apply {
+            createNewFile()
+            writeText("""
+                pluginManagement {
+                    repositories {
+                        mavenLocal()
+                        google()
+                        jcenter()
+                    }
+                    resolutionStrategy {
+                        eachPlugin {
+                            if (requested.id.id.startsWith("com.android")) {
+                                useModule("com.android.tools.build:gradle:3.2.1")
+                            }
+                            if (requested.id.id.startsWith("guru.stefma")) {
+                                useModule("guru.stefma.androidartifacts:androidartifacts:${System.getProperty("pluginVersion")}")
+                            }
+                        }
+                    }
+                }
+            """.trimIndent())
+        }
+
+        val buildResult = GradleRunner.create()
+                .default(tempDir, "4.10.2", false)
+                .withArguments("androidArtifactRelease")
+                .build()
+
+        println(buildResult.output)
+        assertThat(buildResult.output).doesNotContain("API 'variant.getJavaCompiler()' is obsolete")
+    }
+
+    @Test
+    fun `test AGP 3dot3dot0 should not print warning with Gradle version 4dot10dot2`(
+            @TempDir tempDir: File,
+            @AndroidBuildScript buildScript: File
+    ) {
+        buildScript.appendText(
+                """
+                        group = "guru.stefma"
+                        version = "1.0"
+                        androidArtifact {
+                            artifactId = "androidartifacts"
+                        }
+
+                        repositories {
+                            jcenter()
+                            google()
+                        }
+                """
+        )
+        File(tempDir, "settings.gradle").apply {
+            createNewFile()
+            writeText("""
+                pluginManagement {
+                    repositories {
+                        mavenLocal()
+                        google()
+                        jcenter()
+                    }
+                    resolutionStrategy {
+                        eachPlugin {
+                            if (requested.id.id.startsWith("com.android")) {
+                                useModule("com.android.tools.build:gradle:3.3.0")
+                            }
+                            if (requested.id.id.startsWith("guru.stefma")) {
+                                useModule("guru.stefma.androidartifacts:androidartifacts:${System.getProperty("pluginVersion")}")
+                            }
+                        }
+                    }
+                }
+            """.trimIndent())
+        }
+
+        val buildResult = GradleRunner.create()
+                .default(tempDir, "4.10.2", false)
+                .withArguments("androidArtifactRelease")
+                .build()
+
+        println(buildResult.output)
+        assertThat(buildResult.output).doesNotContain("API 'variant.getJavaCompiler()' is obsolete")
+    }
+
     @Disabled("It currently not working somehow... ")
     @Test
     fun `test apply kotlin should create dokka task`(@TempDir tempDir: File, @AndroidBuildScript buildScript: File) {
