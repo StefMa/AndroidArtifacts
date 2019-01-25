@@ -6,6 +6,17 @@ import java.io.File
 
 interface AbstractTest {
 
+    val androidExtensionDefaults
+        get() = """
+                android {
+                    compileSdkVersion 27
+                    defaultConfig {
+                        minSdkVersion 21
+                        targetSdkVersion 28
+                    }
+                }
+            """
+
     fun createAndroidManifest(projectDir: File) =
             File(projectDir, "/src/main/AndroidManifest.xml").apply {
                 parentFile.mkdirs()
