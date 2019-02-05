@@ -43,29 +43,6 @@ open class MoveDokkaAndGradleSiteToNow : DefaultTask() {
     }
 }
 
-/**
- * This task will create a Dockerfile inside the $rootProject/buildDir/now directory
- * to prepare it for the now publishing...
- */
-@CacheableTask
-open class CreateNowDockerfile : DefaultTask() {
-
-    @Input
-    val dockerfileContent = """
-        FROM httpd:2.4-alpine
-        COPY . /usr/local/apache2/htdocs/
-    """.trimIndent()
-
-    @OutputFile
-    val dockerFile = File(project.rootProject.buildDir, "now/Dockerfile")
-
-    @TaskAction
-    fun createDockerFile() {
-        dockerFile.writeText(dockerfileContent)
-    }
-
-}
-
 @CacheableTask
 open class CreateNowEntrypointIndexHtml : DefaultTask() {
 
@@ -96,7 +73,9 @@ open class CreateNowJson : DefaultTask() {
     @Input
     val nowJsonContent = """
         {
-            "alias" : "androidartifacts"
+            "version": 2,
+            "alias" : "androidartifacts",
+            "builds": [{ "src": "**", "use": "@now/static" }]
         }
     """.trimIndent()
 

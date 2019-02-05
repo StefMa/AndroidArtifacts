@@ -11,12 +11,11 @@ class ZeitPlugin : Plugin<Project> {
         tasks.register("moveDocsToNow", MoveDokkaAndGradleSiteToNow::class.java) {
             it.dependsOn(tasksNamed("dokka", "generateSite"))
         }
-        tasks.register("createNowDockerfile", CreateNowDockerfile::class.java)
         tasks.register("createNowEntrypoint", CreateNowEntrypointIndexHtml::class.java)
         tasks.register("createNowJson", CreateNowJson::class.java)
 
         tasks.register("publishDocsToNow", DefaultZeitTask::class.java) {
-            it.dependsOn(tasksNamed("moveDocsToNow", "createNowDockerfile", "createNowEntrypoint", "createNowJson"))
+            it.dependsOn(tasksNamed("moveDocsToNow", "createNowEntrypoint", "createNowJson"))
             it.executeWithNowCommand(project, "--public")
         }
 
