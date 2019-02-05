@@ -1,10 +1,7 @@
 package guru.stefma.androidartifacts
 
 import groovy.util.Node
-import org.gradle.api.artifacts.Configuration
-import org.gradle.api.artifacts.ConfigurationContainer
-import org.gradle.api.artifacts.Dependency
-import org.gradle.api.artifacts.ModuleDependency
+import org.gradle.api.artifacts.*
 import org.gradle.api.publish.maven.MavenPom
 
 /**
@@ -81,7 +78,7 @@ private fun Node.addDependency(dependency: Dependency, scope: String) {
     val dependencyNode = appendNode("dependency")
     dependency.apply {
         dependencyNode.appendNode("groupId", group)
-        dependencyNode.appendNode("artifactId", name)
+        dependencyNode.appendNode("artifactId", artifactId)
         dependencyNode.appendNode("version", version)
     }
     dependencyNode.appendNode("scope", scope)
@@ -99,3 +96,10 @@ private fun Node.addExclusions(dep: Dependency) = (dep as? ModuleDependency)?.le
         exclusion.appendNode("artifactId", it.module ?: "*")
     }
 }
+
+private val Dependency.artifactId: String
+    get() = (this as? ProjectDependency)?.run {
+            dependencyProject.extensions.findByType(ArtifactsExtension::class.java)?.run {
+               artifactId
+            } ?: name
+        } ?: name

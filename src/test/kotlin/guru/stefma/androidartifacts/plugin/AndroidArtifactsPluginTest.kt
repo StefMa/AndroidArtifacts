@@ -495,6 +495,75 @@ class AndroidArtifactsPluginTest : AbstractTest {
     </dependency>"""
             )
 
+    @Test
+    fun `test apply should generate pom for project with different artifactId correctly`(
+            @TempDir tempDir: File,
+            @AndroidBuildScript buildScript: File
+    ) {
+        withBuildScript(tempDir) {
+            """
+                plugins {
+                    id "com.android.library"
+                    id "guru.stefma.androidartifacts"
+                }
+
+                $androidExtensionDefaults
+
+                group = "guru.stefma"
+                version = "1.0"
+                androidArtifact {
+                    artifactId = "androidartifacts"
+                }
+
+                dependencies {
+                    implementation(project(":awesome"))
+                }
+            """
+        }
+
+        withSettingsScript(tempDir) {
+            """
+                include(":awesome")
+            """
+        }
+
+        File(tempDir, "awesome/build.gradle").apply {
+            parentFile.mkdirs()
+            writeText(
+                    """
+                         plugins {
+                            id "com.android.library"
+                            id "guru.stefma.androidartifacts"
+                        }
+
+                        $androidExtensionDefaults
+
+                        group = "guru.stefma"
+                        version = "1.0"
+                        androidArtifact {
+                            artifactId = "awesomeId"
+                        }
+
+                    """
+            )
+        }
+
+        withGradleRunner(tempDir, args = arrayOf("generatePomFileForReleaseAarPublication")) {
+            val pomFile = File(tempDir, "/build/publications/releaseAar/pom-default.xml")
+            pomFile.assertContainsProjectAwesomeIdDependency()
+        }
+    }
+
+    private fun File.assertContainsProjectAwesomeIdDependency() =
+            assertThat(readText()).contains(
+                    """    <dependency>
+      <groupId>guru.stefma</groupId>
+      <artifactId>awesomeId</artifactId>
+      <version>1.0</version>
+      <scope>runtime</scope>
+    </dependency>"""
+            )
+
     @ParameterizedTest(
             name = "test task androidArtifactRelease should generate jars with Gradle version {arguments}"
     )
