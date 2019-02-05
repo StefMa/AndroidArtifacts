@@ -11,18 +11,17 @@ class ZeitPlugin : Plugin<Project> {
         tasks.register("moveDocsToNow", MoveDokkaAndGradleSiteToNow::class.java) {
             it.dependsOn(tasksNamed("dokka", "generateSite"))
         }
-        tasks.register("createNowDockerfile", CreateNowDockerfile::class.java)
         tasks.register("createNowEntrypoint", CreateNowEntrypointIndexHtml::class.java)
         tasks.register("createNowJson", CreateNowJson::class.java)
 
         tasks.register("publishDocsToNow", DefaultZeitTask::class.java) {
-            it.dependsOn(tasksNamed("moveDocsToNow", "createNowDockerfile", "createNowEntrypoint", "createNowJson"))
-            it.executeWithNowCommand(project, "--public")
+            it.dependsOn(tasksNamed("moveDocsToNow", "createNowEntrypoint", "createNowJson"))
+            it.executeNowWithCommand(project)
         }
 
         tasks.register("createNowAlias", DefaultZeitTask::class.java) {
             it.dependsOn(tasksNamed("publishDocsToNow"))
-            it.executeWithNowCommand(project, "alias")
+            it.executeNowWithCommand(project, "alias")
         }
     }
 
@@ -33,7 +32,7 @@ class ZeitPlugin : Plugin<Project> {
  *
  * The given [command] will be chained into the `now` command.
  */
-private fun DefaultZeitTask.executeWithNowCommand(project: Project, command: String) = doLast {
+private fun DefaultZeitTask.executeNowWithCommand(project: Project, command: String = "") = doLast {
     project.exec {
         it.workingDir("${project.rootProject.buildDir}/now")
         if (zeitToken != null) {

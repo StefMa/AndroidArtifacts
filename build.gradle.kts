@@ -1,10 +1,4 @@
-import java.net.URL
 import guru.stefma.bintrayrelease.PublishExtension
-import guru.stefma.buildsrc.CreateNowDockerfile
-import guru.stefma.buildsrc.CreateNowEntrypointIndexHtml
-import guru.stefma.buildsrc.CreateNowJson
-import guru.stefma.buildsrc.MoveDokkaAndGradleSiteToNow
-import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
     kotlin("jvm") version "1.2.70"
