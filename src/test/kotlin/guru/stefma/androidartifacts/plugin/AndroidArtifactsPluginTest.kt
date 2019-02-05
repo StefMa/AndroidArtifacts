@@ -577,12 +577,8 @@ class AndroidArtifactsPluginTest : AbstractTest {
         }
     }
 
-    @ParameterizedTest(
-            name = "test task androidArtifactRelease without sources, javadoc with Gradle version {arguments}"
-    )
-    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9", "4.10.2"])
+    @Test
     fun `test task androidArtifactRelease without sources, javadoc`(
-            gradleVersion: String,
             @TempDir tempDir: File,
             @AndroidBuildScript buildScript: File
     ) {
@@ -622,39 +618,7 @@ class AndroidArtifactsPluginTest : AbstractTest {
             )
         }
 
-        val agpVersion = when {
-            listOf("4.4", "4.5", "4.5.1").contains(gradleVersion) -> "3.1.0"
-            "4.10.2" == gradleVersion -> "3.3.0"
-            else -> "3.2.1"
-        }
-        withSettingsScript(tempDir) {
-            """
-                pluginManagement {
-                    repositories {
-                        mavenLocal()
-                        google()
-                        jcenter()
-                    }
-                    resolutionStrategy {
-                        eachPlugin {
-                            if (requested.id.id.startsWith("com.android")) {
-                                useModule("com.android.tools.build:gradle:$agpVersion")
-                            }
-                            if (requested.id.id.startsWith("guru.stefma")) {
-                                useModule("guru.stefma.androidartifacts:androidartifacts:${System.getProperty("pluginVersion")}")
-                            }
-                        }
-                    }
-                }
-            """
-        }
-
-        withGradleRunner(
-                tempDir,
-                pluginClasspath = false,
-                gradleVersion = gradleVersion,
-                args = arrayOf("androidArtifactRelease")
-        ) {
+        withGradleRunner(tempDir, args = arrayOf("androidArtifactRelease")) {
             assertThat(File(tempDir, "/build/outputs/aar/${tempDir.name}-release.aar")).exists()
             assertThat(File(tempDir, "/build/libs/").listFiles()).isNull()
         }
