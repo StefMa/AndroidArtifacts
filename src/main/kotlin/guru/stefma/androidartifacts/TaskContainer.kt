@@ -7,6 +7,7 @@ import org.gradle.api.Project
 import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPluginConvention
 import org.gradle.api.tasks.TaskContainer
+import org.gradle.api.tasks.TaskProvider
 import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.javadoc.Javadoc
 import org.gradle.jvm.tasks.Jar
@@ -91,7 +92,7 @@ internal fun TaskContainer.createAndroidArtifactsJavadocTask(
 ): Task {
     val docHelperTask =
             create("androidArtifact${variant.name.capitalize()}JavadocHelper", Javadoc::class.java) {
-                it.source = (variant.javaCompiler as JavaCompile).source
+                it.source = variant.safeJavaCompiler.source
                 // The first two classpath(es) adds our own
                 // and the Android code.
                 variant.sourceSets.forEach { sourceProvider ->
@@ -99,7 +100,7 @@ internal fun TaskContainer.createAndroidArtifactsJavadocTask(
                 }
                 it.classpath += project.files(project.androidLibraryExtension.bootClasspath)
                 // This will add all the dependencies to the classpath
-                it.classpath += (variant.javaCompiler as JavaCompile).classpath
+                it.classpath += variant.safeJavaCompiler.classpath
                 // excludes the from Android generated R and BuildConfig class
                 it.exclude("**/R.*", "**/BuildConfig.*")
                 it.isFailOnError = false
@@ -114,6 +115,14 @@ internal fun TaskContainer.createAndroidArtifactsJavadocTask(
         it.description = "Package the javadoc for the 'androidArtifact${variant.name.capitalize()}' into a JAR."
     }
 }
+
+private val LibraryVariant.safeJavaCompiler
+    get() = try {
+        val javaCompileProvider = this::class.java.getMethod("getJavaCompileProvider").invoke(this)
+        (javaCompileProvider as TaskProvider<JavaCompile>).get()
+    } catch (noMethodExe: NoSuchMethodException) {
+        javaCompile
+    }
 
 /**
  * Creates a [Jar] task which will package the sources from the [org.gradle.api.tasks.javadoc.Javadoc] output.

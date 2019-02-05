@@ -6,32 +6,52 @@ import java.io.File
 
 interface AbstractTest {
 
+    val androidExtensionDefaults
+        get() = """
+                android {
+                    compileSdkVersion 27
+                    defaultConfig {
+                        minSdkVersion 21
+                        targetSdkVersion 28
+                    }
+                }
+            """
+
     fun createAndroidManifest(projectDir: File) =
             File(projectDir, "/src/main/AndroidManifest.xml").apply {
                 parentFile.mkdirs()
                 writeText("<manifest package=\"guru.stefma.androidartifacts.test\"/>")
             }
 
+    fun withBuildScript(projectDir: File, contentBlock: () -> String) =
+            File(projectDir, "build.gradle").apply {
+                parentFile.mkdirs()
+                createNewFile()
+                writeText(contentBlock())
+            }
+
+    fun withSettingsScript(projectDir: File, contentBlock: () -> String) =
+            File(projectDir, "settings.gradle").apply {
+                parentFile.mkdirs()
+                createNewFile()
+                writeText(contentBlock())
+            }
+
     fun withGradleRunner(
             projectDir: File,
-            buildScriptContent: String,
-            vararg args: String,
+            pluginClasspath: Boolean = true,
+            gradleVersion: String = "4.10.2",
+            args: Array<String> = emptyArray(),
             fail: Boolean = false,
             block: BuildResult.() -> Unit
     ) {
-        createBuildScript(projectDir, buildScriptContent)
-
         GradleRunner.create()
-                .default(projectDir)
+                .apply { if(pluginClasspath) withPluginClasspath() }
+                .withGradleVersion(gradleVersion)
+                .withProjectDir(projectDir)
                 .withArguments(*args)
                 .run { if (fail) buildAndFail() else build() }
                 .also { block(it) }
     }
 
-    private fun createBuildScript(projectDir: File, content: String) =
-            File(projectDir, "build.gradle").apply {
-                parentFile.mkdirs()
-                createNewFile()
-                writeText(content)
-            }
 }

@@ -300,12 +300,8 @@ class JavaArtifactsPluginTest {
         assertThat(File(tempDir, "/build/libs/${tempDir.name}-1.0-javadocs.jar")).exists()
     }
 
-    @ParameterizedTest(
-            name = "test task androidArtifactRelease without sources, javadoc with Gradle version {arguments}"
-    )
-    @ValueSource(strings = ["4.4", "4.5", "4.5.1", "4.6", "4.7", "4.8", "4.8.1", "4.9", "4.10.2"])
+    @Test
     fun `test task androidArtifactJava without sources, javadoc`(
-            gradleVersion: String,
             @TempDir tempDir: File,
             @JavaBuildScript buildScript: File
     ) {
@@ -338,7 +334,7 @@ class JavaArtifactsPluginTest {
         }
 
         GradleRunner.create()
-                .default(tempDir, gradleVersion)
+                .default(tempDir)
                 .withArguments("androidArtifactJava")
                 .build()
 

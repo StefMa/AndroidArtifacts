@@ -21,7 +21,7 @@ plugins {
 apply(plugin = "guru.stefma.bintrayrelease")
 
 group = "guru.stefma.androidartifacts"
-version = "1.3.0"
+version = "1.4.0-NOSNAPSHOT"
 description = "A Gradle Plugin which will easify the process to publish Android and Java artifacts to the local maven"
 val githubSite = "https://github.com/StefMa/AndroidArtifacts"
 
@@ -44,7 +44,7 @@ dependencies {
     implementation("org.jetbrains.dokka:dokka-android-gradle-plugin:0.9.17")
     implementation("org.jetbrains.dokka:dokka-gradle-plugin:0.9.17")
 
-    optionalPlugins("com.android.tools.build:gradle:3.1.4")
+    optionalPlugins("com.android.tools.build:gradle:3.3.0")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
@@ -52,8 +52,13 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.11.1")
 }
 
-tasks.withType(Test::class.java) {
-    useJUnitPlatform()
+afterEvaluate {
+    tasks.withType(Test::class.java).configureEach {
+        dependsOn(tasks.named("publishToMavenLocal"))
+        systemProperty("pluginVersion", version)
+
+        useJUnitPlatform()
+    }
 }
 
 // This will add the android tools into the "test classpath"

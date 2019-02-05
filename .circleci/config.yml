@@ -21,9 +21,7 @@ jobs:
       - run: unzip -q sdk-tools-linux-4333796.zip
       - run: mkdir $HOME/android-sdk
       - run: mv tools $HOME/android-sdk/tools
-      - run: mkdir $HOME/android-sdk/licenses
-      - run: echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$HOME/android-sdk/licenses/android-sdk-license"
-      - run: echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$HOME/android-sdk/licenses/android-sdk-preview-license"
+      - run: yes | $HOME/android-sdk/tools/bin/sdkmanager --licenses || true
 
       # Try to restore cache (see ho to save cache below)
       - restore_cache:
@@ -39,6 +37,17 @@ jobs:
           paths:
             - ~/.gradle
           key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+      - run:
+          name: Save test results
+          command: |
+            mkdir -p ~/test_results/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/test_results/ \;
+          when: always
+      - store_test_results:
+          path: ~/test_results
+      - store_artifacts:
+          path: ~/test_results
 
   # This job will publish the consumers from
   # the subprojects/consumers dir into the local maven
@@ -59,9 +68,7 @@ jobs:
     - run: unzip -q sdk-tools-linux-4333796.zip
     - run: mkdir $HOME/android-sdk
     - run: mv tools $HOME/android-sdk/tools
-    - run: mkdir $HOME/android-sdk/licenses
-    - run: echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$HOME/android-sdk/licenses/android-sdk-license"
-    - run: echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$HOME/android-sdk/licenses/android-sdk-preview-license"
+    - run: yes | $HOME/android-sdk/tools/bin/sdkmanager --licenses || true
 
     - run:
         working_directory: subprojects/consumer
@@ -74,8 +81,8 @@ jobs:
 
   # This will publish the docs to now without setting an alias.
   "publishDocs":
-    machine:
-      image: circleci/classic:latest
+    docker:
+      - image: openjdk:8u191-jdk-alpine3.8
 
     steps:
     - checkout
@@ -85,13 +92,21 @@ jobs:
           key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}    
 
     # First install now
-    - run: npm install -g now
-    - run: ./gradlew publishDocsToNow --zeitToken=$NOW_TOKEN
+    - run: apk update
+    - run: apk add wget
+    - run: wget -q https://github.com/zeit/now-cli/releases/download/13.1.3/now-alpine.gz
+    - run: apk add gzip
+    - run: gunzip now-alpine.gz
+    - run: chmod a+x now-alpine
+    - run: mv now-alpine /usr/local/bin/now
+
+    # Then publish it
+    - run: ./gradlew publishDocsToNow --zeitToken=$NOW_TOKEN --stacktrace
 
   # Same as "publishDocs" but will set an alias afterwards
   "publishDocsWithAlias":
-    machine:
-      image: circleci/classic:latest
+    docker:
+      - image: openjdk:8u191-jdk-alpine3.8
 
     steps:
     - checkout
@@ -101,7 +116,15 @@ jobs:
           key: gradle-cache-v0-{{ checksum "build.gradle.kts" }}-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}        
 
     # First install now
-    - run: npm install -g now
+    - run: apk update
+    - run: apk add wget
+    - run: wget -q https://github.com/zeit/now-cli/releases/download/13.1.3/now-alpine.gz
+    - run: apk add gzip
+    - run: gunzip now-alpine.gz
+    - run: chmod a+x now-alpine
+    - run: mv now-alpine /usr/local/bin/now
+
+    # Then publish it
     - run: ./gradlew publishDocsToNow --zeitToken=$NOW_TOKEN createNowAlias --zeitToken=$NOW_TOKEN
 
 workflows:
