@@ -1,8 +1,8 @@
 [![CircleCI](https://circleci.com/gh/StefMa/AndroidArtifacts.svg?style=svg)](https://circleci.com/gh/StefMa/AndroidArtifacts)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Download](https://api.bintray.com/packages/stefma/maven/AndroidArtifacts/images/download.svg)](https://bintray.com/stefma/maven/AndroidArtifacs/_latestVersion)
-[![Dokka](https://img.shields.io/badge/Dokka-2E7D32.svg)](https://androidartifacts.now.sh/androidartifacts)
-[![Gradle Site](https://img.shields.io/badge/Gradle_Site-2E7D32.svg)](https://androidartifacts.now.sh/gradleSite)
+[![Dokka](https://img.shields.io/badge/Dokka-2E7D32.svg)](https://androidartifacts.now.sh/androidartifacts/)
+[![Gradle Site](https://img.shields.io/badge/Gradle_Site-2E7D32.svg)](https://androidartifacts.now.sh/gradleSite/)
 
 # AndroidArtifacts 
 A super easy way to create Android and Java artifacts.
