@@ -11,7 +11,7 @@ plugins {
 }
 
 group = "guru.stefma.androidartifacts"
-version = "1.4.0"
+version = "1.4.0-NOSNAPSHOT"
 description = "A Gradle Plugin which will easify the process to publish Android and Java artifacts to the local maven"
 val githubSite = "https://github.com/StefMa/AndroidArtifacts"
 
