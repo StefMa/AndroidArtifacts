@@ -10,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.70")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.21")
     }
 }
 
@@ -34,7 +34,7 @@ repositories {
 }
 
 dependencies {
-    "implementation"(kotlin("stdlib-jdk8:1.2.70"))
+    "implementation"(kotlin("stdlib-jdk8:1.3.21"))
 
     // The following are "test" dependencies
     "api"("junit:junit:4.12")

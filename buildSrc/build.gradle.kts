@@ -1,11 +1,11 @@
 plugins {
-    kotlin("jvm") version "1.2.70"
+    kotlin("jvm") version "1.3.21"
     `java-gradle-plugin`
 }
 
 repositories {
     jcenter()
-    maven(url = "https://plugins.gradle.org/m2/")
+    gradlePluginPortal()
 }
 
 dependencies {

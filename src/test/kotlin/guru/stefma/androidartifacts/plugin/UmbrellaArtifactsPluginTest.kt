@@ -70,7 +70,7 @@ class UmbrellaArtifactsPluginTest : AbstractTest {
         withBuildScript(tempDir) {
             """
                 plugins {
-                    id("org.jetbrains.kotlin.jvm") version "1.2.71"
+                    id("org.jetbrains.kotlin.jvm") version "1.3.21"
                     id("guru.stefma.artifacts")
                 }
 
@@ -98,7 +98,7 @@ class UmbrellaArtifactsPluginTest : AbstractTest {
             """
                 plugins {
                     id("guru.stefma.artifacts")
-                    id("org.jetbrains.kotlin.jvm") version "1.2.71"
+                    id("org.jetbrains.kotlin.jvm") version "1.3.21"
                 }
 
                 group = "guru.stefma"

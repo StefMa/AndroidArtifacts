@@ -1,18 +1,14 @@
-import guru.stefma.bintrayrelease.PublishExtension
-
 plugins {
-    kotlin("jvm") version "1.2.70"
+    kotlin("jvm") version "1.3.21"
 
-    id("com.gradle.plugin-publish") version "0.10.0"
+    id("com.gradle.plugin-publish") version "0.10.1"
     `java-gradle-plugin`
 
-    id("java-library")
-    id("guru.stefma.bintrayrelease") version "1.0.0" apply false
+    id("guru.stefma.bintrayrelease") version "1.1.0"
 
     id("guru.stefma.androidartifacts.docs")
     id("guru.stefma.androidartifacts.zeit")
 }
-apply(plugin = "guru.stefma.bintrayrelease")
 
 group = "guru.stefma.androidartifacts"
 version = "1.4.0-NOSNAPSHOT"
@@ -40,9 +36,7 @@ dependencies {
 
     optionalPlugins("com.android.tools.build:gradle:3.3.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.4.0")
     testImplementation("org.assertj:assertj-core:3.11.1")
 }
 
@@ -104,8 +98,13 @@ pluginBundle {
     }
 }
 
-configure<PublishExtension> {
+// version and group are
+// declared above
+javaArtifact {
     artifactId = "androidartifacts"
+}
+
+publish {
     userOrg = "stefma"
     desc = description
     uploadName = "AndroidArtifacts"

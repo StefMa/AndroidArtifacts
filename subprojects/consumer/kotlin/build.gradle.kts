@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.2.70"
+    kotlin("jvm") version "1.3.21"
 }
 apply<guru.stefma.androidartifacts.plugin.JavaArtifactsPlugin>()
 
