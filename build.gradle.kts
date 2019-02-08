@@ -4,7 +4,7 @@ plugins {
     id("com.gradle.plugin-publish") version "0.10.1"
     `java-gradle-plugin`
 
-    id("guru.stefma.bintrayrelease") version "1.1.0"
+    id("guru.stefma.bintrayrelease") version "1.1.1"
 
     id("guru.stefma.androidartifacts.docs")
     id("guru.stefma.androidartifacts.zeit")
