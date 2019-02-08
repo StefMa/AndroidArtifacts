@@ -40,9 +40,7 @@ dependencies {
 
     optionalPlugins("com.android.tools.build:gradle:3.3.0")
 
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.3.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.4.0")
     testImplementation("org.assertj:assertj-core:3.11.1")
 }
 
