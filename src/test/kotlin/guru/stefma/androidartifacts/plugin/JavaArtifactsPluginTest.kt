@@ -411,7 +411,7 @@ class JavaArtifactsPluginTest {
         buildScript.writeText(
                 """
                         plugins {
-                            id "org.jetbrains.kotlin.jvm" version "1.2.50"
+                            id "org.jetbrains.kotlin.jvm" version "1.3.21"
                             id "guru.stefma.javaartifacts"
                         }
 

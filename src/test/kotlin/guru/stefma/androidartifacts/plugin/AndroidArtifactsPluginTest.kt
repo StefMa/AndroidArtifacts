@@ -795,7 +795,7 @@ class AndroidArtifactsPluginTest : AbstractTest {
                 """
                         plugins {
                             id "com.android.library" apply false
-                            id "org.jetbrains.kotlin.android" version "1.2.50" apply false
+                            id "org.jetbrains.kotlin.android" version "1.3.21" apply false
                             id "guru.stefma.androidartifacts" apply false
                         }
 
